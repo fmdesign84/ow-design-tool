@@ -1,0 +1,761 @@
+/**
+ * MockupGenerator 컴포넌트 스타일
+ */
+
+.mockupContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* 업로드 안내 및 상태 박스 */
+.uploadInfo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  background: #F8F8F8;
+  border-radius: 8px;
+}
+
+.uploadInfoText {
+  margin: 0;
+  font-size: 11px;
+  color: #757575;
+}
+
+/* 두 개 업로드 영역 - 가로 배치 */
+.uploadRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.uploadColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.uploadLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: #9E9E9E;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 작은 업로드 영역 */
+.uploadZoneSmall {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 12px;
+  border: 1px dashed #D0D0D0;
+  border-radius: 10px;
+  background: #FAFAFA;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+  min-height: 120px;
+}
+
+.uploadZoneSmall:hover {
+  border-color: var(--color-primary);
+  background: #FFF8F5;
+  box-shadow: 0 2px 8px rgba(255, 107, 0, 0.06);
+}
+
+.uploadZoneSmall svg {
+  color: #BDBDBD;
+  margin-bottom: 8px;
+  transition: all 0.25s ease;
+}
+
+.uploadZoneSmall:hover svg {
+  color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+.uploadZoneSmall h4 {
+  margin: 0 0 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3C3C3C;
+}
+
+.uploadZoneSmall p {
+  margin: 0;
+  font-size: 10px;
+  color: #9E9E9E;
+}
+
+/* 작은 미리보기 영역 */
+.previewAreaSmall {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px;
+  background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+  border: 1px solid #E8E8E8;
+  border-radius: 10px;
+  min-height: 120px;
+}
+
+.previewImageSmall {
+  max-width: 100%;
+  max-height: 80px;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.removeBtnSmall {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(60, 60, 60, 0.7);
+  backdrop-filter: blur(4px);
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.removeBtnSmall:hover {
+  background: rgba(255, 59, 48, 0.9);
+  transform: scale(1.1);
+}
+
+.fileNameSmall {
+  margin-top: 8px;
+  font-size: 9px;
+  color: #9E9E9E;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 2px 8px;
+  border-radius: 8px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 업로드 상태 표시 */
+.statusWarning {
+  font-size: 10px;
+  color: #FF9800;
+  font-weight: 500;
+}
+
+.statusOk {
+  font-size: 10px;
+  color: #4CAF50;
+  font-weight: 500;
+}
+
+.statusBest {
+  font-size: 10px;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* 업로드 영역 */
+.uploadZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  border: 2px dashed #E0E0E0;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+}
+
+.uploadZone:hover {
+  border-color: var(--color-primary);
+  background: linear-gradient(180deg, #FFF8F5 0%, #FFFFFF 100%);
+  box-shadow: 0 4px 16px rgba(255, 107, 0, 0.08);
+}
+
+.uploadZone svg {
+  color: #BDBDBD;
+  margin-bottom: 12px;
+  transition: all 0.25s ease;
+}
+
+.uploadZone:hover svg {
+  color: var(--color-primary);
+  transform: scale(1.1);
+}
+
+.uploadZone h3 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3C3C3C;
+}
+
+.uploadZone p {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: #757575;
+}
+
+.uploadHint {
+  font-size: 10px;
+  color: #9E9E9E;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+/* 키비주얼 미리보기 영역 */
+.previewArea {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+  border: 1px solid #E8E8E8;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.previewImage {
+  max-width: 100%;
+  max-height: 160px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.removeBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: rgba(60, 60, 60, 0.7);
+  backdrop-filter: blur(4px);
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.removeBtn:hover {
+  background: rgba(255, 59, 48, 0.9);
+  transform: scale(1.1);
+}
+
+.fileName {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #9E9E9E;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 3px 10px;
+  border-radius: 10px;
+}
+
+/* 설정 그룹 */
+.settingGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  color: #9E9E9E;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.selectedInfo {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 11px;
+  text-transform: none;
+  letter-spacing: 0;
+  background: rgba(255, 107, 0, 0.08);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* 카테고리 드롭다운 */
+.categoryDropdown {
+  position: relative;
+}
+
+.categoryBtn {
+  position: relative;
+  width: 100%;
+  height: 102px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.categoryBtn.open {
+  border-color: var(--color-primary);
+}
+
+.categoryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 배경 이미지 - 전체 커버 */
+.categoryImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.15);
+  transition: transform 0.25s ease;
+}
+
+.categoryBtn:hover .categoryImage {
+  transform: scale(1.25);
+}
+
+.categoryPlaceholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #F5F6F8 0%, #E8E9EB 100%);
+  font-size: 32px;
+  color: #BDBDBD;
+}
+
+/* 어두운 오버레이 - 전체 자연스러운 그라데이션 */
+.categoryDimOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.1) 100%);
+  transition: opacity 0.2s ease;
+  z-index: 1;
+}
+
+.categoryBtn:hover .categoryDimOverlay {
+  opacity: 0.5;
+}
+
+/* 라벨 오버레이 */
+.categoryOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 36px;
+  padding: 8px 12px;
+  z-index: 2;
+  text-align: left;
+}
+
+.categoryLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #FFFFFF;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* 화살표 - 오른쪽 오버레이 */
+.categoryBtnArrow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease;
+  z-index: 3;
+}
+
+.categoryBtn:hover .categoryBtnArrow {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.categoryBtnArrow.open {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.categoryBtnArrow svg {
+  transition: transform 0.15s ease;
+}
+
+.categoryBtnArrow.open svg {
+  transform: rotate(180deg);
+}
+
+/* 카테고리 드롭다운 리스트 */
+.categoryList {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  z-index: 100;
+  overflow: hidden;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.categoryItem {
+  width: 100%;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  background: #F0F0F0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  overflow: hidden;
+}
+
+.categoryItem:hover {
+  background: #FFFFFF;
+}
+
+.categoryItem.active {
+  background: #FFFFFF;
+}
+
+/* 드롭다운 아이템 이미지 */
+.categoryItemImageWrapper {
+  width: 80px;
+  height: 100%;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 7px 0 0 7px;
+  position: relative;
+}
+
+.categoryItemImageWrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  transition: opacity 0.2s ease;
+}
+
+.categoryItem:hover .categoryItemImageWrapper::after {
+  opacity: 0;
+}
+
+.categoryItemImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.2s ease;
+}
+
+.categoryItem:hover .categoryItemImage {
+  transform: scale(1.1);
+}
+
+.categoryItemPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #F5F6F8 0%, #E8E9EB 100%);
+  font-size: 20px;
+  color: #BDBDBD;
+}
+
+.categoryItemLabel {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 500;
+  color: #757575;
+  text-align: left;
+  padding-right: 12px;
+  transition: color 0.15s ease;
+}
+
+.categoryItem:hover .categoryItemLabel {
+  color: #3C3C3C;
+}
+
+.categoryItem.active .categoryItemLabel {
+  color: #3C3C3C;
+  font-weight: 600;
+}
+
+/* 목업 타입 리스트 (2열 그리드) */
+.presetList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.presetBtn {
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.presetBtn:hover {
+  border-color: rgba(255, 107, 0, 0.4);
+}
+
+.presetBtn:hover .presetImageWrapper::after {
+  opacity: 0;
+}
+
+.presetBtn:hover .presetImage {
+  transform: scale(1.08);
+}
+
+.presetBtn.active {
+  border-color: var(--color-primary);
+  box-shadow: 0 1px 6px rgba(255, 107, 0, 0.2);
+}
+
+.presetBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.presetBtn:disabled:hover .presetImage {
+  transform: none;
+}
+
+/* 이미지 래퍼 */
+.presetImageWrapper {
+  position: relative;
+  width: 100%;
+  height: 172px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* 기본 어두운 오버레이 - 자연스러운 그라데이션 (호버 시 밝아짐) */
+.presetImageWrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.1) 100%);
+  opacity: 1;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 실제 이미지 */
+.presetImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.25s ease;
+}
+
+/* 이미지 없을 때 플레이스홀더 */
+.presetPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #F5F6F8 0%, #E8E9EB 100%);
+  color: #BDBDBD;
+}
+
+.presetBtn.active .presetPlaceholder {
+  background: linear-gradient(135deg, #FFF0E8 0%, #FFE0CC 100%);
+  color: var(--color-primary);
+}
+
+/* 오버레이 (라벨 + 비율) */
+.presetOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  z-index: 2;
+}
+
+.presetLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #FFFFFF;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.presetRatio {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* 생성 버튼 */
+.generateBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 44px;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #FF8534 100%);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+  margin-top: 20px;
+  box-shadow: 0 2px 8px rgba(255, 107, 0, 0.3);
+}
+
+.generateBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #E55A2B 0%, var(--color-primary) 100%);
+  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+.generateBtn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(255, 107, 0, 0.3);
+}
+
+.generateBtn:disabled {
+  background: #E0E0E0;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 스피너 */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 결과 섹션 */
+.resultSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #E8E8E8;
+}
+
+.resultImageWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+  border: 1px solid #E8E8E8;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.resultImage {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.downloadBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #3C3C3C;
+  background: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.downloadBtn:hover {
+  background: #F5F5F5;
+  border-color: #BDBDBD;
+  color: var(--color-primary);
+}

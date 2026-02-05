@@ -1,0 +1,196 @@
+/**
+ * ModelSelector 스타일
+ * - FreeGeneration의 qualitySelector 패턴 적용
+ */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 헤더 - FreeGeneration .label 패턴 */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #5F5F5F;
+}
+
+.recommendBadge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 6px;
+  background: #FFF5F0;
+  color: var(--color-primary);
+  border: 1px solid rgba(255, 107, 0, 0.3);
+  border-radius: 4px;
+}
+
+/* 모델 버튼 그룹 - qualitySelector 패턴 */
+.models {
+  display: flex;
+  gap: 0;
+  background: #F5F6F8;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.modelButton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 44px;
+  padding: 8px 6px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.modelButton:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.modelButton.selected {
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.modelButton.recommended:not(.selected) {
+  background: rgba(255, 107, 0, 0.05);
+}
+
+.modelButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 모델 이름 */
+.modelHeader {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.modelName {
+  font-size: 12px;
+  font-weight: 500;
+  color: #757575;
+  line-height: 1;
+}
+
+.modelButton.selected .modelName {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.recIcon {
+  font-size: 10px;
+  color: var(--color-primary);
+}
+
+/* 뱃지 */
+.badges {
+  display: flex;
+  gap: 3px;
+  justify-content: center;
+}
+
+.badge {
+  font-size: 9px;
+  font-weight: 500;
+  padding: 2px 4px;
+  background: #E8E8E8;
+  color: #757575;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+.modelButton.selected .badge {
+  background: #FFF5F0;
+  color: var(--color-primary);
+}
+
+/* 설명 영역 */
+.description {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: #F5F6F8;
+  border-radius: 6px;
+}
+
+.description p {
+  margin: 0;
+  font-size: 11px;
+  color: #9E9E9E;
+}
+
+.cost {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+/* 추천 이유 */
+.recommendReason {
+  font-size: 11px;
+  padding: 6px 10px;
+  background: #FFF5F0;
+  border: 1px solid rgba(255, 107, 0, 0.2);
+  border-radius: 6px;
+  color: var(--color-primary);
+}
+
+/* Compact 모드 */
+.compact .models {
+  gap: 0;
+}
+
+.compact .modelButton {
+  min-height: 36px;
+  padding: 6px 4px;
+}
+
+.compact .modelName {
+  font-size: 11px;
+}
+
+.compact .badges {
+  display: none;
+}
+
+/* 모바일 */
+@media (max-width: 480px) {
+  .modelButton {
+    padding: 6px 4px;
+    min-height: 40px;
+  }
+
+  .modelName {
+    font-size: 11px;
+  }
+
+  .badges {
+    display: none;
+  }
+
+  .description {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}

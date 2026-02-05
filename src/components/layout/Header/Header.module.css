@@ -1,0 +1,446 @@
+/* ========================================
+   Header Component Styles
+   원본 header-component.js CSS 그대로 변환
+   ======================================== */
+
+.topHeader {
+  background: var(--bg-gray);
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  /* 헤더는 전체 너비 사용 - 프로필/알람이 항상 오른쪽 끝에 위치 */
+  width: 100%;
+  transition: background 0.3s ease;
+}
+
+/* 투명 헤더 모드 (AI Studio 홈) */
+.topHeader.transparent {
+  background: transparent;
+  position: fixed;
+  top: 0;
+  left: 0; /* Orange Whale Only - 사이드바 없음 */
+  right: 0;
+  width: 100%;
+  z-index: 9999; /* 최상위 */
+}
+
+.topHeader.transparent .headerRight {
+  position: relative;
+  z-index: 10000;
+}
+
+/* 투명 모드 - 페이지 타이틀 */
+.pageTitleTransparent {
+  color: #fff !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.pageTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black);
+  letter-spacing: -0.2px;
+  margin: 0;
+  margin-top: var(--spacing-1);
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+/* === Notification Bell === */
+.notificationBell {
+  position: relative;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.notificationBell svg {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  fill: none;
+  stroke: var(--text-muted);
+  stroke-width: 1.5;
+}
+
+/* 투명 모드 - 알림벨 흰색 (직접 클래스 적용) */
+.notificationBellTransparent svg {
+  stroke: #fff !important;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-size: 9px;
+  font-weight: var(--font-weight-bold);
+  min-width: 16px;
+  height: 16px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--spacing-1);
+}
+
+/* === User Info === */
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.userDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.userName {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  line-height: var(--line-height-normal);
+}
+
+/* 투명 모드 - 사용자 이름 흰색 (직접 클래스 적용) */
+.userNameTransparent {
+  color: #fff !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.userRole {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-muted);
+  line-height: var(--line-height-normal);
+}
+
+/* 투명 모드 - 역할 흰색 (직접 클래스 적용) */
+.userRoleTransparent {
+  color: rgba(255,255,255,0.8) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.userAvatar {
+  width: var(--avatar-size-sm);
+  height: var(--avatar-size-sm);
+  border-radius: var(--radius-circle);
+  background: var(--avatar-bg-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-top: -2px;
+}
+
+/* 투명 모드 - 아바타 (직접 클래스 적용) */
+.userAvatarTransparent {
+  background: rgba(255,255,255,0.2) !important;
+  border: 1px solid rgba(255,255,255,0.4) !important;
+}
+
+.userAvatarTransparent svg {
+  fill: #fff !important;
+}
+
+.userAvatar svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--color-primary);
+}
+
+.userAvatar img,
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* === Notification Popup === */
+.notificationPopup {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 400px;
+  max-height: 600px;
+  background: var(--notification-bg);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--notification-shadow);
+  display: flex;
+  flex-direction: column;
+  z-index: var(--z-modal);
+  animation: notificationPopupIn 0.2s ease-out;
+}
+
+@keyframes notificationPopupIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.notificationPopupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4) var(--spacing-5);
+  border-bottom: 1px solid var(--notification-border);
+}
+
+.notificationPopupTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.notificationPopupClose {
+  width: var(--avatar-size-sm);
+  height: var(--avatar-size-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast);
+}
+
+.notificationPopupClose:hover {
+  background: var(--hover-bg-light);
+}
+
+.notificationPopupClose svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--color-primary);
+  stroke-width: 2;
+}
+
+/* === Notification List === */
+.notificationList {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 450px;
+}
+
+.notificationList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notificationList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.notificationList::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-400);
+  border-radius: var(--radius-xs);
+}
+
+.notificationItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: 14px var(--spacing-4);
+  border-bottom: 1px solid var(--notification-border);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.notificationItem:hover {
+  background: var(--notification-hover-bg);
+}
+
+/* 이미 확인한 알림 (읽음 상태) */
+.itemRead {
+  background: var(--notification-read-bg);
+}
+
+.itemRead:hover {
+  background: var(--notification-read-hover-bg);
+}
+
+.notificationItem:last-child {
+  border-bottom: none;
+}
+
+.notificationItemTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notificationTag {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  padding: 3px var(--spacing-2);
+  border-radius: var(--radius-sm);
+  display: inline-block;
+}
+
+/* 결재 도착: 오렌지 라인 + 오렌지 글자 */
+.notificationTag.arrival {
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+
+/* 결재 회수: 검은 라인 + 흰 배경 */
+.notificationTag.recall {
+  background: var(--color-white);
+  color: var(--text-primary);
+  border: 1px solid var(--text-primary);
+}
+
+/* 결재 완료: 오렌지 배경 */
+.notificationTag.complete {
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: 1px solid var(--color-primary);
+}
+
+/* 댓글 등록: 녹색 */
+.notificationTag.comment {
+  background: var(--tag-comment-bg);
+  color: var(--tag-comment-color);
+  border: 1px solid var(--tag-comment-color);
+}
+
+/* 결재 취소: 그레이 배경 + 진한 그레이 글자 */
+.notificationTag.cancel {
+  background: var(--tag-cancel-bg);
+  color: var(--tag-cancel-color);
+  border: 1px solid var(--tag-cancel-bg);
+}
+
+/* 결재 반려: 검은 배경 + 흰 글자 */
+.notificationTag.reject {
+  background: var(--tag-reject-bg);
+  color: var(--tag-reject-color);
+  border: 1px solid var(--tag-reject-bg);
+}
+
+.notificationDate {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-muted);
+}
+
+.notificationContent {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding-left: var(--spacing-1);
+}
+
+.notificationContent.unread {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.notificationItemBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 4px;
+}
+
+.notificationAuthor {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-muted);
+}
+
+/* === Notification Pagination === */
+.notificationPagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-1);
+  padding: var(--spacing-3) var(--spacing-5);
+  border-top: 1px solid var(--notification-border);
+  background: var(--notification-bg);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+}
+
+.pageBtn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.pageBtn:hover {
+  background: var(--hover-bg-light);
+  color: var(--text-secondary);
+}
+
+.pageBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pageBtn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.pageNum {
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.pageNum:hover {
+  background: var(--hover-bg-light);
+}
+
+.pageNum.active {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.pageEllipsis {
+  font-size: var(--font-size-base);
+  color: var(--text-muted);
+  padding: 0 var(--spacing-1);
+}

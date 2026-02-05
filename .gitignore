@@ -1,0 +1,39 @@
+# 빌드/환경
+build/
+node_modules/
+.vercel
+.env*.local
+
+# 로그/캐시
+*storybook.log
+storybook-static
+.DS_Store
+
+# 로컬 전용
+CLAUDE.md
+TO_CLAUDE.md
+scripts/
+infra-triumph-481005-s5-6e1ad3510d1e.json
+.env.local
+.env.production
+
+# Auto Claude data directory
+.auto-claude/
+
+# 기획/문서 (로컬 보관)
+docs/
+
+# Claude 로컬 설정
+.claude/
+.claude_settings.json
+.auto-claude-status
+
+# 테스트/임시 파일
+*.pptx
+check-usage.js
+
+# Git worktree
+.worktrees/
+
+# 기타
+AGENTS.md

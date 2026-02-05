@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>문서 스타일 통합기 - 프로토타입</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Malgun Gothic', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .document-merger {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 32px;
+    }
+
+    .merger-header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .merger-header h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .merger-header p {
+      color: #666;
+      font-size: 15px;
+    }
+
+    .upload-zone {
+      border: 3px dashed #ddd;
+      border-radius: 16px;
+      padding: 48px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+      margin-bottom: 24px;
+    }
+
+    .upload-zone:hover, .upload-zone.drag-over {
+      border-color: #667eea;
+      background: linear-gradient(135deg, #f0f4ff 0%, #e8edff 100%);
+      transform: translateY(-2px);
+    }
+
+    .upload-icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+    }
+
+    .upload-zone h3 {
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .upload-zone small {
+      color: #888;
+    }
+
+    .section {
+      margin-bottom: 24px;
+      background: #fafafa;
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #e8e8e8;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .section-header h3 {
+      font-size: 16px;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .documents-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .document-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      transition: all 0.2s;
+    }
+
+    .document-item:hover {
+      border-color: #667eea;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+    }
+
+    .document-item.main {
+      background: linear-gradient(135deg, #e8edff 0%, #f0f4ff 100%);
+      border-color: #667eea;
+    }
+
+    .doc-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .doc-icon {
+      font-size: 24px;
+    }
+
+    .doc-name {
+      font-size: 14px;
+      font-weight: 500;
+      max-width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .main-badge {
+      font-size: 11px;
+      background: #667eea;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-left: 8px;
+    }
+
+    .doc-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .doc-actions button {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .btn-star {
+      background: #fff3e0;
+      color: #ff9800;
+    }
+
+    .btn-star:hover {
+      background: #ffe0b2;
+    }
+
+    .btn-up, .btn-down {
+      background: #e8eaf6;
+      color: #3f51b5;
+    }
+
+    .btn-up:hover, .btn-down:hover {
+      background: #c5cae9;
+    }
+
+    .btn-delete {
+      background: #ffebee;
+      color: #f44336;
+    }
+
+    .btn-delete:hover {
+      background: #ffcdd2;
+    }
+
+    .style-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .style-item {
+      background: white;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .style-item label {
+      font-size: 12px;
+      color: #888;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .style-item span {
+      font-size: 15px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .style-editor {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px dashed #ddd;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .editor-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .editor-field label {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .editor-field select,
+    .editor-field input[type="number"] {
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border 0.2s;
+    }
+
+    .editor-field select:focus,
+    .editor-field input:focus {
+      border-color: #667eea;
+      outline: none;
+    }
+
+    .editor-field input[type="color"] {
+      width: 100%;
+      height: 40px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .style-toggles {
+      display: flex;
+      gap: 8px;
+    }
+
+    .style-toggles button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s;
+    }
+
+    .style-toggles button:hover {
+      background: #f5f5f5;
+    }
+
+    .style-toggles button.active {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+
+    .settings-group {
+      margin-bottom: 16px;
+    }
+
+    .settings-group label {
+      font-size: 13px;
+      color: #666;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .radio-options {
+      display: flex;
+      gap: 16px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .checkbox-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-process {
+      width: 100%;
+      padding: 18px 24px;
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 16px;
+    }
+
+    .btn-process:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-process:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .progress-container {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      transition: width 0.3s;
+    }
+
+    .download-section {
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      border: 1px solid #a5d6a7;
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+
+    .download-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .download-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: white;
+      border-radius: 10px;
+    }
+
+    .download-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-download {
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      color: white;
+      background: #4caf50;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-download:hover {
+      background: #43a047;
+    }
+
+    .btn-download-all {
+      padding: 8px 16px;
+      font-size: 13px;
+      color: #2e7d32;
+      background: white;
+      border: 1px solid #2e7d32;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-download-all:hover {
+      background: #2e7d32;
+      color: white;
+    }
+
+    .btn-reset {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      color: #666;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-reset:hover {
+      background: #e0e0e0;
+      color: #333;
+    }
+
+    .btn-toggle-editor {
+      font-size: 13px;
+      color: #667eea;
+      background: white;
+      border: 1px solid #667eea;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-toggle-editor:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .error-message {
+      background: #ffebee;
+      border: 1px solid #ffcdd2;
+      color: #c62828;
+      padding: 14px 18px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .error-message button {
+      background: none;
+      border: none;
+      color: #c62828;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      .document-merger {
+        padding: 20px;
+        border-radius: 16px;
+      }
+
+      .merger-header h1 {
+        font-size: 22px;
+      }
+
+      .style-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .style-editor {
+        grid-template-columns: 1fr;
+      }
+
+      .radio-options {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .doc-name {
+        max-width: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useCallback, useRef } = React;
+
+    // 기본 스타일
+    const DEFAULT_STYLE = {
+      fontFamily: 'Malgun Gothic',
+      fontSize: 11,
+      fontColor: '#000000',
+      bold: false,
+      italic: false,
+      underline: false,
+      lineSpacing: 1.15,
+      paragraphSpacing: 8,
+      alignment: 'left',
+      firstLineIndent: 0,
+    };
+
+    // 문서 파일 타입 확인
+    function getFileType(file) {
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (ext === 'docx') return 'docx';
+      if (ext === 'pdf') return 'pdf';
+      if (ext === 'txt') return 'txt';
+      return null;
+    }
+
+    // 파일 아이콘
+    function getFileIcon(type) {
+      switch (type) {
+        case 'docx': return '📄';
+        case 'pdf': return '📕';
+        case 'txt': return '📝';
+        default: return '📎';
+      }
+    }
+
+    // DOCX에서 스타일 추출
+    async function extractStyleFromDocx(file) {
+      const arrayBuffer = await file.arrayBuffer();
+      const zip = await JSZip.loadAsync(arrayBuffer);
+      const style = { ...DEFAULT_STYLE };
+
+      try {
+        const stylesXml = await zip.file('word/styles.xml')?.async('string');
+        if (stylesXml) {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(stylesXml, 'application/xml');
+
+          // Normal 스타일에서 추출
+          const defaultStyle = doc.querySelector('w\\:style[w\\:styleId="Normal"], style[styleId="Normal"]');
+          if (defaultStyle) {
+            const rPr = defaultStyle.querySelector('w\\:rPr, rPr');
+            if (rPr) {
+              // 폰트
+              const rFonts = rPr.querySelector('w\\:rFonts, rFonts');
+              if (rFonts) {
+                style.fontFamily = rFonts.getAttribute('w:eastAsia') ||
+                                  rFonts.getAttribute('w:ascii') ||
+                                  rFonts.getAttribute('eastAsia') ||
+                                  rFonts.getAttribute('ascii') ||
+                                  'Malgun Gothic';
+              }
+
+              // 크기
+              const sz = rPr.querySelector('w\\:sz, sz');
+              if (sz) {
+                const val = sz.getAttribute('w:val') || sz.getAttribute('val');
+                if (val) style.fontSize = parseInt(val) / 2;
+              }
+
+              // 색상
+              const color = rPr.querySelector('w\\:color, color');
+              if (color) {
+                const val = color.getAttribute('w:val') || color.getAttribute('val');
+                if (val && val !== 'auto') style.fontColor = `#${val}`;
+              }
+
+              // 볼드/이탤릭
+              style.bold = !!rPr.querySelector('w\\:b, b');
+              style.italic = !!rPr.querySelector('w\\:i, i');
+              style.underline = !!rPr.querySelector('w\\:u, u');
+            }
+
+            const pPr = defaultStyle.querySelector('w\\:pPr, pPr');
+            if (pPr) {
+              // 정렬
+              const jc = pPr.querySelector('w\\:jc, jc');
+              if (jc) {
+                const val = jc.getAttribute('w:val') || jc.getAttribute('val');
+                const map = { left: 'left', center: 'center', right: 'right', both: 'justify', justify: 'justify' };
+                style.alignment = map[val?.toLowerCase()] || 'left';
+              }
+
+              // 줄간격
+              const spacing = pPr.querySelector('w\\:spacing, spacing');
+              if (spacing) {
+                const line = spacing.getAttribute('w:line') || spacing.getAttribute('line');
+                if (line) style.lineSpacing = parseInt(line) / 240;
+                const after = spacing.getAttribute('w:after') || spacing.getAttribute('after');
+                if (after) style.paragraphSpacing = parseInt(after) / 20;
+              }
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('Style extraction warning:', e);
+      }
+
+      return style;
+    }
+
+    // DOCX에서 텍스트 추출
+    async function extractDocxContent(file) {
+      const arrayBuffer = await file.arrayBuffer();
+      const zip = await JSZip.loadAsync(arrayBuffer);
+      const docXml = await zip.file('word/document.xml')?.async('string');
+      if (!docXml) return '';
+
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(docXml, 'application/xml');
+      const texts = [];
+
+      doc.querySelectorAll('w\\:p, p').forEach(p => {
+        const paraTexts = [];
+        p.querySelectorAll('w\\:t, t').forEach(t => {
+          if (t.textContent) paraTexts.push(t.textContent);
+        });
+        if (paraTexts.length > 0) texts.push(paraTexts.join(''));
+      });
+
+      return texts.join('\n\n');
+    }
+
+    // 텍스트 파일 내용 추출
+    async function extractTextContent(file) {
+      return await file.text();
+    }
+
+    // 스타일 적용된 DOCX 생성
+    async function createStyledDocx(contents, style) {
+      const { Document, Packer, Paragraph, TextRun, AlignmentType } = docx;
+
+      const alignMap = {
+        left: AlignmentType.LEFT,
+        center: AlignmentType.CENTER,
+        right: AlignmentType.RIGHT,
+        justify: AlignmentType.JUSTIFIED,
+      };
+
+      const children = contents.map(text => {
+        return new Paragraph({
+          alignment: alignMap[style.alignment] || AlignmentType.LEFT,
+          spacing: {
+            line: Math.round(style.lineSpacing * 240),
+            after: Math.round(style.paragraphSpacing * 20),
+          },
+          children: [
+            new TextRun({
+              text: text,
+              font: style.fontFamily,
+              size: style.fontSize * 2,
+              bold: style.bold,
+              italics: style.italic,
+              underline: style.underline ? {} : undefined,
+              color: style.fontColor.replace('#', ''),
+            }),
+          ],
+        });
+      });
+
+      const doc = new Document({
+        sections: [{ children }],
+      });
+
+      return await Packer.toBlob(doc);
+    }
+
+    // 메인 컴포넌트
+    function DocumentMerger() {
+      const [documents, setDocuments] = useState([]);
+      const [mainDocId, setMainDocId] = useState(null);
+      const [extractedStyle, setExtractedStyle] = useState(null);
+      const [settings, setSettings] = useState({
+        outputMode: 'merge',
+        preservePageBreaks: true,
+      });
+      const [isProcessing, setIsProcessing] = useState(false);
+      const [progress, setProgress] = useState(0);
+      const [error, setError] = useState(null);
+      const [downloadLinks, setDownloadLinks] = useState([]);
+      const [showStyleEditor, setShowStyleEditor] = useState(false);
+      const [dragOver, setDragOver] = useState(false);
+      const fileInputRef = useRef(null);
+
+      // 파일 추가
+      const handleAddFiles = useCallback(async (files) => {
+        const fileArray = Array.from(files);
+        const newDocs = [];
+
+        for (const file of fileArray) {
+          const type = getFileType(file);
+          if (!type) {
+            setError(`지원하지 않는 파일 형식: ${file.name}`);
+            continue;
+          }
+
+          newDocs.push({
+            id: `doc-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+            name: file.name,
+            type,
+            file,
+            order: documents.length + newDocs.length,
+          });
+        }
+
+        if (newDocs.length > 0) {
+          setDocuments(prev => [...prev, ...newDocs]);
+
+          // 첫 문서면 메인으로 설정하고 스타일 추출
+          if (documents.length === 0 && newDocs.length > 0) {
+            const firstDoc = newDocs[0];
+            setMainDocId(firstDoc.id);
+
+            if (firstDoc.type === 'docx') {
+              const style = await extractStyleFromDocx(firstDoc.file);
+              setExtractedStyle(style);
+            } else {
+              setExtractedStyle({ ...DEFAULT_STYLE });
+            }
+          }
+        }
+      }, [documents.length]);
+
+      // 메인 문서 변경
+      const handleSetMain = useCallback(async (docId) => {
+        const doc = documents.find(d => d.id === docId);
+        if (!doc) return;
+
+        setMainDocId(docId);
+
+        if (doc.type === 'docx') {
+          const style = await extractStyleFromDocx(doc.file);
+          setExtractedStyle(style);
+        } else {
+          setExtractedStyle({ ...DEFAULT_STYLE });
+        }
+      }, [documents]);
+
+      // 문서 순서 변경
+      const handleReorder = useCallback((fromIdx, toIdx) => {
+        setDocuments(prev => {
+          const newDocs = [...prev];
+          const [removed] = newDocs.splice(fromIdx, 1);
+          newDocs.splice(toIdx, 0, removed);
+          return newDocs;
+        });
+      }, []);
+
+      // 문서 삭제
+      const handleRemove = useCallback((docId) => {
+        setDocuments(prev => {
+          const newDocs = prev.filter(d => d.id !== docId);
+
+          if (docId === mainDocId && newDocs.length > 0) {
+            setMainDocId(newDocs[0].id);
+          } else if (newDocs.length === 0) {
+            setMainDocId(null);
+            setExtractedStyle(null);
+          }
+
+          return newDocs;
+        });
+      }, [mainDocId]);
+
+      // 스타일 수정
+      const handleUpdateStyle = useCallback((updates) => {
+        setExtractedStyle(prev => prev ? { ...prev, ...updates } : { ...DEFAULT_STYLE, ...updates });
+      }, []);
+
+      // 처리 실행
+      const handleProcess = useCallback(async () => {
+        if (documents.length === 0 || !extractedStyle) {
+          setError('처리할 문서가 없습니다.');
+          return;
+        }
+
+        setIsProcessing(true);
+        setProgress(0);
+        setError(null);
+        setDownloadLinks([]);
+
+        try {
+          const results = [];
+
+          if (settings.outputMode === 'merge') {
+            // 병합 모드
+            const allContents = [];
+
+            for (let i = 0; i < documents.length; i++) {
+              const doc = documents[i];
+              let content = '';
+
+              if (doc.type === 'docx') {
+                content = await extractDocxContent(doc.file);
+              } else if (doc.type === 'txt') {
+                content = await extractTextContent(doc.file);
+              } else if (doc.type === 'pdf') {
+                content = '[PDF 내용 - 추후 지원 예정]';
+              }
+
+              if (i > 0 && settings.preservePageBreaks) {
+                allContents.push('');
+                allContents.push(`━━━ ${doc.name} ━━━`);
+              }
+
+              content.split('\n\n').filter(p => p.trim()).forEach(p => {
+                allContents.push(p.trim());
+              });
+
+              setProgress(Math.round(((i + 1) / documents.length) * 60));
+            }
+
+            const blob = await createStyledDocx(allContents, extractedStyle);
+            results.push({ blob, filename: 'merged-document.docx' });
+            setProgress(100);
+          } else {
+            // 개별 변환 모드
+            const nonMain = documents.filter(d => d.id !== mainDocId);
+
+            for (let i = 0; i < nonMain.length; i++) {
+              const doc = nonMain[i];
+              let content = '';
+
+              if (doc.type === 'docx') {
+                content = await extractDocxContent(doc.file);
+              } else if (doc.type === 'txt') {
+                content = await extractTextContent(doc.file);
+              } else if (doc.type === 'pdf') {
+                content = '[PDF 내용 - 추후 지원 예정]';
+              }
+
+              const paras = content.split('\n\n').filter(p => p.trim()).map(p => p.trim());
+              const blob = await createStyledDocx(paras, extractedStyle);
+              const newName = doc.name.replace(/\.[^.]+$/, '_styled.docx');
+              results.push({ blob, filename: newName });
+
+              setProgress(Math.round(((i + 1) / nonMain.length) * 100));
+            }
+          }
+
+          // 다운로드 링크 생성
+          const links = results.map(r => ({
+            url: URL.createObjectURL(r.blob),
+            filename: r.filename,
+          }));
+
+          setDownloadLinks(links);
+        } catch (e) {
+          console.error('Processing error:', e);
+          setError('문서 처리 중 오류가 발생했습니다.');
+        } finally {
+          setIsProcessing(false);
+        }
+      }, [documents, extractedStyle, settings, mainDocId]);
+
+      // 다운로드
+      const handleDownload = useCallback((url, filename) => {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }, []);
+
+      // 초기화
+      const handleReset = useCallback(() => {
+        setDocuments([]);
+        setMainDocId(null);
+        setExtractedStyle(null);
+        setDownloadLinks([]);
+        setError(null);
+        setProgress(0);
+      }, []);
+
+      const mainDoc = documents.find(d => d.id === mainDocId);
+
+      return (
+        <div className="document-merger">
+          <div className="merger-header">
+            <h1>📑 문서 스타일 통합기</h1>
+            <p>메인 문서의 스타일을 다른 문서들에 자동으로 적용합니다</p>
+          </div>
+
+          {error && (
+            <div className="error-message">
+              <span>⚠️ {error}</span>
+              <button onClick={() => setError(null)}>✕</button>
+            </div>
+          )}
+
+          {/* 업로드 영역 */}
+          <div
+            className={`upload-zone ${dragOver ? 'drag-over' : ''}`}
+            onClick={() => fileInputRef.current?.click()}
+            onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+            onDragLeave={(e) => { e.preventDefault(); setDragOver(false); }}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragOver(false);
+              if (e.dataTransfer.files.length > 0) {
+                handleAddFiles(e.dataTransfer.files);
+              }
+            }}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept=".docx,.pdf,.txt"
+              style={{ display: 'none' }}
+              onChange={(e) => e.target.files && handleAddFiles(e.target.files)}
+            />
+            <div className="upload-icon">📂</div>
+            <h3>파일을 드래그하거나 클릭하여 업로드</h3>
+            <small>지원 형식: DOCX, PDF, TXT • 첫 번째 파일이 메인 문서가 됩니다</small>
+          </div>
+
+          {/* 문서 목록 */}
+          {documents.length > 0 && (
+            <div className="section">
+              <div className="section-header">
+                <h3>📋 문서 목록</h3>
+                <span className="badge">{documents.length}개</span>
+              </div>
+
+              <div className="documents-list">
+                {documents.map((doc, idx) => (
+                  <div
+                    key={doc.id}
+                    className={`document-item ${doc.id === mainDocId ? 'main' : ''}`}
+                  >
+                    <div className="doc-info">
+                      <span className="doc-icon">{getFileIcon(doc.type)}</span>
+                      <span className="doc-name">{doc.name}</span>
+                      {doc.id === mainDocId && <span className="main-badge">메인</span>}
+                    </div>
+
+                    <div className="doc-actions">
+                      {doc.id !== mainDocId && (
+                        <button className="btn-star" onClick={() => handleSetMain(doc.id)} title="메인으로 설정">⭐</button>
+                      )}
+                      {idx > 0 && (
+                        <button className="btn-up" onClick={() => handleReorder(idx, idx - 1)} title="위로">↑</button>
+                      )}
+                      {idx < documents.length - 1 && (
+                        <button className="btn-down" onClick={() => handleReorder(idx, idx + 1)} title="아래로">↓</button>
+                      )}
+                      <button className="btn-delete" onClick={() => handleRemove(doc.id)} title="삭제">✕</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 스타일 정보 */}
+          {extractedStyle && (
+            <div className="section">
+              <div className="section-header">
+                <h3>🎨 추출된 스타일</h3>
+                <button
+                  className="btn-toggle-editor"
+                  onClick={() => setShowStyleEditor(!showStyleEditor)}
+                >
+                  {showStyleEditor ? '접기' : '수정하기'}
+                </button>
+              </div>
+
+              <div className="style-grid">
+                <div className="style-item">
+                  <label>폰트</label>
+                  <span>{extractedStyle.fontFamily}</span>
+                </div>
+                <div className="style-item">
+                  <label>크기</label>
+                  <span>{extractedStyle.fontSize}pt</span>
+                </div>
+                <div className="style-item">
+                  <label>색상</label>
+                  <span style={{ color: extractedStyle.fontColor }}>{extractedStyle.fontColor}</span>
+                </div>
+                <div className="style-item">
+                  <label>정렬</label>
+                  <span>{{ left: '왼쪽', center: '가운데', right: '오른쪽', justify: '양쪽' }[extractedStyle.alignment]}</span>
+                </div>
+                <div className="style-item">
+                  <label>줄간격</label>
+                  <span>{extractedStyle.lineSpacing.toFixed(2)}배</span>
+                </div>
+              </div>
+
+              {showStyleEditor && (
+                <div className="style-editor">
+                  <div className="editor-field">
+                    <label>폰트</label>
+                    <select
+                      value={extractedStyle.fontFamily}
+                      onChange={(e) => handleUpdateStyle({ fontFamily: e.target.value })}
+                    >
+                      <option value="Malgun Gothic">맑은 고딕</option>
+                      <option value="Nanum Gothic">나눔고딕</option>
+                      <option value="Batang">바탕</option>
+                      <option value="Gulim">굴림</option>
+                      <option value="Arial">Arial</option>
+                      <option value="Times New Roman">Times New Roman</option>
+                    </select>
+                  </div>
+
+                  <div className="editor-field">
+                    <label>크기 (pt)</label>
+                    <input
+                      type="number"
+                      min="8"
+                      max="72"
+                      value={extractedStyle.fontSize}
+                      onChange={(e) => handleUpdateStyle({ fontSize: Number(e.target.value) })}
+                    />
+                  </div>
+
+                  <div className="editor-field">
+                    <label>색상</label>
+                    <input
+                      type="color"
+                      value={extractedStyle.fontColor}
+                      onChange={(e) => handleUpdateStyle({ fontColor: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="editor-field">
+                    <label>정렬</label>
+                    <select
+                      value={extractedStyle.alignment}
+                      onChange={(e) => handleUpdateStyle({ alignment: e.target.value })}
+                    >
+                      <option value="left">왼쪽</option>
+                      <option value="center">가운데</option>
+                      <option value="right">오른쪽</option>
+                      <option value="justify">양쪽</option>
+                    </select>
+                  </div>
+
+                  <div className="editor-field">
+                    <label>줄간격</label>
+                    <select
+                      value={extractedStyle.lineSpacing}
+                      onChange={(e) => handleUpdateStyle({ lineSpacing: Number(e.target.value) })}
+                    >
+                      <option value={1}>1.0</option>
+                      <option value={1.15}>1.15</option>
+                      <option value={1.5}>1.5</option>
+                      <option value={2}>2.0</option>
+                    </select>
+                  </div>
+
+                  <div className="editor-field">
+                    <label>스타일</label>
+                    <div className="style-toggles">
+                      <button
+                        className={extractedStyle.bold ? 'active' : ''}
+                        onClick={() => handleUpdateStyle({ bold: !extractedStyle.bold })}
+                      >
+                        <strong>B</strong>
+                      </button>
+                      <button
+                        className={extractedStyle.italic ? 'active' : ''}
+                        onClick={() => handleUpdateStyle({ italic: !extractedStyle.italic })}
+                      >
+                        <em>I</em>
+                      </button>
+                      <button
+                        className={extractedStyle.underline ? 'active' : ''}
+                        onClick={() => handleUpdateStyle({ underline: !extractedStyle.underline })}
+                      >
+                        <u>U</u>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 설정 */}
+          {documents.length > 1 && (
+            <div className="section">
+              <div className="section-header">
+                <h3>⚙️ 출력 설정</h3>
+              </div>
+
+              <div className="settings-group">
+                <label>출력 방식</label>
+                <div className="radio-options">
+                  <label className="radio-option">
+                    <input
+                      type="radio"
+                      checked={settings.outputMode === 'merge'}
+                      onChange={() => setSettings(s => ({ ...s, outputMode: 'merge' }))}
+                    />
+                    <span>하나로 병합</span>
+                  </label>
+                  <label className="radio-option">
+                    <input
+                      type="radio"
+                      checked={settings.outputMode === 'individual'}
+                      onChange={() => setSettings(s => ({ ...s, outputMode: 'individual' }))}
+                    />
+                    <span>개별 파일로 변환</span>
+                  </label>
+                </div>
+              </div>
+
+              {settings.outputMode === 'merge' && (
+                <div className="settings-group">
+                  <label className="checkbox-option">
+                    <input
+                      type="checkbox"
+                      checked={settings.preservePageBreaks}
+                      onChange={(e) => setSettings(s => ({ ...s, preservePageBreaks: e.target.checked }))}
+                    />
+                    <span>문서 구분 표시 유지</span>
+                  </label>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 처리 버튼 */}
+          {documents.length > 0 && extractedStyle && (
+            <>
+              {isProcessing ? (
+                <div className="progress-container">
+                  <div className="progress-bar">
+                    <div className="progress-fill" style={{ width: `${progress}%` }} />
+                  </div>
+                  <span>처리 중... {progress}%</span>
+                </div>
+              ) : (
+                <button className="btn-process" onClick={handleProcess}>
+                  🚀 스타일 적용 및 변환
+                </button>
+              )}
+            </>
+          )}
+
+          {/* 다운로드 */}
+          {downloadLinks.length > 0 && (
+            <div className="download-section">
+              <div className="section-header">
+                <h3>📥 다운로드</h3>
+                {downloadLinks.length > 1 && (
+                  <button
+                    className="btn-download-all"
+                    onClick={() => downloadLinks.forEach(l => handleDownload(l.url, l.filename))}
+                  >
+                    모두 다운로드
+                  </button>
+                )}
+              </div>
+
+              <div className="download-list">
+                {downloadLinks.map((link, idx) => (
+                  <div key={idx} className="download-item">
+                    <div className="download-info">
+                      <span className="doc-icon">📄</span>
+                      <span>{link.filename}</span>
+                    </div>
+                    <button
+                      className="btn-download"
+                      onClick={() => handleDownload(link.url, link.filename)}
+                    >
+                      다운로드
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* 초기화 */}
+          {(documents.length > 0 || downloadLinks.length > 0) && (
+            <button className="btn-reset" onClick={handleReset}>
+              🔄 새로 시작
+            </button>
+          )}
+        </div>
+      );
+    }
+
+    // 렌더링
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<DocumentMerger />);
+  </script>
+</body>
+</html>

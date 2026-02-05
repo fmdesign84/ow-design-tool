@@ -1,0 +1,9 @@
+/* ========================================
+   Orange Whale Studio - Style Entry Point
+   @import만 포함 (스타일 로직 없음)
+   ======================================== */
+
+@import './design-tokens.css';
+@import './globals.css';
+@import './layout-base.css';
+@import './responsive.css';

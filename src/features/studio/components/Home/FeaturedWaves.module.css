@@ -1,0 +1,163 @@
+/**
+ * FeaturedWaves 스타일
+ * FeaturedGallery와 동일한 이미지 카드 스타일
+ */
+
+.container {
+  width: 100%;
+}
+
+/* 그리드 - 6열 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--spacing-2, 8px);
+}
+
+/* 카드 */
+.card {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg, 8px);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all var(--transition-normal, 0.2s) ease;
+  background: var(--home-card-inner-bg, #F5F6F8);
+  border: 1px solid var(--home-card-inner-border, #E8E8E8);
+}
+
+.card:hover {
+  border-color: var(--home-card-hover-border, var(--color-primary));
+  box-shadow: var(--home-card-hover-shadow, 0 4px 12px rgba(255, 107, 0, 0.1));
+}
+
+.cardInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* 썸네일 이미지 */
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.05s ease, transform 0.05s ease;
+  animation: imageBlurIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.35s both;
+}
+
+.card:hover .cardImage {
+  filter: blur(8px) brightness(0.7);
+  transform: scale(1.05);
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+
+/* 이미지 없을 때 placeholder */
+.cardPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-neutral-100, #F5F6F8);
+  color: var(--text-tertiary, #9CA3AF);
+}
+
+.cardPlaceholder svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* 오버레이 - 항상 표시 */
+.cardOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: var(--spacing-1, 4px);
+  padding: var(--spacing-3, 12px);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 60%);
+  pointer-events: none;
+}
+
+/* 뱃지 그룹 */
+.cardBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1, 4px);
+}
+
+.cardBadges > span {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: transparent !important;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* 카드 이름 - 한 줄 */
+.cardName {
+  color: var(--color-white, #fff);
+  font-size: var(--font-size-sm, 12px);
+  font-weight: 500;
+  line-height: var(--line-height-normal, 1.4);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* 스켈레톤 */
+.skeleton {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg, 8px);
+  background: linear-gradient(
+    90deg,
+    var(--color-neutral-200, #E8E8E8) 25%,
+    var(--color-neutral-100, #F5F6F8) 50%,
+    var(--color-neutral-200, #E8E8E8) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* 애니메이션 */
+@keyframes imageBlurIn {
+  from {
+    filter: blur(10px);
+    opacity: 0;
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* 반응형 - 태블릿 */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* 반응형 - 모바일 */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

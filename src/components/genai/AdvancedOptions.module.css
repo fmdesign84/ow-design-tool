@@ -1,0 +1,219 @@
+/**
+ * AdvancedOptions 스타일
+ * 고급 옵션 패널
+ */
+
+.container {
+  width: 100%;
+  border: 1px solid #E8E8E8;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #FAFAFA;
+}
+
+/* 헤더 */
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.header:hover:not(:disabled) {
+  background: #F0F0F0;
+}
+
+.header:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.headerLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5F5F5F;
+}
+
+/* 패널 */
+.panel {
+  padding: 0 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 옵션 리스트 */
+.optionList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.optionItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: white;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.optionItem:hover {
+  border-color: #D1D1D1;
+  background: #FAFAFA;
+}
+
+.optionItem.checked {
+  border-color: rgba(255, 107, 0, 0.4);
+  background: rgba(255, 107, 0, 0.03);
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.optionIcon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F5F6F8;
+  border-radius: 6px;
+  color: #757575;
+}
+
+.optionItem.checked .optionIcon {
+  background: rgba(255, 107, 0, 0.1);
+  color: var(--color-primary);
+}
+
+.optionText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.optionLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+}
+
+.optionDesc {
+  font-size: 11px;
+  color: #9E9E9E;
+}
+
+/* 슬라이더 그룹 */
+.sliderGroup {
+  padding: 12px;
+  background: white;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+}
+
+.sliderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.sliderLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: #5F5F5F;
+}
+
+.sliderValue {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.slider {
+  width: 100%;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(to right, #4285F4, var(--color-primary));
+  border-radius: 2px;
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: white;
+  border: 2px solid var(--color-primary);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.sliderHints {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 10px;
+  color: #9E9E9E;
+}
+
+/* 모델 힌트 */
+.modelHint {
+  margin: 0;
+  padding: 8px 10px;
+  background: #F5F6F8;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #757575;
+  line-height: 1.5;
+}
+
+/* 반응형 */
+@media (max-width: 480px) {
+  .panel {
+    padding: 0 10px 10px;
+    gap: 10px;
+  }
+
+  .optionItem {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .optionIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .optionLabel {
+    font-size: 12px;
+  }
+}

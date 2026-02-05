@@ -1,0 +1,74 @@
+{
+  "name": "ow-design-tool",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "@ffmpeg/core": "^0.12.10",
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "@ffmpeg/util": "^0.12.2",
+    "@supabase/supabase-js": "^2.87.1",
+    "@types/node": "^25.0.3",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@xyflow/react": "^12.10.0",
+    "browser-image-compression": "^2.0.2",
+    "google-auth-library": "^10.5.0",
+    "html-to-image": "^1.11.11",
+    "konva": "^10.0.12",
+    "lucide-react": "^0.562.0",
+    "mammoth": "^1.11.0",
+    "openai": "^6.15.0",
+    "pdf-lib": "^1.17.1",
+    "png-chunk-text": "^1.0.0",
+    "png-chunks-encode": "^1.0.0",
+    "png-chunks-extract": "^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-konva": "^18.2.14",
+    "react-router-dom": "^6.20.0",
+    "react-scripts": "5.0.1",
+    "sharp": "^0.34.5",
+    "typescript": "^5.9.3",
+    "zustand": "^5.0.9"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint src/",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^10.1.4",
+    "@storybook/addon-docs": "^10.1.4",
+    "@storybook/addon-onboarding": "^10.1.4",
+    "@storybook/preset-create-react-app": "^10.1.4",
+    "@storybook/react-webpack5": "^10.1.4",
+    "@vitest/mocker": "^4.0.15",
+    "docx": "^9.5.1",
+    "pg": "^8.16.3",
+    "prop-types": "^15.8.1",
+    "storybook": "^10.1.4",
+    "webpack": "^5.103.0"
+  }
+}

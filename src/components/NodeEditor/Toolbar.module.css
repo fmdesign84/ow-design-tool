@@ -1,0 +1,202 @@
+/**
+ * Orange Wave Toolbar Styles
+ * 기존 디자인 시스템과 통합
+ */
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-2, 8px) var(--spacing-4, 16px);
+  background: var(--color-white, #FFFFFF);
+  border-bottom: 1px solid var(--color-neutral-300, #E8E8E8);
+  height: 52px;
+  flex-shrink: 0;
+}
+
+/* 임베드 모드 - 기존 서브사이드바 타이틀 스타일 적용 */
+.toolbar.embedded {
+  border-bottom: 1px solid var(--color-neutral-200, #F3F4F6);
+  border-radius: 20px 20px 0 0;
+  height: 48px;
+  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+}
+
+.left,
+.center,
+.right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2, 8px);
+}
+
+.left {
+  flex: 1;
+}
+
+.right {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+/* 브랜드 */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2, 8px);
+}
+
+.brandIcon {
+  font-size: 20px;
+}
+
+.embedded .brandIcon {
+  font-size: 18px;
+}
+
+.brandName {
+  font-size: var(--font-size-md, 14px);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--color-neutral-800, #3C3C3C);
+}
+
+.embedded .brandName {
+  font-size: var(--font-size-md, 14px);
+}
+
+.betaBadge {
+  padding: 2px 5px;
+  background: var(--color-primary-light, #FFF5F0);
+  color: var(--color-primary, #FF6B00);
+  font-size: 9px;
+  font-weight: var(--font-weight-bold, 700);
+  border-radius: var(--radius-sm, 4px);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 구분선 */
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-neutral-300, #E8E8E8);
+  margin: 0 var(--spacing-1, 4px);
+}
+
+/* 워크플로우 이름 */
+.workflowName {
+  font-size: var(--font-size-sm, 11px);
+  color: var(--text-tertiary, #757575);
+}
+
+/* 아이콘 버튼 */
+.iconButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-neutral-100, #F5F6F8);
+  border: 1px solid var(--color-neutral-300, #E8E8E8);
+  border-radius: var(--radius-lg, 8px);
+  font-size: var(--font-size-md, 14px);
+  color: var(--text-secondary, #5F5F5F);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.embedded .iconButton {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md, 6px);
+  font-size: var(--font-size-sm, 11px);
+}
+
+.iconButton:hover {
+  background: var(--color-neutral-200, #F3F4F6);
+  color: var(--text-primary, #3C3C3C);
+  border-color: var(--color-neutral-400, #D9D9D9);
+}
+
+.iconButton.active {
+  background: var(--color-primary-light, #FFF5F0);
+  border-color: var(--color-primary, #FF6B00);
+  color: var(--color-primary, #FF6B00);
+}
+
+.iconButton.active:hover {
+  background: var(--color-primary-light, #FFF5F0);
+}
+
+/* 실행 버튼 */
+.runButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2, 8px);
+  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+  background: var(--color-primary, #FF6B00);
+  border: none;
+  border-radius: var(--radius-lg, 8px);
+  font-size: var(--font-size-sm, 11px);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-white, #FFFFFF);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.embedded .runButton {
+  padding: var(--spacing-1, 4px) var(--spacing-3, 12px);
+  border-radius: var(--radius-md, 6px);
+  font-size: 11px;
+}
+
+.runButton:hover:not(:disabled) {
+  background: var(--color-primary-hover, #E55A00);
+}
+
+.runButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.9;
+}
+
+.runButton.running {
+  background: var(--color-warning, #F5A623);
+}
+
+.playIcon {
+  font-size: 10px;
+}
+
+/* 스피너 */
+.spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--color-white, #FFFFFF);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .brandName {
+    display: none;
+  }
+
+  .betaBadge {
+    display: none;
+  }
+
+  .workflowName {
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

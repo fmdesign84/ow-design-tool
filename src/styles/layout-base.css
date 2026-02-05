@@ -1,0 +1,152 @@
+/* ========================================
+   Layout Base - Global Layout System
+
+   [중요] React 앱의 전체 높이 확장을 위한 Flex Chain:
+   html → body → #root → .main-container → .content-area → 페이지 컴포넌트
+
+   모든 레벨에서 height/flex 설정이 필요함!
+   min-height: 0은 flex 자식이 부모를 넘어서 스크롤되도록 허용
+   ======================================== */
+
+/* === Base Reset === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ========================================
+   Full Height Flex Chain (필수!)
+   - 페이지가 뷰포트 전체 높이를 사용하려면
+   - html부터 content-area까지 끊김 없이 연결되어야 함
+   ======================================== */
+
+/* Step 1: HTML & Body - 뷰포트 기준 높이 설정 */
+html, body {
+    height: 100%;
+}
+
+body {
+    /* Self-hosted Pretendard - Teams 환경 호환 */
+    font-family: 'Pretendard', 'Pretendard Variable', sans-serif;
+    background: #F5F6F8;
+    display: flex;
+    min-width: unset; /* Orange Whale Only - 사이드바 없음 */
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: auto;
+
+    /* 크로스 플랫폼 폰트 렌더링 최적화 */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* 모바일 환경에서 가로 스크롤 방지 */
+@media (max-width: 768px) {
+    body {
+        min-width: unset;
+        overflow-x: hidden;
+    }
+}
+
+/* Step 2: React Root Container - Flex Chain 연결 */
+#root {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+}
+
+/* Step 3: Main Container - 사이드바 제외 영역 */
+.main-container {
+    flex: 1;
+    margin-left: var(--sidebar-expanded, 210px);
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.15s ease;
+    height: 100vh;
+    width: calc(100% - var(--sidebar-expanded, 210px));
+    min-height: 0; /* flex 자식 스크롤 허용 */
+}
+
+/* GNB collapsed state */
+body.gnb-collapsed .main-container {
+    margin-left: var(--sidebar-collapsed, 54px);
+    width: calc(100% - var(--sidebar-collapsed, 54px));
+}
+
+/* No Sidebar - Orange Whale Only */
+.main-container.no-sidebar {
+    margin-left: 0;
+    width: 100%;
+}
+
+/* No Sidebar - Content Area 중앙 정렬 */
+.main-container.no-sidebar .content-area {
+    padding: 0;
+    justify-content: center;
+}
+
+/* Step 4: Content Area - 페이지 콘텐츠 영역 */
+.content-area {
+    flex: 1;
+    padding: 2px 24px 16px 16px;
+    width: 100%;
+    display: flex;
+    gap: var(--space-section-gap);
+    min-height: 0; /* flex 자식 스크롤 허용 */
+    overflow-y: auto; /* 스크롤 가능하도록 */
+}
+
+/* Step 5: Content Area 직접 자식 - 페이지 컴포넌트 */
+.content-area > * {
+    flex: 1;
+    min-height: 0; /* flex 자식 스크롤 허용 */
+}
+
+/* ========================================
+   페이지 컴포넌트 공통 패턴
+
+   새 페이지 만들 때 이 패턴 따르기:
+   .pageWrapper {
+     display: flex;
+     flex-direction: column; (또는 row)
+     width: 100%;
+     flex: 1;
+     min-height: 0;
+   }
+   ======================================== */
+
+/* ========================================
+   AI Studio Dark Mode (Orange Whale Studio)
+   - /gen-ai 페이지용 다크 배경
+   ======================================== */
+
+.main-container.ai-studio-dark {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%) !important;
+}
+
+.content-area.ai-studio-dark {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+/* 다크모드에서 스크롤바 스타일 */
+.content-area.ai-studio-dark::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+}
+
+.content-area.ai-studio-dark::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.content-area.ai-studio-dark::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.content-area.ai-studio-dark::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}

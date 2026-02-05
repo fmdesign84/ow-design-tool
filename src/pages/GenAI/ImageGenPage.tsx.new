@@ -1,0 +1,215 @@
+/**
+ * ImageGenPage (경량화 버전)
+ * - React.lazy로 코드 스플리팅
+ * - 개별 View 컴포넌트로 분리
+ * - 상태는 각 View + Zustand Store에서 관리
+ */
+
+import React, { Suspense, lazy, useState, useCallback, useMemo, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { StudioLayout } from './layouts/StudioLayout';
+import styles from './ImageGenPage.module.css';
+
+// React.lazy로 View 컴포넌트 동적 로딩
+const HomeView = lazy(() => import('./views/HomeView'));
+const ImageView = lazy(() => import('./views/ImageView'));
+const VideoView = lazy(() => import('./views/VideoView'));
+const ToolsView = lazy(() => import('./views/ToolsView'));
+const DesignView = lazy(() => import('./views/DesignView'));
+const LibraryView = lazy(() => import('./views/LibraryView'));
+const WaveView = lazy(() => import('./views/WaveView'));
+const SwimmingView = lazy(() => import('./views/SwimmingView'));
+const ChatView = lazy(() => import('./views/ChatView'));
+const CopilotView = lazy(() => import('./views/CopilotView'));
+
+// 메뉴 타입
+type MainMenu = 'home' | 'image' | 'video' | 'tools' | 'design' | 'library' | 'wave' | 'swimming' | 'chat' | 'copilot';
+
+// 서브메뉴 타입
+type SubMenuType = string;
+
+// 로딩 스피너
+const LoadingSpinner: React.FC = () => (
+  <div className={styles.loadingContainer}>
+    <div className={styles.spinner} />
+    <p>불러오는 중...</p>
+  </div>
+);
+
+const ImageGenPage: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // 로딩 상태 (공유)
+  const [isLoading, setIsLoading] = useState(false);
+
+  // URL 경로에서 초기 메뉴 결정
+  const getInitialMenu = useCallback((): MainMenu => {
+    const path = location.pathname;
+    if (path.includes('/video')) return 'video';
+    if (path.includes('/tools')) return 'tools';
+    if (path.includes('/design')) return 'design';
+    if (path.includes('/wave')) return 'wave';
+    if (path.includes('/swimming')) return 'swimming';
+    if (path.includes('/image')) return 'image';
+    if (path.includes('/library')) return 'library';
+    if (path.includes('/chat')) return 'chat';
+    if (path.includes('/copilot')) return 'copilot';
+    return 'home';
+  }, [location.pathname]);
+
+  // 서브메뉴 초기값
+  const getInitialSubMenu = useCallback((menu: MainMenu): SubMenuType => {
+    switch (menu) {
+      case 'video':
+        return 'text-to-video';
+      case 'design':
+        return 'mockup-generator';
+      case 'tools':
+        return 'upscale';
+      case 'image':
+        return 'text-to-image';
+      case 'library':
+        return 'all';
+      case 'copilot':
+        return 'hr-assistant';
+      default:
+        return '';
+    }
+  }, []);
+
+  const initialMenu = useMemo(() => getInitialMenu(), [getInitialMenu]);
+  const [activeMenu, setActiveMenu] = useState<MainMenu>(initialMenu);
+  const [activeSubMenu, setActiveSubMenu] = useState<SubMenuType>(getInitialSubMenu(initialMenu));
+
+  // 메뉴 변경 시 서브메뉴 초기화
+  const handleMenuChange = useCallback((menu: MainMenu) => {
+    setActiveMenu(menu);
+    setActiveSubMenu(getInitialSubMenu(menu));
+
+    // URL 업데이트
+    if (menu === 'home') {
+      navigate('/genai');
+    } else {
+      navigate(`/genai/${menu}`);
+    }
+  }, [getInitialSubMenu, navigate]);
+
+  // 서브메뉴 변경
+  const handleSubMenuChange = useCallback((subMenu: SubMenuType) => {
+    setActiveSubMenu(subMenu);
+  }, []);
+
+  // 에러 핸들러
+  const handleError = useCallback((error: string) => {
+    console.error('[ImageGenPage]', error);
+    // TODO: 토스트 알림 등
+  }, []);
+
+  // URL 변경 감지
+  useEffect(() => {
+    const newMenu = getInitialMenu();
+    if (newMenu !== activeMenu) {
+      setActiveMenu(newMenu);
+      setActiveSubMenu(getInitialSubMenu(newMenu));
+    }
+  }, [location.pathname, activeMenu, getInitialMenu, getInitialSubMenu]);
+
+  // View 렌더링
+  const renderView = () => {
+    switch (activeMenu) {
+      case 'home':
+        return (
+          <HomeView
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            onNavigate={handleMenuChange}
+            onError={handleError}
+          />
+        );
+
+      case 'image':
+        return (
+          <ImageView
+            activeSubMenu={activeSubMenu as 'text-to-image' | 'image-to-image' | 'inpainting' | 'id-photo-studio' | 'free-photo' | 'composite-photo' | 'product-photo'}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            onError={handleError}
+          />
+        );
+
+      case 'video':
+        return (
+          <VideoView
+            activeSubMenu={activeSubMenu as 'text-to-video' | 'image-to-video' | 'multi-image-to-video'}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            onError={handleError}
+          />
+        );
+
+      case 'tools':
+        return (
+          <ToolsView
+            activeSubMenu={activeSubMenu as 'upscale' | 'remove-bg' | 'video-to-webp' | 'text-correct'}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            onError={handleError}
+          />
+        );
+
+      case 'design':
+        return (
+          <DesignView
+            activeSubMenu={activeSubMenu as 'mockup-generator' | 'ppt-maker'}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            onError={handleError}
+          />
+        );
+
+      case 'library':
+        return (
+          <LibraryView
+            activeSubMenu={activeSubMenu as 'all' | 'images' | 'design' | 'videos' | 'favorites'}
+            imageHistory={[]}  // TODO: 히스토리 로드
+            isLoading={isLoading}
+          />
+        );
+
+      case 'wave':
+        return <WaveView />;
+
+      case 'swimming':
+        return <SwimmingView />;
+
+      case 'chat':
+        return <ChatView />;
+
+      case 'copilot':
+        return <CopilotView />;
+
+      default:
+        return null;
+    }
+  };
+
+  // 포인트 사용량 (TODO: 실제 포인트 시스템 연동)
+  const pointUsage = { used: 0, limit: 100 };
+
+  return (
+    <StudioLayout
+      activeMenu={activeMenu}
+      activeSubMenu={activeSubMenu}
+      onMenuChange={handleMenuChange}
+      onSubMenuChange={handleSubMenuChange}
+      pointUsage={pointUsage}
+    >
+      <Suspense fallback={<LoadingSpinner />}>
+        {renderView()}
+      </Suspense>
+    </StudioLayout>
+  );
+};
+
+export default ImageGenPage;

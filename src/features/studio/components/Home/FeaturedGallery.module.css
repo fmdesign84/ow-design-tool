@@ -1,0 +1,206 @@
+/**
+ * FeaturedGallery 컴포넌트 스타일
+ * Pinterest 스타일 마소니 레이아웃
+ */
+
+.featuredSection {
+  width: 100%;
+}
+
+/* 마소니 레이아웃 (CSS columns 사용) */
+.featuredGrid {
+  column-count: 5;
+  column-gap: 12px;
+}
+
+.featuredItem {
+  position: relative;
+  break-inside: avoid;
+  margin-bottom: 12px;
+  border-radius: var(--radius-lg, 12px);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all var(--transition-normal, 0.2s) ease;
+  background: var(--home-card-inner-bg, #F5F6F8);
+}
+
+.featuredItem:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.featuredItemInner {
+  position: relative;
+  width: 100%;
+}
+
+.featuredItem img,
+.featuredItem video {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+  animation: imageBlurIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.35s both;
+}
+
+/* 호버 시 살짝 확대 */
+.featuredItem:hover img,
+.featuredItem:hover video {
+  transform: scale(1.02);
+}
+
+/* 비디오 플레이 아이콘 */
+.featuredVideoIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  font-size: 18px;
+  color: #fff;
+  pointer-events: none;
+  opacity: 0.9;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.featuredItem:hover .featuredVideoIcon {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* 오버레이 - 호버 시에만 표시 */
+.featuredItemOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.4) 40%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.featuredItem:hover .featuredItemOverlay {
+  opacity: 1;
+}
+
+/* 뱃지 그룹 */
+.featuredBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.featuredBadges > span {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: transparent !important;
+  font-size: 10px !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+}
+
+/* 프롬프트 미리보기 - 호버 시 표시 */
+.featuredPromptPreview {
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* 스켈레톤 로딩 */
+.featuredItemSkeleton {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg, 8px);
+  background: linear-gradient(
+    90deg,
+    var(--color-neutral-200, #E8E8E8) 25%,
+    var(--color-neutral-100, #F5F6F8) 50%,
+    var(--color-neutral-200, #E8E8E8) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* 애니메이션 */
+@keyframes imageBlurIn {
+  from {
+    filter: blur(10px);
+    opacity: 0;
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* 반응형 - 태블릿 */
+@media (max-width: 1024px) {
+  .featuredGrid {
+    column-count: 4;
+    column-gap: 10px;
+  }
+
+  .featuredItem {
+    margin-bottom: 10px;
+  }
+}
+
+/* 반응형 - 모바일 */
+@media (max-width: 768px) {
+  .featuredGrid {
+    column-count: 2;
+    column-gap: 8px;
+  }
+
+  .featuredItem {
+    margin-bottom: 8px;
+    border-radius: var(--radius-md, 8px);
+  }
+
+  .featuredItemOverlay {
+    padding: 12px;
+    opacity: 1; /* 모바일에서는 항상 표시 */
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.7) 0%,
+      transparent 70%
+    );
+  }
+
+  .featuredPromptPreview {
+    font-size: 11px;
+    -webkit-line-clamp: 2;
+  }
+}

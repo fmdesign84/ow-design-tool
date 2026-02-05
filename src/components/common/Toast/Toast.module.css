@@ -1,0 +1,141 @@
+/**
+ * Toast 스타일
+ */
+
+.container {
+  position: fixed;
+  bottom: var(--spacing-6, 24px);
+  right: var(--spacing-6, 24px);
+  z-index: var(--z-tooltip, 700);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2, 8px);
+  pointer-events: none;
+}
+
+/* ===== Toast ===== */
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3, 12px);
+  padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+  background: var(--bg-white, #FFFFFF);
+  border-radius: var(--radius-lg, 8px);
+  box-shadow: var(--shadow-lg, 0 8px 24px rgba(0, 0, 0, 0.12));
+  border-left: 4px solid;
+  pointer-events: auto;
+  animation: toast-in 0.2s ease;
+  min-width: 280px;
+  max-width: 400px;
+}
+
+.exiting {
+  animation: toast-out 0.2s ease forwards;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* ===== Type Variants ===== */
+
+.success {
+  border-left-color: var(--color-success, #22C55E);
+}
+
+.success .icon {
+  color: var(--color-success, #22C55E);
+}
+
+.error {
+  border-left-color: var(--color-error, #F44336);
+}
+
+.error .icon {
+  color: var(--color-error, #F44336);
+}
+
+.warning {
+  border-left-color: var(--color-warning, #F5A623);
+}
+
+.warning .icon {
+  color: var(--color-warning, #F5A623);
+}
+
+.info {
+  border-left-color: var(--color-info, #3B82F6);
+}
+
+.info .icon {
+  color: var(--color-info, #3B82F6);
+}
+
+/* ===== Elements ===== */
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.message {
+  flex: 1;
+  font-size: var(--font-size-base, 12px);
+  color: var(--text-primary, #3C3C3C);
+  line-height: var(--line-height-normal, 1.4);
+}
+
+.close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-1, 4px);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm, 4px);
+  color: var(--text-muted, #9E9E9E);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s) ease;
+  flex-shrink: 0;
+}
+
+.close:hover {
+  background: var(--bg-gray, #F5F6F8);
+  color: var(--text-primary, #3C3C3C);
+}
+
+/* ===== Responsive ===== */
+
+@media (max-width: 480px) {
+  .container {
+    left: var(--spacing-4, 16px);
+    right: var(--spacing-4, 16px);
+    bottom: var(--spacing-4, 16px);
+  }
+
+  .toast {
+    min-width: 0;
+    max-width: none;
+  }
+}

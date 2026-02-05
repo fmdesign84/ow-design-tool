@@ -1,0 +1,545 @@
+/**
+ * CompositePhoto 컴포넌트 스타일
+ * 합성 사진 (Location Compositing, Virtual Try-On, Background Generation)
+ */
+
+/* ========== 컨테이너 ========== */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ========== 모드 탭 ========== */
+.modeTabs {
+  display: flex;
+  gap: 8px;
+  padding: 4px;
+  background: #F5F6F8;
+  border-radius: 10px;
+}
+
+.modeTab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #757575;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.modeTab:hover:not(:disabled) {
+  color: #5F5F5F;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.modeTab.active {
+  background: #fff;
+  color: var(--color-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.modeTab:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modeIcon {
+  font-size: 16px;
+}
+
+/* ========== 설정 그룹 ========== */
+.settingGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ========== 라벨 ========== */
+.label {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #5F5F5F;
+}
+
+.required {
+  color: var(--color-primary);
+  margin-left: 4px;
+}
+
+.hint {
+  font-weight: 400;
+  color: #9E9E9E;
+  margin-left: 4px;
+}
+
+/* ========== 듀얼 업로드 영역 ========== */
+.dualUploadContainer {
+  display: flex;
+  gap: 12px;
+}
+
+.uploadColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.columnLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: #5F5F5F;
+  text-align: center;
+}
+
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  padding: 20px;
+  background: #F5F6F8;
+  border: 1px dashed #D1D1D1;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.uploadArea:hover {
+  border-color: rgba(255, 107, 53, 0.5);
+  background: rgba(255, 107, 53, 0.03);
+}
+
+.uploadArea:hover .uploadIconWrapper {
+  color: #F37021;
+  opacity: 1;
+}
+
+.uploadArea.dragging {
+  border-color: rgba(255, 107, 53, 0.5);
+  background: rgba(255, 107, 53, 0.08);
+}
+
+.uploadArea.hasImage {
+  cursor: default;
+  border-style: solid;
+  border-color: #E8E8E8;
+}
+
+.uploadPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.uploadIconWrapper {
+  color: #F37021;
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.uploadText {
+  font-size: 12px;
+  font-weight: 500;
+  color: #5F5F5F;
+  margin: 0;
+  text-align: center;
+}
+
+.uploadHint {
+  font-size: 10px;
+  color: #9E9E9E;
+  margin: 0;
+  text-align: center;
+}
+
+/* ========== 업로드된 이미지 프리뷰 ========== */
+.uploadedPreview {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.previewImage {
+  max-width: 100%;
+  max-height: 140px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.removeImageBtn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid #E8E8E8;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #757575;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.removeImageBtn:hover {
+  background: #DC2626;
+  border-color: #DC2626;
+  color: #fff;
+}
+
+.uploadedFileName {
+  font-size: 10px;
+  color: #757575;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ========== 카테고리 선택 (Virtual Try-On) ========== */
+.categorySelector {
+  display: flex;
+  gap: 8px;
+}
+
+.categoryBtn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 8px;
+  min-height: 60px;
+  background: #F5F6F8;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.categoryBtn:hover:not(:disabled) {
+  background: #F0F0F0;
+  border-color: #D1D1D1;
+}
+
+.categoryBtn.active {
+  background: rgba(255, 107, 53, 0.08);
+  border-color: rgba(255, 107, 53, 0.5);
+}
+
+.categoryBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.categoryIcon {
+  font-size: 20px;
+}
+
+.categoryLabel {
+  font-size: 11px;
+  font-weight: 500;
+  color: #757575;
+}
+
+.categoryBtn.active .categoryLabel {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* ========== 프롬프트 입력 ========== */
+.promptInput {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #3C3C3C;
+  resize: vertical;
+  transition: border-color 0.15s ease;
+}
+
+.promptInput::placeholder {
+  color: #9E9E9E;
+}
+
+.promptInput:focus {
+  outline: none;
+  border-color: rgba(255, 107, 53, 0.5);
+}
+
+.promptInput:disabled {
+  background: #F5F6F8;
+  cursor: not-allowed;
+}
+
+/* ========== 경고 배너 (라이선스) ========== */
+.warningBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: #FFF8E1;
+  border: 1px solid #FFE082;
+  border-radius: 8px;
+}
+
+.warningIcon {
+  flex-shrink: 0;
+  color: #F57C00;
+  font-size: 18px;
+}
+
+.warningContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.warningTitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #F57C00;
+  margin: 0;
+}
+
+.warningText {
+  font-size: 11px;
+  color: #EF6C00;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ========== 생성 버튼 그룹 ========== */
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.generateBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 44px;
+  padding: 0 20px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.generateBtn:hover:not(:disabled) {
+  background: #E55A2B;
+}
+
+.generateBtn:disabled {
+  background: #D1D1D1;
+  cursor: not-allowed;
+}
+
+.pointCost {
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* ========== 로딩 상태 ========== */
+.loadingSpinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  font-size: 13px;
+}
+
+/* ========== 결과 미리보기 ========== */
+.resultPreview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #E8E8E8;
+  border-radius: 12px;
+}
+
+.resultImage {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  object-fit: contain;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.resultActions {
+  display: flex;
+  gap: 8px;
+}
+
+.downloadBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.downloadBtn:hover {
+  background: #E55A00;
+}
+
+.retryBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #5F5F5F;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.retryBtn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* ========== 힌트 텍스트 ========== */
+.hintText {
+  font-size: 11px;
+  color: #9E9E9E;
+  margin: 0;
+  text-align: center;
+}
+
+/* ========== 에러 상태 ========== */
+.errorMessage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #FFEBEE;
+  border: 1px solid #FFCDD2;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #C62828;
+}
+
+.errorIcon {
+  flex-shrink: 0;
+  font-size: 18px;
+}
+
+/* ========== 설명 섹션 ========== */
+.descriptionInput {
+  width: 100%;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #3C3C3C;
+  transition: border-color 0.15s ease;
+}
+
+.descriptionInput::placeholder {
+  color: #9E9E9E;
+}
+
+.descriptionInput:focus {
+  outline: none;
+  border-color: rgba(255, 107, 53, 0.5);
+}
+
+.descriptionInput:disabled {
+  background: #F5F6F8;
+  cursor: not-allowed;
+}
+
+/* ========== 반응형 ========== */
+@media (max-width: 480px) {
+  .dualUploadContainer {
+    flex-direction: column;
+  }
+
+  .uploadArea {
+    min-height: 150px;
+  }
+
+  .modeTabs {
+    flex-wrap: wrap;
+  }
+
+  .modeTab {
+    flex: 1 1 calc(50% - 4px);
+    min-width: calc(50% - 4px);
+  }
+
+  .categorySelector {
+    flex-wrap: wrap;
+  }
+
+  .categoryBtn {
+    flex: 1 1 calc(33% - 6px);
+  }
+}

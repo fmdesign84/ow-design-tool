@@ -1,0 +1,42 @@
+/* CostEstimate 스타일 */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.cost {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 149, 0, 0.9);
+}
+
+.krw {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.breakdown {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  padding-left: 2px;
+}
+
+/* Compact 모드 */
+.compact {
+  font-size: 11px;
+  color: rgba(255, 149, 0, 0.8);
+  font-weight: 500;
+}

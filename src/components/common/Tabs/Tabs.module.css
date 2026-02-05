@@ -1,0 +1,135 @@
+/**
+ * Tabs 스타일
+ */
+
+.tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-1, 4px);
+  background: var(--bg-gray, #F5F6F8);
+  border-radius: var(--radius-lg, 8px);
+  padding: var(--spacing-1, 4px);
+}
+
+.fullWidth {
+  display: flex;
+  width: 100%;
+}
+
+.fullWidth .tab {
+  flex: 1;
+}
+
+/* ===== Tab Button ===== */
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2, 8px);
+  padding: var(--spacing-2, 8px) var(--spacing-4, 16px);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-md, 6px);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-secondary, #5F5F5F);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s) ease;
+  white-space: nowrap;
+}
+
+.tab:hover:not(.disabled) {
+  background: var(--bg-hover, #E8E8E8);
+  color: var(--text-primary, #3C3C3C);
+}
+
+.tab.active {
+  background: var(--bg-white, #FFFFFF);
+  color: var(--text-primary, #3C3C3C);
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.05));
+}
+
+.tab.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  line-height: 1;
+}
+
+/* ===== Size Variants ===== */
+
+.sm .tab {
+  padding: 6px 12px;
+  font-size: var(--font-size-sm, 11px);
+}
+
+.md .tab {
+  padding: var(--spacing-2, 8px) var(--spacing-4, 16px);
+  font-size: var(--font-size-base, 12px);
+}
+
+.lg .tab {
+  padding: 10px 20px;
+  font-size: var(--font-size-md, 14px);
+}
+
+/* ===== Variant: Pills ===== */
+
+.pills {
+  background: transparent;
+  padding: 0;
+  gap: var(--spacing-2, 8px);
+}
+
+.pills .tab {
+  border-radius: var(--radius-full, 20px);
+  background: var(--bg-gray, #F5F6F8);
+  border: 1px solid var(--border-default, #E8E8E8);
+}
+
+.pills .tab:hover:not(.disabled) {
+  border-color: var(--border-dark, #D9D9D9);
+}
+
+.pills .tab.active {
+  background: var(--color-primary-light, #FFF5F0);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* ===== Variant: Underline ===== */
+
+.underline {
+  background: transparent;
+  padding: 0;
+  gap: 0;
+  border-bottom: 1px solid var(--border-default, #E8E8E8);
+  border-radius: 0;
+}
+
+.underline .tab {
+  border-radius: 0;
+  padding: var(--spacing-3, 12px) var(--spacing-4, 16px);
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+}
+
+.underline .tab:hover:not(.disabled) {
+  background: transparent;
+  border-bottom-color: var(--border-dark, #D9D9D9);
+}
+
+.underline .tab.active {
+  background: transparent;
+  box-shadow: none;
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}

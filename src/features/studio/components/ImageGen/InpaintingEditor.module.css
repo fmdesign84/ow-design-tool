@@ -1,0 +1,198 @@
+/**
+ * InpaintingEditor 스타일
+ * 부분 편집 UI
+ */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 라벨 */
+.label {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #5F5F5F;
+}
+
+.required {
+  color: var(--color-primary);
+  margin-left: 4px;
+}
+
+/* 업로드 영역 */
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 200px;
+  padding: 32px;
+  background: #F5F6F8;
+  border: 2px dashed #D1D1D1;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #757575;
+}
+
+.uploadArea:hover {
+  border-color: rgba(255, 107, 53, 0.5);
+  background: rgba(255, 107, 53, 0.03);
+  color: var(--color-primary);
+}
+
+.uploadArea.dragging {
+  border-color: var(--color-primary);
+  background: rgba(255, 107, 53, 0.08);
+}
+
+.uploadText {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.uploadHint {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* 에디터 래퍼 */
+.editorWrapper {
+  position: relative;
+}
+
+.removeImageBtn {
+  position: absolute;
+  top: 72px;  /* toolbar(52px) + gap(12px) + 8px */
+  right: 8px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.removeImageBtn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.removeImageBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 텍스트 영역 */
+.textarea {
+  width: 100%;
+  padding: 12px 14px;
+  background: #F5F6F8;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #333;
+  resize: vertical;
+  transition: border-color 0.15s;
+}
+
+.textarea::placeholder {
+  color: #9E9E9E;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: white;
+}
+
+.textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 힌트 */
+.hint {
+  margin: 0;
+  font-size: 11px;
+  color: #9E9E9E;
+}
+
+/* 경고 메시지 */
+.warning {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: #FFF3E0;
+  border: 1px solid #FFB74D;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #E65100;
+  line-height: 1.4;
+}
+
+/* 버튼 그룹 */
+.buttonGroup {
+  margin-top: 8px;
+}
+
+.generateBtn {
+  width: 100%;
+  height: 44px;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.generateBtn:hover:not(:disabled) {
+  background: #E55A2B;
+}
+
+.generateBtn:disabled {
+  background: #D1D1D1;
+  cursor: not-allowed;
+}
+
+/* 반응형 */
+@media (max-width: 480px) {
+  .container {
+    gap: 16px;
+  }
+
+  .uploadArea {
+    min-height: 160px;
+    padding: 24px;
+  }
+
+  .removeImageBtn {
+    top: 6px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+  }
+}

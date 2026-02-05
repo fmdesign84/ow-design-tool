@@ -1,0 +1,295 @@
+/* ========================================
+   Orange Whale Studio - Design Tokens
+   통합 디자인 토큰 파일
+   ======================================== */
+
+:root {
+  /* ===== Colors - Primary ===== */
+  --color-primary: #FF6B00;
+  --color-primary-light: #FFF5F0;
+  --color-primary-hover: #E55A00;
+
+  /* ===== Colors - Status ===== */
+  --color-success: #22C55E;
+  --color-success-light: #DCFCE7;
+  --color-warning: #F5A623;
+  --color-warning-light: #FFF8E6;
+  --color-error: #F44336;
+  --color-error-light: #FFEBEE;
+  --color-info: #3B82F6;
+  --color-info-light: #DBEAFE;
+  --color-gray: #607D8B;
+  --color-gray-light: #ECEFF1;
+
+  /* ===== Colors - Neutral ===== */
+  --color-neutral-900: #212121;
+  --color-neutral-800: #3C3C3C;
+  --color-neutral-700: #5F5F5F;
+  --color-neutral-600: #757575;
+  --color-neutral-500: #9E9E9E;
+  --color-neutral-400: #D9D9D9;
+  --color-neutral-350: #ACACAC;
+  --color-neutral-300: #E8E8E8;
+  --color-neutral-200: #F3F4F6;
+  --color-neutral-100: #F5F6F8;
+  --color-neutral-50: #FAFBFC;
+  --color-white: #FFFFFF;
+  --color-black: #1A1A1A;
+
+  /* ===== Typography ===== */
+  --font-family: 'Pretendard', 'Pretendard Variable', sans-serif;
+
+  --font-size-xs: 10px;
+  --font-size-sm: 11px;
+  --font-size-base: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.6;
+
+  /* ===== Spacing - 숫자 기반 ===== */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+
+  /* Spacing - 이름 기반 (호환성) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+  --spacing-4xl: 40px;
+
+  /* Spacing - 용도별 */
+  --space-section-gap: 12px;
+  --space-card-padding: 20px;
+  --space-inner-padding: 16px;
+  --space-title-gap: 10px;
+  --space-divider-gap: 10px;
+  --space-item-gap: 8px;
+  --space-small-gap: 4px;
+  --space-inline-gap: 6px;
+  --card-gap: 12px;
+
+  /* ===== Border Radius ===== */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 20px;
+  --radius-circle: 50%;
+
+  /* ===== Shadows ===== */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-primary: 0 1px 4px rgba(255, 107, 0, 0.15);
+  --shadow-primary-hover: 0 2px 8px rgba(255, 107, 0, 0.2);
+  --shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+
+  /* ===== Transitions ===== */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+  --transition-bounce: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ===== Z-Index ===== */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-toast: 1100;
+
+  /* ===== Component Sizes ===== */
+  --input-height: 34px;
+  --input-height-sm: 30px;
+  --input-height-lg: 40px;
+  --avatar-size: 40px;
+  --avatar-size-sm: 32px;
+  --avatar-size-xs: 24px;
+  --avatar-size-lg: 48px;
+  --avatar-size-xl: 64px;
+  --icon-size: 20px;
+  --icon-size-sm: 16px;
+  --icon-size-lg: 24px;
+
+  /* ===== Semantic Colors ===== */
+
+  /* Text */
+  --text-primary: var(--color-neutral-800);
+  --text-secondary: var(--color-neutral-700);
+  --text-tertiary: var(--color-neutral-600);
+  --text-muted: var(--color-neutral-500);
+  --text-disabled: var(--color-neutral-400);
+  --text-accent: var(--color-primary);
+  --text-inverse: var(--color-white);
+  --text-link: var(--color-info);
+
+  /* Background */
+  --bg-white: var(--color-white);
+  --bg-gray: var(--color-neutral-100);
+  --bg-gray-light: var(--color-neutral-50);
+  --bg-gray-medium: var(--color-neutral-200);
+  --bg-gray-dark: var(--color-neutral-300);
+  --bg-primary-light: var(--color-primary-light);
+  --bg-hover: #F8F8F8;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Border */
+  --border-default: var(--color-neutral-300);
+  --border-light: var(--color-neutral-200);
+  --border-dark: var(--color-neutral-400);
+  --border-divider: var(--color-neutral-200);
+  --border-focus: var(--color-primary);
+
+  /* ===== Interactive States ===== */
+  /* Hover - 통일된 hover 배경색 */
+  --hover-bg: var(--color-neutral-200);
+  --hover-bg-light: var(--color-neutral-100);
+  --hover-bg-subtle: var(--color-neutral-50);
+
+  /* Focus Ring - 통일된 focus 스타일 */
+  --focus-ring-color: var(--color-primary);
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-shadow: 0 0 0 2px rgba(255, 107, 0, 0.15);
+
+  /* Error States */
+  --color-error-hover: #D32F2F;
+
+  /* ===== Component - Card ===== */
+  --card-bg: var(--color-white);
+  --card-border: var(--border-default);
+  --card-radius: var(--radius-xl);
+  --card-shadow: var(--shadow-sm);
+  --card-hover-shadow: var(--shadow-md);
+  --card-hover-border: var(--color-primary);
+
+  /* ===== Component - Button ===== */
+  --btn-primary-bg: var(--color-primary);
+  --btn-primary-hover: var(--color-primary-hover);
+  --btn-primary-text: var(--color-white);
+  --btn-secondary-bg: var(--bg-gray);
+  --btn-secondary-hover: var(--bg-gray-medium);
+  --btn-secondary-text: var(--text-primary);
+  --btn-ghost-hover: var(--bg-gray);
+  --btn-disabled-bg: var(--color-neutral-200);
+  --btn-disabled-border: var(--color-neutral-300);
+  --btn-disabled-text: var(--color-neutral-400);
+
+  /* ===== Component - Input ===== */
+  --input-bg: var(--color-neutral-100);
+  --input-border: var(--border-default);
+  --input-text: var(--text-primary);
+  --input-placeholder: var(--text-muted);
+  --input-focus-bg: var(--color-white);
+  --input-focus-border: var(--color-primary);
+  --input-error-border: var(--color-error);
+
+  /* ===== Component - Badge ===== */
+  --badge-bg: var(--color-neutral-100);
+  --badge-border: var(--border-default);
+  --badge-text: var(--text-secondary);
+  --badge-hover-bg: var(--color-neutral-200);
+  --badge-hover-text: var(--text-primary);
+  --badge-active-bg: var(--color-primary-light);
+  --badge-active-border: var(--color-primary);
+  --badge-active-text: var(--color-primary);
+
+  /* ===== Component - Modal ===== */
+  --modal-bg: var(--color-white);
+  --modal-border: var(--border-default);
+  --modal-shadow: var(--shadow-xl);
+  --modal-backdrop: var(--bg-overlay);
+
+  /* ===== Component - Tooltip ===== */
+  --tooltip-bg: var(--color-neutral-900);
+  --tooltip-text: var(--color-white);
+
+  /* ===== Component - Toast ===== */
+  --toast-bg: var(--color-white);
+  --toast-shadow: var(--shadow-lg);
+
+  /* ===== Home Section - Light Theme (기본) ===== */
+  --home-section-title: var(--text-primary);
+  --home-card-bg: var(--card-bg);
+  --home-card-border: var(--card-border);
+  --home-card-shadow: var(--card-shadow);
+  --home-card-hover-bg: var(--bg-white);
+  --home-card-hover-border: var(--color-primary);
+  --home-card-hover-shadow: 0 2px 8px rgba(255, 107, 0, 0.08);
+  --home-card-inner-bg: var(--bg-gray);
+  --home-card-inner-border: var(--border-default);
+  --home-card-text: var(--text-primary);
+  --home-card-text-secondary: var(--text-muted);
+  --home-card-icon: var(--text-primary);
+
+  /* ===== Component - Avatar ===== */
+  --avatar-bg-accent: #FFE5D0;
+
+  /* ===== Component - Notification ===== */
+  --notification-bg: var(--color-white);
+  --notification-hover-bg: var(--color-neutral-50);
+  --notification-read-bg: #ECEDF0;
+  --notification-read-hover-bg: #E3E4E8;
+  --notification-border: var(--border-light);
+  --notification-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+
+  /* Notification Tag Colors */
+  --tag-comment-bg: #E8F5E9;
+  --tag-comment-color: #4CAF50;
+  --tag-cancel-bg: #E0E0E0;
+  --tag-cancel-color: var(--color-neutral-700);
+  --tag-reject-bg: var(--color-neutral-800);
+  --tag-reject-color: var(--color-white);
+
+  /* ===== Layout ===== */
+  --header-height: 56px;
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 64px;
+  --content-max-width: 1400px;
+  --board-gap: 12px;
+}
+
+/* ===== Dark/Glass Theme (홈 전용, 필요시 활성화) ===== */
+/*
+.glass-theme {
+  --home-section-title: var(--color-white);
+  --home-card-bg: rgba(255, 255, 255, 0.15);
+  --home-card-border: rgba(255, 255, 255, 0.25);
+  --home-card-shadow: none;
+  --home-card-hover-bg: rgba(255, 255, 255, 0.2);
+  --home-card-hover-border: rgba(255, 255, 255, 0.4);
+  --home-card-hover-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  --home-card-inner-bg: transparent;
+  --home-card-inner-border: transparent;
+  --home-card-text: var(--color-white);
+  --home-card-text-secondary: rgba(255, 255, 255, 0.7);
+  --home-card-icon: var(--color-white);
+}
+*/

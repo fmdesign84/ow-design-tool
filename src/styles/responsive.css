@@ -1,0 +1,45 @@
+/* ========================================
+   Orange Whale Studio - Responsive Layout
+   ======================================== */
+
+:root {
+  /* Breakpoints (참고용) */
+  --bp-xl: 1400px;
+  --bp-lg: 1200px;
+  --bp-md: 1024px;
+  --bp-sm: 768px;
+}
+
+/* ========================================
+   Desktop Breakpoints
+   ======================================== */
+
+/* XL: 1400px+ */
+@media (min-width: 1400px) {
+  .content-area {
+    padding: 2px 32px 48px 24px;
+  }
+}
+
+/* LG: 1200px ~ 1399px */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .content-area {
+    padding: 2px 24px 48px 16px;
+  }
+}
+
+/* MD: 1024px ~ 1199px */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .content-area {
+    padding: 2px 16px 48px 12px;
+    gap: 10px;
+  }
+}
+
+/* SM: 768px ~ 1023px */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .content-area {
+    padding: 2px 12px 40px 10px;
+    gap: 8px;
+  }
+}

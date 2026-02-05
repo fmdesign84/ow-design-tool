@@ -1,0 +1,806 @@
+/* ========================================
+   Mobile Responsive Layout System
+   모바일 전용 반응형 레이아웃 (max-width: 768px)
+   ======================================== */
+
+/* ========================================
+   CSS Variables - Mobile-specific Values
+
+   [사용법]
+   - 모바일 헤더 높이: var(--mobile-header-height)
+   - 터치 타겟 최소 크기: var(--mobile-touch-target)
+   - 모바일 간격: var(--mobile-padding-*, --mobile-gap-*)
+   ======================================== */
+:root {
+  /* Mobile Layout */
+  --mobile-header-height: 56px;
+  --mobile-touch-target: 44px;
+  --mobile-bottom-nav-height: 60px;
+
+  /* Mobile Spacing */
+  --mobile-padding-xs: 8px;
+  --mobile-padding-sm: 12px;
+  --mobile-padding-md: 16px;
+  --mobile-padding-lg: 20px;
+  --mobile-gap-xs: 8px;
+  --mobile-gap-sm: 12px;
+  --mobile-gap-md: 16px;
+
+  /* Mobile Typography */
+  --mobile-font-xs: 12px;
+  --mobile-font-sm: 13px;
+  --mobile-font-md: 14px;
+  --mobile-font-lg: 16px;
+  --mobile-font-xl: 18px;
+  --mobile-line-height: 1.5;
+
+  /* Mobile Transition */
+  --mobile-transition: all 0.2s ease;
+}
+
+/* ========================================
+   Mobile Breakpoint - 768px 이하
+   ======================================== */
+@media (max-width: 768px) {
+
+  /* ========================================
+     가로 스크롤 전면 금지 + 스크롤바 숨기기
+     ======================================== */
+
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    /* 스크롤바 그래픽 숨기기 (스크롤은 유지) */
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  * {
+    max-width: 100vw;
+  }
+
+  /* ========================================
+     Base Layout Rules
+     ======================================== */
+
+  /* Hide desktop sidebar and GNB */
+  .gnb,
+  .sidebar {
+    display: none !important;
+  }
+
+  /* Main container full width */
+  .main-container {
+    width: 100vw !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+
+  .content-area {
+    width: 100% !important;
+    max-width: 100vw !important;
+    padding: var(--mobile-padding-sm) var(--mobile-padding-md) var(--mobile-padding-lg) var(--mobile-padding-md) !important;
+    gap: var(--mobile-gap-md) !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Mobile content area - account for fixed MobileGNB header */
+  .content-area.mobile-content {
+    padding-top: calc(var(--mobile-header-height) + var(--mobile-padding-sm)) !important;
+    min-height: calc(100vh - var(--mobile-header-height)) !important;
+  }
+
+  /* Header adjustments - keep 56px but adjust content */
+  .header {
+    height: var(--mobile-header-height) !important;
+    padding: 0 var(--mobile-padding-md) !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+  }
+
+  .header-title {
+    font-size: var(--mobile-font-lg) !important;
+    font-weight: 600 !important;
+  }
+
+  .header-actions {
+    gap: var(--mobile-gap-xs) !important;
+  }
+
+  /* ========================================
+     Form Rules
+     ======================================== */
+
+  /* Form container */
+  .form-container {
+    border-radius: 8px !important;
+  }
+
+  .form-header {
+    padding: var(--mobile-padding-sm) var(--mobile-padding-md) !important;
+  }
+
+  .form-body {
+    padding: var(--mobile-padding-md) var(--mobile-padding-md) var(--mobile-padding-lg) var(--mobile-padding-md) !important;
+  }
+
+  /* Form rows stack vertically */
+  .form-row {
+    flex-direction: column !important;
+    gap: var(--mobile-gap-sm) !important;
+    width: 100% !important;
+  }
+
+  .form-row-inline,
+  .form-row-inline-double {
+    flex-direction: column !important;
+    gap: var(--mobile-gap-sm) !important;
+    width: 100% !important;
+  }
+
+  /* Labels above inputs */
+  .form-label,
+  .form-label-inline {
+    width: 100% !important;
+    min-width: unset !important;
+    margin-bottom: 4px !important;
+    font-size: var(--mobile-font-sm) !important;
+  }
+
+  /* Inputs 100% width */
+  .form-input,
+  .form-select,
+  .form-textarea,
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  select,
+  textarea {
+    width: 100% !important;
+    min-width: unset !important;
+    max-width: 100% !important;
+    font-size: var(--mobile-font-md) !important;
+  }
+
+  /* Form field wrapper */
+  .form-field {
+    width: 100% !important;
+  }
+
+  .form-input-wrapper {
+    width: 100% !important;
+  }
+
+  /* Form sections */
+  .form-section {
+    padding: var(--mobile-padding-md) !important;
+    gap: var(--mobile-gap-md) !important;
+  }
+
+  .form-section-title {
+    font-size: var(--mobile-font-md) !important;
+    margin-bottom: var(--mobile-gap-sm) !important;
+  }
+
+  /* Form actions */
+  .form-actions {
+    padding: var(--mobile-padding-md) var(--mobile-padding-md) var(--mobile-padding-lg) var(--mobile-padding-md) !important;
+    gap: var(--mobile-gap-sm) !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+  }
+
+  /* ========================================
+     Modal Rules
+     ======================================== */
+
+  /* Full screen modal */
+  .modal-overlay {
+    padding: 0 !important;
+  }
+
+  .modal,
+  .form-modal,
+  .project-search-modal,
+  .calendar-modal,
+  .confirmation-modal {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+
+  .modal-content {
+    border-radius: 0 !important;
+    max-height: 100vh !important;
+  }
+
+  /* 모달 헤더 공통 - safe area 지원 */
+  .modal-header {
+    padding: var(--mobile-padding-md) !important;
+    padding-top: calc(var(--mobile-padding-md) + env(safe-area-inset-top)) !important;
+    border-radius: 0 !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 10 !important;
+    background: white !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    min-height: 56px !important;
+  }
+
+  .modal-body {
+    padding: var(--mobile-padding-md) !important;
+    max-height: calc(100vh - 120px) !important;
+    overflow-y: auto !important;
+  }
+
+  .modal-footer {
+    padding: var(--mobile-padding-md) !important;
+    border-radius: 0 !important;
+  }
+
+  /* Small modals (confirmation, etc.) */
+  .confirmation-modal {
+    width: 90vw !important;
+    height: auto !important;
+    max-width: 400px !important;
+    max-height: 90vh !important;
+    border-radius: 12px !important;
+  }
+
+  /* ========================================
+     Button Rules
+     ======================================== */
+
+  /* Minimum touch target 44px - 액션 버튼에만 적용 */
+  .btn,
+  button[type="submit"],
+  button[type="button"]:not([class*="close"]):not([class*="Close"]):not([class*="icon"]):not([class*="Icon"]) {
+    min-height: var(--mobile-touch-target) !important;
+    padding: 0 var(--mobile-padding-md) !important;
+    font-size: var(--mobile-font-md) !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* 모달 닫기 버튼 - 별도 스타일 */
+  [class*="closeBtn"],
+  [class*="CloseBtn"],
+  .modal-close {
+    width: 44px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Full width primary actions */
+  .btn-primary,
+  .btn-submit {
+    width: 100% !important;
+    min-width: unset !important;
+  }
+
+  /* Button group */
+  .btn-group {
+    flex-direction: column !important;
+    gap: var(--mobile-gap-sm) !important;
+    width: 100% !important;
+  }
+
+  .btn-group .btn {
+    width: 100% !important;
+  }
+
+  /* Icon buttons */
+  .btn-icon {
+    width: var(--mobile-touch-target) !important;
+    height: var(--mobile-touch-target) !important;
+    min-width: var(--mobile-touch-target) !important;
+    padding: 0 !important;
+  }
+
+  /* ========================================
+     Typography
+     ======================================== */
+
+  /* Minimum 14px font size */
+  body {
+    font-size: var(--mobile-font-md) !important;
+    line-height: var(--mobile-line-height) !important;
+  }
+
+  h1 {
+    font-size: var(--mobile-font-xl) !important;
+    line-height: 1.4 !important;
+  }
+
+  h2 {
+    font-size: var(--mobile-font-lg) !important;
+    line-height: 1.4 !important;
+  }
+
+  h3 {
+    font-size: var(--mobile-font-md) !important;
+    line-height: 1.4 !important;
+  }
+
+  p,
+  span,
+  div {
+    font-size: var(--mobile-font-md) !important;
+    line-height: var(--mobile-line-height) !important;
+  }
+
+  small,
+  .text-sm {
+    font-size: var(--mobile-font-sm) !important;
+  }
+
+  .text-xs {
+    font-size: var(--mobile-font-xs) !important;
+  }
+
+  /* ========================================
+     Table Rules
+     ======================================== */
+
+  /* 테이블 가로스크롤 제거 - MobileTableCard로 대체됨 */
+  .table-container,
+  .tableWrapper,
+  [class*="tableWrapper"] {
+    overflow-x: visible !important;
+  }
+
+  table {
+    width: 100% !important;
+    min-width: unset !important;
+  }
+
+  th,
+  td {
+    padding: var(--mobile-padding-sm) var(--mobile-padding-xs) !important;
+    font-size: var(--mobile-font-sm) !important;
+  }
+
+  /* Mobile table variant - card style */
+  .table-mobile-card {
+    display: block !important;
+  }
+
+  .table-mobile-card thead {
+    display: none !important;
+  }
+
+  .table-mobile-card tbody {
+    display: block !important;
+  }
+
+  .table-mobile-card tr {
+    display: block !important;
+    margin-bottom: var(--mobile-gap-md) !important;
+    border: 1px solid var(--border-default) !important;
+    border-radius: 8px !important;
+    padding: var(--mobile-padding-md) !important;
+  }
+
+  .table-mobile-card td {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: var(--mobile-padding-xs) 0 !important;
+    border: none !important;
+  }
+
+  .table-mobile-card td::before {
+    content: attr(data-label) !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
+  }
+
+  /* ========================================
+     Search & Filter Rules
+     ======================================== */
+
+  .search-bar,
+  .filter-bar {
+    flex-direction: column !important;
+    gap: var(--mobile-gap-sm) !important;
+    width: 100% !important;
+  }
+
+  .search-input-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .search-input {
+    width: 100% !important;
+    min-height: var(--mobile-touch-target) !important;
+    font-size: 14px !important;
+  }
+
+  /* 모든 검색창 폰트 크기 통일 */
+  input[type="search"],
+  input[placeholder*="검색"],
+  [class*="search"] input,
+  [class*="Search"] input {
+    font-size: 14px !important;
+  }
+
+  .filter-group {
+    width: 100% !important;
+    flex-direction: column !important;
+    gap: var(--mobile-gap-sm) !important;
+  }
+
+  /* ========================================
+     Card & List Rules
+     ======================================== */
+
+  .card {
+    border-radius: 8px !important;
+    padding: var(--mobile-padding-md) !important;
+  }
+
+  .card-header {
+    padding: var(--mobile-padding-md) !important;
+    padding-bottom: var(--mobile-padding-sm) !important;
+  }
+
+  .card-header h2,
+  .card-header h3,
+  .card-header .card-title,
+  .card-header [class*="title"],
+  .card-header [class*="Title"] {
+    font-size: var(--mobile-font-lg) !important;
+    font-weight: 700 !important;
+  }
+
+  .card-body {
+    padding: var(--mobile-padding-md) !important;
+  }
+
+  .list-item {
+    padding: var(--mobile-padding-md) !important;
+  }
+
+  /* ========================================
+     Dashboard & Stats Rules
+     ======================================== */
+
+  .dashboard-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--mobile-gap-md) !important;
+  }
+
+  .stat-card {
+    padding: var(--mobile-padding-md) !important;
+  }
+
+  /* ========================================
+     Approval Sidebar - Hide on Mobile
+     ======================================== */
+
+  .approval-sidebar {
+    display: none !important;
+  }
+
+  /* If needed, show as bottom sheet */
+  .approval-sidebar-mobile {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    max-height: 70vh !important;
+    border-radius: 16px 16px 0 0 !important;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1) !important;
+    z-index: 1001 !important;
+  }
+
+  /* ========================================
+     Tab Navigation
+     ======================================== */
+
+  .tab-list {
+    overflow-x: visible !important;
+    flex-wrap: wrap !important;
+    gap: var(--mobile-gap-xs) !important;
+  }
+
+  .tab-button {
+    min-height: var(--mobile-touch-target) !important;
+    font-size: var(--mobile-font-sm) !important;
+    padding: 0 var(--mobile-padding-md) !important;
+    white-space: nowrap !important;
+  }
+
+  /* ========================================
+     Utility Classes
+     ======================================== */
+
+  /* Mobile only - show on mobile */
+  .mobile-only {
+    display: block !important;
+  }
+
+  .mobile-only-flex {
+    display: flex !important;
+  }
+
+  .mobile-only-inline {
+    display: inline !important;
+  }
+
+  .mobile-only-inline-flex {
+    display: inline-flex !important;
+  }
+
+  /* Desktop only - hide on mobile */
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* Mobile stack - vertical stack on mobile */
+  .mobile-stack {
+    flex-direction: column !important;
+    gap: var(--mobile-gap-sm) !important;
+    width: 100% !important;
+  }
+
+  .mobile-stack > * {
+    width: 100% !important;
+  }
+
+  /* Mobile full width */
+  .mobile-full-width {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Mobile center */
+  .mobile-center {
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  /* Mobile padding utilities */
+  .mobile-p-0 {
+    padding: 0 !important;
+  }
+
+  .mobile-p-sm {
+    padding: var(--mobile-padding-sm) !important;
+  }
+
+  .mobile-p-md {
+    padding: var(--mobile-padding-md) !important;
+  }
+
+  .mobile-px-md {
+    padding-left: var(--mobile-padding-md) !important;
+    padding-right: var(--mobile-padding-md) !important;
+  }
+
+  .mobile-py-md {
+    padding-top: var(--mobile-padding-md) !important;
+    padding-bottom: var(--mobile-padding-md) !important;
+  }
+
+  /* Mobile margin utilities */
+  .mobile-m-0 {
+    margin: 0 !important;
+  }
+
+  .mobile-mt-sm {
+    margin-top: var(--mobile-padding-sm) !important;
+  }
+
+  .mobile-mt-md {
+    margin-top: var(--mobile-padding-md) !important;
+  }
+
+  .mobile-mb-sm {
+    margin-bottom: var(--mobile-padding-sm) !important;
+  }
+
+  .mobile-mb-md {
+    margin-bottom: var(--mobile-padding-md) !important;
+  }
+
+  /* Mobile gap utilities */
+  .mobile-gap-sm {
+    gap: var(--mobile-gap-sm) !important;
+  }
+
+  .mobile-gap-md {
+    gap: var(--mobile-gap-md) !important;
+  }
+
+  /* Mobile hide scrollbar */
+  .mobile-hide-scrollbar {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+  }
+
+  .mobile-hide-scrollbar::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* ========================================
+     Bottom Navigation (Optional)
+     ======================================== */
+
+  .mobile-bottom-nav {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: var(--mobile-bottom-nav-height) !important;
+    background: var(--surface-default) !important;
+    border-top: 1px solid var(--border-default) !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    padding: 0 var(--mobile-padding-md) !important;
+    z-index: 1000 !important;
+  }
+
+  .mobile-bottom-nav-item {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 4px !important;
+    min-width: var(--mobile-touch-target) !important;
+    min-height: var(--mobile-touch-target) !important;
+    color: var(--text-secondary) !important;
+    font-size: var(--mobile-font-xs) !important;
+    cursor: pointer !important;
+    transition: var(--mobile-transition) !important;
+  }
+
+  .mobile-bottom-nav-item.active {
+    color: var(--primary-default) !important;
+  }
+
+  /* ========================================
+     Accessibility - Touch Target (44px minimum)
+     ======================================== */
+
+  /* Ensure all interactive elements meet minimum touch target */
+  a,
+  button,
+  input[type="button"],
+  input[type="submit"],
+  .btn,
+  [class*="btn"],
+  input[type="checkbox"],
+  input[type="radio"],
+  .clickable {
+    min-height: var(--mobile-touch-target) !important;
+    min-width: var(--mobile-touch-target) !important;
+  }
+
+  /* Text inputs - 44px height + 16px font to prevent iOS zoom */
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  textarea,
+  select {
+    min-height: var(--mobile-touch-target) !important;
+    font-size: 16px !important; /* iOS 자동 줌 방지 */
+  }
+
+  /* Checkbox and radio - larger touch area */
+  input[type="checkbox"],
+  input[type="radio"] {
+    transform: scale(1.2) !important;
+  }
+
+  /* ========================================
+     Performance - Smooth Scrolling
+     ======================================== */
+
+  * {
+    -webkit-tap-highlight-color: transparent !important;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100% !important;
+    -ms-text-size-adjust: 100% !important;
+  }
+
+  body {
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* ========================================
+     Safe Area Insets (iOS notch support)
+     ======================================== */
+
+  .mobile-safe-top {
+    padding-top: env(safe-area-inset-top) !important;
+  }
+
+  .mobile-safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom) !important;
+  }
+
+  .mobile-safe-left {
+    padding-left: env(safe-area-inset-left) !important;
+  }
+
+  .mobile-safe-right {
+    padding-right: env(safe-area-inset-right) !important;
+  }
+}
+
+/* ========================================
+   Mobile Landscape - 768px 이하, landscape
+   ======================================== */
+@media (max-width: 768px) and (orientation: landscape) {
+
+  .header {
+    height: 48px !important;
+  }
+
+  .modal-body {
+    max-height: calc(100vh - 100px) !important;
+  }
+
+  .mobile-bottom-nav {
+    height: 48px !important;
+  }
+}
+
+/* ========================================
+   Small Mobile - 480px 이하
+   ======================================== */
+@media (max-width: 480px) {
+
+  :root {
+    --mobile-padding-xs: 6px;
+    --mobile-padding-sm: 10px;
+    --mobile-padding-md: 12px;
+    --mobile-padding-lg: 16px;
+    --mobile-gap-xs: 6px;
+    --mobile-gap-sm: 10px;
+    --mobile-gap-md: 12px;
+  }
+
+  .header-title {
+    font-size: var(--mobile-font-md) !important;
+  }
+
+  .btn {
+    font-size: var(--mobile-font-sm) !important;
+  }
+
+  table {
+    font-size: var(--mobile-font-xs) !important;
+  }
+}

@@ -1,0 +1,115 @@
+/**
+ * Tooltip 스타일
+ */
+
+.container {
+  position: relative;
+  display: inline-flex;
+}
+
+/* ===== Tooltip ===== */
+
+.tooltip {
+  position: absolute;
+  z-index: var(--z-tooltip, 700);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-fast, 0.15s) ease;
+}
+
+.tooltip.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.content {
+  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+  background: var(--color-neutral-900, #212121);
+  color: var(--color-white, #FFFFFF);
+  font-size: var(--font-size-sm, 11px);
+  font-weight: var(--font-weight-medium, 500);
+  border-radius: var(--radius-md, 6px);
+  white-space: nowrap;
+  box-shadow: var(--shadow-lg, 0 8px 24px rgba(0, 0, 0, 0.12));
+}
+
+.arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--color-neutral-900, #212121);
+  transform: rotate(45deg);
+}
+
+/* ===== Placement: Top ===== */
+
+.top {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+}
+
+.top.visible {
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.top .arrow {
+  bottom: -4px;
+  left: 50%;
+  margin-left: -4px;
+}
+
+/* ===== Placement: Bottom ===== */
+
+.bottom {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+}
+
+.bottom.visible {
+  transform: translateX(-50%) translateY(4px);
+}
+
+.bottom .arrow {
+  top: -4px;
+  left: 50%;
+  margin-left: -4px;
+}
+
+/* ===== Placement: Left ===== */
+
+.left {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(-8px);
+}
+
+.left.visible {
+  transform: translateY(-50%) translateX(-4px);
+}
+
+.left .arrow {
+  right: -4px;
+  top: 50%;
+  margin-top: -4px;
+}
+
+/* ===== Placement: Right ===== */
+
+.right {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+}
+
+.right.visible {
+  transform: translateY(-50%) translateX(4px);
+}
+
+.right .arrow {
+  left: -4px;
+  top: 50%;
+  margin-top: -4px;
+}

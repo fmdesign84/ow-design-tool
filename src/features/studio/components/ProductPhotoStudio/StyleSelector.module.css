@@ -1,0 +1,296 @@
+/**
+ * StyleSelector 스타일
+ * 제품 사진 스타일 선택 화면 - 오렌지 베리에이션 통일
+ */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 20px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.headerText {
+  flex: 1;
+}
+
+.title {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary, #3C3C3C);
+  letter-spacing: -0.3px;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-tertiary, #9E9E9E);
+}
+
+/* ===== 스타일 그리드 ===== */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.styleWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.styleCard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: var(--color-white, #fff);
+  border: 1.5px solid var(--border-default, #E8E8E8);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.styleCard:hover {
+  border-color: rgba(255, 107, 0, 0.4);
+  background: rgba(255, 107, 0, 0.03);
+}
+
+.styleCard.selected {
+  border-color: var(--color-primary);
+  background: rgba(255, 107, 0, 0.06);
+  box-shadow: 0 2px 12px rgba(255, 107, 0, 0.15);
+}
+
+.styleCard.expanded {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-color: transparent;
+}
+
+.styleIcon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.styleText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.styleName {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary, #3C3C3C);
+}
+
+.styleDesc {
+  font-size: 12px;
+  color: var(--text-tertiary, #9E9E9E);
+}
+
+/* 배지 */
+.badge {
+  padding: 4px 12px;
+  font-size: 10px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #FF8533 100%);
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+/* 확장 아이콘 */
+.expandIcon {
+  font-size: 10px;
+  color: var(--text-tertiary, #9E9E9E);
+  transition: transform 0.2s ease;
+  margin-left: 4px;
+}
+
+.expandIcon.rotated {
+  transform: rotate(180deg);
+}
+
+/* ===== 서브옵션 컨테이너 ===== */
+.subOptionsContainer {
+  background: rgba(255, 107, 0, 0.03);
+  border: 1.5px solid var(--color-primary);
+  border-top: none;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+  padding: 16px;
+}
+
+/* 시즌 옵션 그리드 */
+.subOptionsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.subOptionCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 12px;
+  background: var(--color-white, #fff);
+  border: 1.5px solid var(--border-default, #E8E8E8);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.subOptionCard:hover {
+  border-color: rgba(255, 107, 0, 0.4);
+  background: rgba(255, 107, 0, 0.03);
+}
+
+.subOptionCard.selected {
+  border-color: var(--color-primary);
+  background: rgba(255, 107, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(255, 107, 0, 0.12);
+}
+
+.subOptionIcon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.subOptionName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #3C3C3C);
+}
+
+.subOptionDesc {
+  font-size: 11px;
+  color: var(--text-tertiary, #9E9E9E);
+}
+
+/* 컬러 옵션 그리드 */
+.colorOptionsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.colorOptionCard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--color-white, #fff);
+  border: 1.5px solid var(--border-default, #E8E8E8);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.colorOptionCard:hover {
+  border-color: rgba(255, 107, 0, 0.4);
+  background: rgba(255, 107, 0, 0.03);
+}
+
+.colorOptionCard.selected {
+  border-color: var(--color-primary);
+  background: rgba(255, 107, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(255, 107, 0, 0.12);
+}
+
+.colorSwatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.colorName {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary, #3C3C3C);
+}
+
+/* ===== 정보 섹션 ===== */
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.infoCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: rgba(255, 107, 0, 0.04);
+  border: 1px solid rgba(255, 107, 0, 0.08);
+  border-radius: 12px;
+}
+
+.infoIcon {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.infoContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.infoContent strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary, #3C3C3C);
+}
+
+.infoContent p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-tertiary, #757575);
+}
+
+/* ===== 노트 카드 ===== */
+.noteCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.04) 0%, rgba(255, 107, 0, 0.08) 100%);
+  border: 1px solid rgba(255, 107, 0, 0.12);
+  border-radius: 12px;
+}
+
+.noteIcon {
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.noteCard p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary, #5F5F5F);
+  line-height: 1.5;
+}

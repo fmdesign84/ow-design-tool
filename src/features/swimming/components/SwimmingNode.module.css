@@ -1,0 +1,272 @@
+/**
+ * Swimming Node Styles
+ * Wave CustomNode.module.css 구조 그대로 + Zinc 다크 테마
+ */
+
+/* ===== 노드 컨테이너 ===== */
+.node {
+  background: #27272A;
+  border: 1px solid #3F3F46;
+  border-radius: 12px;
+  min-width: 180px;
+  max-width: 280px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+  overflow: visible;
+}
+
+.node.selected {
+  border-color: #FF6B00;
+  box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.node.running {
+  border-color: #F59E0B;
+}
+
+.node.completed {
+  border-color: #10B981;
+}
+
+.node.error {
+  border-color: #EF4444;
+}
+
+/* ===== 헤더 ===== */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #18181B;
+  border-radius: 12px 12px 0 0;
+  border-bottom: 1px solid #3F3F46;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.iconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #FAFAFA;
+}
+
+/* 상태 아이콘 */
+.spinner {
+  color: #F59E0B;
+  animation: spin 1s linear infinite;
+}
+
+.checkmark {
+  color: #10B981;
+}
+
+.errorIcon {
+  color: #EF4444;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== 입력 포트 섹션 ===== */
+.inputSection {
+  padding: 8px 0;
+  border-bottom: 1px solid #3F3F46;
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  position: relative;
+}
+
+.inputLabel {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ===== 출력 포트 섹션 ===== */
+.outputSection {
+  padding: 8px 0;
+}
+
+.outputRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 6px 14px;
+  position: relative;
+}
+
+.outputLabel {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ===== 핸들 (연결점) ===== */
+.handle {
+  width: 12px !important;
+  height: 12px !important;
+  border: 2px solid #27272A !important;
+  border-radius: 50% !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  cursor: crosshair !important;
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  --handle-color: #64748B;
+}
+
+/* 입력 핸들 - 왼쪽 가장자리 */
+.inputRow .handle {
+  left: -6px !important;
+  right: auto !important;
+}
+
+/* 출력 핸들 - 오른쪽 가장자리 */
+.outputRow .handle {
+  right: -6px !important;
+  left: auto !important;
+}
+
+/* 핸들 호버 */
+.handle:hover {
+  transform: translateY(-50%) scale(1.3) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--handle-color) 30%, transparent),
+              0 0 8px color-mix(in srgb, var(--handle-color) 50%, transparent) !important;
+}
+
+/* ===== 문서 노드 페이지 관리 ===== */
+.pageChipSection {
+  padding: 8px 10px;
+  border-bottom: 1px solid #3F3F46;
+}
+
+.pageChipList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.pageChip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: #3F3F46;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #E4E4E7;
+  cursor: grab;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.pageChip:hover {
+  background: #52525B;
+}
+
+.pageChip.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.pageChipNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background: #27272A;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #A1A1AA;
+}
+
+.pageChipName {
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pageChipDelete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  color: #71717A;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.15s ease;
+}
+
+.pageChip:hover .pageChipDelete {
+  opacity: 1;
+}
+
+.pageChipDelete:hover {
+  background: #EF4444;
+  color: white;
+}
+
+.pageAddButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: 1px dashed #52525B;
+  border-radius: 6px;
+  color: #71717A;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pageAddButton:hover {
+  background: #3F3F46;
+  border-color: #FF6B00;
+  color: #FF6B00;
+}
+
+.pageHint {
+  font-size: 10px;
+  color: #71717A;
+  margin-top: 6px;
+  text-align: center;
+}

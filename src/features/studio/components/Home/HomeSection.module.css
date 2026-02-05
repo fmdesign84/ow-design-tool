@@ -1,0 +1,398 @@
+/**
+ * HomeSection 컴포넌트 스타일
+ * Button, Badge, SectionCard 공용 컴포넌트 사용
+ * 레이아웃 및 커스텀 요소만 정의
+ */
+
+/* ========== 컨테이너 ========== */
+.homeContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 24px;
+  padding: 0 0 40px 0;
+  min-height: 100%;
+  background: transparent;
+}
+
+/* ========== 검색 카드 (Hero) ========== */
+.homeSearchCard {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #FAFAFA 100%);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  animation: searchCardIntro 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+/* ========== 영상 프레임 (검색 카드 안) ========== */
+.videoFrame {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.frameVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ========== 검색 행 (입력 + 옵션) ========== */
+.searchRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3, 12px);
+}
+
+/* ========== 검색 입력 영역 ========== */
+.searchInputWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: #F7F7F8;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.searchInputWrapper:hover {
+  background: #F0F0F2;
+}
+
+.searchInputWrapper:focus-within {
+  background: #FFFFFF;
+  border-color: var(--color-primary, #FF6B00);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.1);
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 450;
+  color: #1A1A1A;
+  outline: none;
+  box-shadow: none;
+}
+
+.searchInput:focus,
+.searchInput:focus-visible {
+  outline: none;
+  border: none;
+  box-shadow: none;
+}
+
+.searchInput::placeholder {
+  color: #9E9E9E;
+  font-weight: 400;
+}
+
+/* ========== 고래 아이콘 ========== */
+.searchLogoInside {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform var(--transition-normal, 0.2s) ease;
+}
+
+.searchLogoInside:hover {
+  transform: scale(1.1);
+}
+
+.whaleBounce {
+  animation: whaleBounce 1s ease-in-out;
+}
+
+.whaleSwim {
+  animation: whaleSwim 2s ease-in-out infinite;
+}
+
+.whaleEnhancing {
+  animation: whaleEnhancing 0.8s ease-in-out infinite;
+}
+
+/* ========== 구분선 ========== */
+.optionsDivider {
+  width: 1px;
+  height: 24px;
+  background: var(--home-card-inner-border, #E0E0E0);
+  flex-shrink: 0;
+  margin: 0 4px;
+}
+
+/* ========== 옵션 버튼 그룹 (생성바 내부) ========== */
+.homeOptionsBadges {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* 옵션 버튼 (이미지/영상) */
+.optionBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: var(--radius-md, 6px);
+  font-size: var(--font-size-sm, 12px);
+  font-weight: var(--font-weight-medium, 500);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary, #9E9E9E);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s) ease;
+  white-space: nowrap;
+  min-width: 70px; /* 고정 너비로 위치 고정 */
+}
+
+.optionBtn:hover {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text-primary, #3C3C3C);
+}
+
+/* 활성 옵션 버튼 */
+.optionBtnActive {
+  background: var(--color-primary-light, #FFF5F0);
+  color: var(--color-primary, #FF6B00);
+}
+
+.optionBtnActive:hover {
+  background: var(--color-primary-light, #FFF5F0);
+  color: var(--color-primary, #FF6B00);
+}
+
+/* 비율 드롭다운 */
+.homeRatioSelect {
+  appearance: none;
+  padding: 6px 26px 6px 10px;
+  border-radius: var(--radius-md, 6px);
+  font-size: var(--font-size-sm, 12px);
+  font-weight: var(--font-weight-medium, 500);
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%239E9E9E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 8px center;
+  border: none;
+  color: var(--text-secondary, #9E9E9E);
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s) ease;
+  flex-shrink: 0;
+}
+
+.homeRatioSelect:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  color: var(--text-primary, #3C3C3C);
+}
+
+.homeRatioSelect:focus {
+  outline: none;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.homeRatioSelect option {
+  background: var(--bg-white, #FFFFFF);
+  color: var(--text-primary, #3C3C3C);
+}
+
+/* ========== 추천 갤러리 섹션 ========== */
+.featuredSections {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ========== 아이디어 섹션 (SectionCard 사용) ========== */
+.ideasSection {
+  width: 100%;
+}
+
+.ideasGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.ideaCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px 14px;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.ideaCard:hover {
+  background: #FFFFFF;
+  border-color: var(--color-primary, #FF6B00);
+  transform: translateY(-3px);
+  box-shadow:
+    0 6px 20px rgba(255, 107, 0, 0.1),
+    0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.ideaEmoji {
+  font-size: 24px;
+  transition: transform 0.2s ease;
+}
+
+.ideaCard:hover .ideaEmoji {
+  transform: scale(1.15);
+}
+
+.ideaText {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A1A;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  letter-spacing: -0.01em;
+}
+
+/* ========== 애니메이션 ========== */
+@keyframes searchCardIntro {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes sectionSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes whaleBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(-5deg); }
+  50% { transform: translateY(-4px) rotate(5deg); }
+  75% { transform: translateY(-6px) rotate(-3deg); }
+}
+
+@keyframes whaleSwim {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(3px) rotate(3deg); }
+  50% { transform: translateX(0) rotate(0deg); }
+  75% { transform: translateX(-3px) rotate(-3deg); }
+}
+
+@keyframes whaleEnhancing {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.1); filter: brightness(1.2); }
+}
+
+/* ========== 반응형 - 태블릿 ========== */
+@media (max-width: 1024px) {
+  .videoFrame {
+    height: 200px;
+  }
+
+  .ideasGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  /* 태블릿: 비율만 숨김 */
+  .homeRatioSelect {
+    display: none;
+  }
+}
+
+/* ========== 반응형 - 모바일 ========== */
+@media (max-width: 768px) {
+  .homeContainer {
+    padding: var(--spacing-4, 16px);
+    gap: var(--spacing-4, 16px);
+  }
+
+  .videoFrame {
+    height: 140px;
+  }
+
+  .homeSearchCard {
+    padding: var(--spacing-3, 12px);
+    gap: var(--spacing-3, 12px);
+  }
+
+  .searchRow {
+    flex-direction: column;
+    gap: var(--spacing-2, 8px);
+  }
+
+  .searchInputWrapper {
+    width: 100%;
+    padding: 6px 10px;
+    gap: var(--spacing-2, 8px);
+  }
+
+  .searchInput {
+    font-size: var(--font-size-md, 14px);
+  }
+
+  /* 모바일: 옵션 숨김 (생성바가 좁아서) */
+  .optionsDivider,
+  .homeOptionsBadges,
+  .homeRatioSelect {
+    display: none;
+  }
+
+  .ideasGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .ideaCard {
+    padding: 12px 10px;
+    gap: 6px;
+    border-radius: 10px;
+  }
+
+  .ideaEmoji {
+    font-size: 20px;
+  }
+
+  .ideaText {
+    font-size: 12px;
+  }
+}

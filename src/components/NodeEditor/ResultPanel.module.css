@@ -1,0 +1,832 @@
+/**
+ * Result Panel Styles
+ * Wave 스타일 플로팅 아카이브 패널
+ */
+
+/* ===== 아카이브 패널 (플로팅 윈도우 - 왼쪽 툴바와 동일 스타일) ===== */
+.archivePanel {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  width: 220px;
+  max-height: 400px;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  pointer-events: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 100;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  padding: 8px;
+}
+
+.archivePanel.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* 패널 헤더 */
+.archiveHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 4px 8px 4px;
+  border-bottom: 1px solid #F3F4F6;
+  flex-shrink: 0;
+  margin-bottom: 4px;
+}
+
+.archiveTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.archiveIcon {
+  color: #6B7280;
+}
+
+.archiveCloseBtn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: #9CA3AF;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.archiveCloseBtn:hover {
+  background: #F0F0F0;
+  color: #374151;
+}
+
+/* 패널 컨텐츠 */
+.archiveContent {
+  flex: 1;
+  padding: 0;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* ===== 실행 중 상태 ===== */
+.runningState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 12px;
+  text-align: center;
+}
+
+.whaleAnimation {
+  margin-bottom: 10px;
+  animation: whaleSwim 2s ease-in-out infinite;
+}
+
+.whaleAnimation svg {
+  width: 40px;
+  height: 40px;
+}
+
+@keyframes whaleSwim {
+  0%, 100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.02, 0.98);
+  }
+}
+
+.runningText {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6B7280;
+  margin: 0 0 10px 0;
+}
+
+.progressBar {
+  width: 80px;
+  height: 3px;
+  background: #F3F4F6;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, #FF6B00, #FF9548);
+  border-radius: 2px;
+  animation: progressSlide 1.5s ease-in-out infinite;
+}
+
+@keyframes progressSlide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
+
+/* ===== 에러 상태 ===== */
+.errorState {
+  padding: 10px;
+  background: #FEF2F2;
+  border-radius: 8px;
+}
+
+.errorBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: #FEE2E2;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #DC2626;
+  margin-bottom: 6px;
+}
+
+.errorMessage {
+  font-size: 11px;
+  color: #7F1D1D;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.errorNode {
+  margin-top: 6px;
+  font-size: 10px;
+  color: #9CA3AF;
+}
+
+/* ===== 완료 상태 ===== */
+.completeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: #ECFDF5;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #059669;
+  margin-bottom: 10px;
+}
+
+.completeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.completeDuration {
+  padding-left: 4px;
+  border-left: 1px solid rgba(5, 150, 105, 0.3);
+  color: #10B981;
+  font-weight: 500;
+}
+
+/* ===== 미디어 프리뷰 ===== */
+.mediaPreview {
+  margin-bottom: 10px;
+}
+
+/* 미디어 컨테이너 (캐러셀) */
+.mediaContainer {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mediaContainer:hover .mediaHoverOverlay {
+  opacity: 1;
+}
+
+.mediaContainer:hover .carouselBtn {
+  opacity: 1;
+}
+
+/* 호버 오버레이 */
+.mediaHoverOverlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.hoverActionBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 6px;
+  color: #FFFFFF;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.hoverActionBtn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* 캐러셀 버튼 */
+.carouselBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  color: #FFFFFF;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.carouselBtn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.carouselBtn.prev {
+  left: 8px;
+}
+
+.carouselBtn.next {
+  right: 8px;
+}
+
+/* 캐러셀 인디케이터 */
+.carouselIndicator {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 10px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.previewImage {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: #FAFAFA;
+  border-radius: 12px;
+  border: 1px solid #F0F0F0;
+}
+
+.previewVideo {
+  width: 100%;
+  border-radius: 12px;
+  background: #000;
+}
+
+.mediaActions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.mediaBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 10px;
+  background: #F5F5F5;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.mediaBtn svg {
+  flex-shrink: 0;
+}
+
+.mediaBtn:hover {
+  background: #EBEBEB;
+}
+
+.mediaBtn.primary {
+  background: #FF6B00;
+  color: #FFFFFF;
+}
+
+.mediaBtn.primary:hover {
+  background: #E55A00;
+}
+
+.mediaBtn.secondary {
+  background: #374151;
+  color: #FFFFFF;
+}
+
+.mediaBtn.secondary:hover {
+  background: #1F2937;
+}
+
+/* ===== 메타데이터 섹션 ===== */
+.metaSection {
+  margin-bottom: 16px;
+}
+
+.resultItem {
+  margin-bottom: 10px;
+}
+
+.resultItem:last-child {
+  margin-bottom: 0;
+}
+
+.resultLabel {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.resultValue {
+  font-size: 13px;
+  color: #1F2937;
+  word-break: break-all;
+}
+
+.resultEmpty {
+  font-size: 13px;
+  color: #D1D5DB;
+}
+
+.resultLink {
+  font-size: 12px;
+  color: #FF6B00;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.resultLink:hover {
+  text-decoration: underline;
+}
+
+.resultJson {
+  padding: 10px;
+  background: #FAFAFA;
+  border-radius: 8px;
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 10px;
+  color: #374151;
+  overflow-x: auto;
+  max-height: 120px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ===== 노드별 결과 (접히는 섹션) ===== */
+.detailsSection {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #F0F0F0;
+}
+
+.detailsSummary {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6B7280;
+  cursor: pointer;
+  user-select: none;
+  padding: 6px 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.detailsSummary::before {
+  content: '▶';
+  font-size: 8px;
+  transition: transform 0.15s ease;
+}
+
+.detailsSection[open] .detailsSummary::before {
+  transform: rotate(90deg);
+}
+
+.nodeResults {
+  margin-top: 10px;
+}
+
+.nodeResultItem {
+  padding: 10px 12px;
+  background: #FAFAFA;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+.nodeResultItem:last-child {
+  margin-bottom: 0;
+}
+
+.nodeResultHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nodeStatusDot {
+  width: 8px;
+  height: 8px;
+  background: #10B981;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.nodeStatusDot.error {
+  background: #EF4444;
+}
+
+.nodeResultName {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.nodeResultTime {
+  font-size: 10px;
+  color: #9CA3AF;
+}
+
+.nodeResultError {
+  margin: 8px 0 0 16px;
+  padding: 6px 10px;
+  background: #FEF2F2;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #DC2626;
+}
+
+/* ===== 빈 상태 ===== */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 12px;
+  text-align: center;
+  color: #9CA3AF;
+}
+
+.emptyIcon {
+  font-size: 24px;
+  margin-bottom: 8px;
+  opacity: 0.6;
+}
+
+.emptyState p {
+  font-size: 11px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ===== 헤더 액션 버튼들 ===== */
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.refreshBtn {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: #9CA3AF;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.refreshBtn:hover {
+  background: #F5F5F5;
+  color: #374151;
+}
+
+.refreshBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.archiveCount {
+  font-size: 10px;
+  font-weight: 500;
+  color: #9CA3AF;
+  background: #F0F0F0;
+  padding: 2px 6px;
+  border-radius: 8px;
+  margin-left: 2px;
+}
+
+/* ===== 구분선 ===== */
+.sectionDivider {
+  height: 1px;
+  background: #E5E7EB;
+  margin: 10px 0;
+}
+
+/* ===== 히스토리 섹션 ===== */
+.historySection {
+  margin-top: 4px;
+}
+
+.historyTitle {
+  font-size: 10px;
+  font-weight: 600;
+  color: #9CA3AF;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.historyList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.historyItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.historyDate {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 9px;
+  color: #9CA3AF;
+}
+
+.historyDeleteBtn {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  color: #D1D5DB;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.15s ease;
+}
+
+.historyItem:hover .historyDeleteBtn {
+  opacity: 1;
+}
+
+.historyDeleteBtn:hover {
+  background: #FEE2E2;
+  color: #DC2626;
+}
+
+.historyThumbnail {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #F5F5F5;
+  border: 1px solid #E5E7EB;
+  transition: all 0.15s ease;
+}
+
+.historyThumbnail:hover {
+  border-color: #FF6B00;
+  box-shadow: 0 2px 8px rgba(255, 107, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+.historyThumbnail img,
+.historyThumbnail video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.videoPlayIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10px;
+  pointer-events: none;
+}
+
+.typeBadge {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  padding: 1px 4px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 8px;
+  font-weight: 600;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+/* ===== 로딩 상태 ===== */
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 12px;
+  gap: 8px;
+  color: #9CA3AF;
+  font-size: 11px;
+}
+
+.loadingSpinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #E5E7EB;
+  border-top-color: #FF6B00;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== 라이트박스 ===== */
+.lightboxOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.lightboxContent {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lightboxClose:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lightboxImage,
+.lightboxVideo {
+  max-width: 100%;
+  max-height: 70vh;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.lightboxInfo {
+  margin-top: 16px;
+  text-align: center;
+  max-width: 500px;
+}
+
+.lightboxPrompt {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+}
+
+.lightboxActions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.lightboxBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: #FF6B00;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lightboxBtn:hover {
+  background: #E55A00;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 768px) {
+  .archivePanel {
+    width: 280px;
+  }
+
+  .lightboxOverlay {
+    padding: 20px;
+  }
+
+  .lightboxClose {
+    top: -30px;
+    right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .archivePanel {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .lightboxContent {
+    width: 100%;
+  }
+
+  .lightboxImage,
+  .lightboxVideo {
+    max-height: 60vh;
+  }
+}

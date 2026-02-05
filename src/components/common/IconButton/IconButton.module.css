@@ -1,0 +1,84 @@
+/**
+ * IconButton 스타일
+ */
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s) ease;
+  flex-shrink: 0;
+}
+
+.iconButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== Size Variants ===== */
+
+.sm {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md, 6px);
+}
+
+.md {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-lg, 8px);
+}
+
+.lg {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg, 8px);
+}
+
+.rounded {
+  border-radius: 50%;
+}
+
+/* ===== Style Variants ===== */
+
+.default {
+  background: var(--bg-gray, #F5F6F8);
+  color: var(--text-secondary, #5F5F5F);
+}
+
+.default:hover:not(:disabled) {
+  background: var(--bg-gray-medium, #E8E8E8);
+  color: var(--text-primary, #3C3C3C);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--text-secondary, #5F5F5F);
+}
+
+.ghost:hover:not(:disabled) {
+  background: var(--bg-gray, #F5F6F8);
+  color: var(--text-primary, #3C3C3C);
+}
+
+.primary {
+  background: var(--color-primary);
+  color: var(--color-white, #FFFFFF);
+}
+
+.primary:hover:not(:disabled) {
+  background: var(--color-primary-hover, #E55A00);
+}
+
+/* ===== Focus State ===== */
+
+.iconButton:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-shadow);
+}
+
+.iconButton:focus:not(:focus-visible) {
+  outline: none;
+}

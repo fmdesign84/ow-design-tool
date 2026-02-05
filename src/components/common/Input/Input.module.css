@@ -1,0 +1,120 @@
+/**
+ * Input 스타일
+ * 공용 입력 컴포넌트
+ */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1, 4px);
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.label {
+  font-size: var(--font-size-sm, 12px);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-secondary, #5F5F5F);
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  background: var(--input-bg, #F5F6F8);
+  border: 1px solid var(--input-border, #E8E8E8);
+  border-radius: var(--radius-lg, 8px);
+  transition: all var(--transition-normal, 0.2s) ease;
+}
+
+.inputWrapper:focus-within {
+  background: var(--input-focus-bg, #FFFFFF);
+  border-color: var(--input-focus-border, #D9D9D9);
+}
+
+.input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--input-text, #3C3C3C);
+  outline: none;
+  width: 100%;
+}
+
+.inputWrapper:focus-within {
+  outline: 2px solid var(--color-primary, #FF6B00);
+  outline-offset: 1px;
+}
+
+.input::placeholder {
+  color: var(--input-placeholder, #9E9E9E);
+}
+
+/* ===== Sizes ===== */
+
+.sm .input {
+  padding: 6px 10px;
+  font-size: var(--font-size-sm, 12px);
+}
+
+.md .input {
+  padding: 10px 14px;
+  font-size: var(--font-size-md, 14px);
+}
+
+.lg .input {
+  padding: 14px 18px;
+  font-size: var(--font-size-lg, 16px);
+}
+
+/* ===== Icons ===== */
+
+.iconLeft,
+.iconRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-tertiary, #757575);
+  flex-shrink: 0;
+}
+
+.iconLeft {
+  padding-left: 12px;
+}
+
+.iconRight {
+  padding-right: 12px;
+}
+
+.hasLeftIcon .input {
+  padding-left: 8px;
+}
+
+.hasRightIcon .input {
+  padding-right: 8px;
+}
+
+/* ===== States ===== */
+
+.error {
+  border-color: var(--color-error, #F44336);
+}
+
+.error:focus-within {
+  border-color: var(--color-error, #F44336);
+}
+
+.errorMessage {
+  font-size: var(--font-size-xs, 11px);
+  color: var(--color-error, #F44336);
+}
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.disabled .input {
+  cursor: not-allowed;
+}

@@ -1,0 +1,168 @@
+/**
+ * MaskEditor 스타일
+ * 마스크 에디터 레이아웃 및 툴바
+ */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* 툴바 */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 12px;
+  background: #F5F6F8;
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.toolGroup {
+  display: flex;
+  gap: 4px;
+}
+
+.toolBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid #E8E8E8;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #5F5F5F;
+  transition: all 0.15s ease;
+}
+
+.toolBtn:hover:not(:disabled) {
+  background: #F0F0F0;
+  border-color: #D1D1D1;
+}
+
+.toolBtn.active {
+  background: rgba(255, 107, 0, 0.1);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.toolBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 브러시 크기 */
+.brushSizeGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 120px;
+  max-width: 200px;
+}
+
+.brushSizeLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: #5F5F5F;
+  min-width: 40px;
+  text-align: right;
+}
+
+.brushSizeSlider {
+  flex: 1;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #D1D1D1;
+  border-radius: 2px;
+  outline: none;
+}
+
+.brushSizeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.brushSizeSlider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.brushSizeSlider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* 캔버스 영역 */
+.canvasWrapper {
+  position: relative;
+  background: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.canvas {
+  display: block;
+}
+
+/* 빈 상태 오버레이 */
+.emptyOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 14px;
+}
+
+/* 안내 문구 */
+.hint {
+  margin: 0;
+  font-size: 12px;
+  color: #9E9E9E;
+  text-align: center;
+}
+
+/* 반응형 */
+@media (max-width: 480px) {
+  .toolbar {
+    gap: 8px;
+    padding: 6px 8px;
+  }
+
+  .toolBtn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brushSizeGroup {
+    order: 3;
+    width: 100%;
+    max-width: none;
+    margin-top: 4px;
+  }
+
+  .brushSizeLabel {
+    min-width: 36px;
+  }
+}

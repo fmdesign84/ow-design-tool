@@ -1,0 +1,244 @@
+/**
+ * 워크플로우 저장 다이얼로그 스타일
+ */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.dialog {
+  background: var(--color-white, #FFFFFF);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 420px;
+  overflow: hidden;
+}
+
+/* 헤더 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--color-neutral-200, #E5E7EB);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary, #1F2937);
+  margin: 0;
+}
+
+.closeBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-secondary, #6B7280);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.closeBtn:hover {
+  background: var(--color-neutral-100, #F5F6F8);
+  color: var(--text-primary, #1F2937);
+}
+
+/* 본문 */
+.body {
+  padding: 24px;
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary, #6B7280);
+  margin-bottom: 8px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  border: 1px solid var(--color-neutral-300, #D1D5DB);
+  border-radius: 10px;
+  background: var(--color-white, #FFFFFF);
+  color: var(--text-primary, #1F2937);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary, #FF6B00);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.1);
+}
+
+.input:disabled {
+  background: var(--color-neutral-100, #F5F6F8);
+  cursor: not-allowed;
+}
+
+.input::placeholder {
+  color: var(--text-tertiary, #9CA3AF);
+}
+
+.message {
+  font-size: 15px;
+  color: var(--text-primary, #1F2937);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 저장 모드 전환 */
+.modeSwitch {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.modeBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--color-white, #FFFFFF);
+  border: 1px solid var(--color-neutral-300, #D1D5DB);
+  border-radius: 8px;
+  color: var(--text-secondary, #6B7280);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.modeBtn:hover:not(:disabled) {
+  border-color: var(--color-primary, #FF6B00);
+  color: var(--color-primary, #FF6B00);
+}
+
+.modeBtn.active {
+  background: var(--color-primary-light, #FFF5F0);
+  border-color: var(--color-primary, #FF6B00);
+  color: var(--color-primary, #FF6B00);
+}
+
+.modeBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--color-neutral-50, #F9FAFB);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-secondary, #6B7280);
+}
+
+.hintIcon {
+  flex-shrink: 0;
+}
+
+/* 푸터 */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 24px;
+  background: var(--color-neutral-50, #F9FAFB);
+  border-top: 1px solid var(--color-neutral-200, #E5E7EB);
+}
+
+.discardBtn,
+.cancelBtn,
+.saveBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.discardBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary, #6B7280);
+}
+
+.discardBtn:hover:not(:disabled) {
+  color: #DC2626;
+  background: #FEF2F2;
+}
+
+.cancelBtn {
+  background: var(--color-white, #FFFFFF);
+  border: 1px solid var(--color-neutral-300, #D1D5DB);
+  color: var(--text-primary, #1F2937);
+}
+
+.cancelBtn:hover:not(:disabled) {
+  background: var(--color-neutral-100, #F5F6F8);
+}
+
+.saveBtn {
+  background: var(--color-primary, #FF6B00);
+  border: none;
+  color: var(--color-white, #FFFFFF);
+  min-width: 100px;
+}
+
+.saveBtn:hover:not(:disabled) {
+  background: var(--color-primary-hover, #E55A00);
+}
+
+.discardBtn:disabled,
+.cancelBtn:disabled,
+.saveBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 스피너 */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: var(--color-white, #FFFFFF);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

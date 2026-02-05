@@ -1,0 +1,72 @@
+/**
+ * Divider 스타일
+ */
+
+.divider {
+  border: none;
+  background: var(--border-default, #E8E8E8);
+}
+
+/* ===== Orientation ===== */
+
+.horizontal {
+  width: 100%;
+  height: 1px;
+}
+
+.vertical {
+  width: 1px;
+  height: 100%;
+}
+
+/* ===== Spacing ===== */
+
+.spacing-none {
+  margin: 0;
+}
+
+.spacing-sm.horizontal {
+  margin: var(--spacing-2, 8px) 0;
+}
+
+.spacing-md.horizontal {
+  margin: var(--spacing-4, 16px) 0;
+}
+
+.spacing-lg.horizontal {
+  margin: var(--spacing-6, 24px) 0;
+}
+
+.spacing-sm.vertical {
+  margin: 0 var(--spacing-2, 8px);
+}
+
+.spacing-md.vertical {
+  margin: 0 var(--spacing-4, 16px);
+}
+
+.spacing-lg.vertical {
+  margin: 0 var(--spacing-6, 24px);
+}
+
+/* ===== With Text ===== */
+
+.withText {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3, 12px);
+  height: auto;
+  background: transparent;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background: var(--border-default, #E8E8E8);
+}
+
+.text {
+  font-size: var(--font-size-sm, 11px);
+  color: var(--text-muted, #9E9E9E);
+  white-space: nowrap;
+}

@@ -1,0 +1,67 @@
+/**
+ * LoadingScreen 스타일
+ */
+
+.fullScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-white, #FFFFFF);
+  z-index: var(--z-modal, 500);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-10, 40px);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-4, 16px);
+}
+
+.spinner {
+  border: 3px solid var(--color-neutral-200, #E8E8E8);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.sm {
+  width: 24px;
+  height: 24px;
+  border-width: 2px;
+}
+
+.md {
+  width: 40px;
+  height: 40px;
+  border-width: 3px;
+}
+
+.lg {
+  width: 56px;
+  height: 56px;
+  border-width: 4px;
+}
+
+.message {
+  font-size: var(--font-size-md, 14px);
+  color: var(--text-secondary, #5F5F5F);
+  margin: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

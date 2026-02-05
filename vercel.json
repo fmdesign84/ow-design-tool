@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "framework": "create-react-app",
+  "buildCommand": "CI=false npm run build",
+  "outputDirectory": "build",
+  "installCommand": "npm install",
+  "crons": [
+    {
+      "path": "/api/cleanup-temp-files",
+      "schedule": "0 0 * * *"
+    }
+  ],
+  "functions": {
+    "api/remove-background.js": {
+      "maxDuration": 60
+    },
+    "api/generate-image.js": {
+      "maxDuration": 60
+    },
+    "api/edit-image.js": {
+      "maxDuration": 60
+    },
+    "api/generate-mockup.js": {
+      "maxDuration": 60
+    },
+    "api/generate-inpainting.js": {
+      "maxDuration": 60
+    },
+    "api/generate-idphoto.js": {
+      "maxDuration": 60
+    },
+    "api/cleanup-temp-files.js": {
+      "maxDuration": 60
+    }
+  }
+}

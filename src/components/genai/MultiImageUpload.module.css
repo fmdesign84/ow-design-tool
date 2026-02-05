@@ -1,0 +1,277 @@
+/**
+ * MultiImageUpload 스타일
+ * 다중 이미지 업로드 그리드 레이아웃
+ */
+
+.container {
+  width: 100%;
+}
+
+.container.compact .imageGrid {
+  gap: 8px;
+}
+
+.container.compact .imageSlot {
+  width: 72px;
+  height: 72px;
+}
+
+/* 이미지 그리드 */
+.imageGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* 이미지 슬롯 */
+.imageSlot {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid var(--color-border, #e5e7eb);
+  background: var(--color-bg-secondary, #f9fafb);
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.imageSlot:hover {
+  border-color: var(--color-primary, #6366f1);
+}
+
+.imageSlot.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.imageSlot.dragOver {
+  border-color: var(--color-primary, #6366f1);
+  border-style: dashed;
+  transform: scale(1.02);
+}
+
+/* 드래그 핸들 */
+.dragHandle {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 2;
+}
+
+.imageSlot:hover .dragHandle {
+  opacity: 1;
+}
+
+/* 이미지 미리보기 */
+.imagePreview {
+  width: 100%;
+  height: 100%;
+}
+
+.imagePreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 제거 버튼 */
+.removeBtn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(239, 68, 68, 0.9);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 3;
+}
+
+.imageSlot:hover .removeBtn {
+  opacity: 1;
+}
+
+.removeBtn:hover {
+  transform: scale(1.1);
+  background: rgba(220, 38, 38, 1);
+}
+
+/* 역할 선택 */
+.roleSelector {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  padding: 16px 4px 4px;
+  z-index: 2;
+}
+
+.roleSelect {
+  width: 100%;
+  padding: 2px 4px;
+  font-size: 10px;
+  font-weight: 500;
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  appearance: none;
+  text-align: center;
+}
+
+.roleSelect:focus {
+  outline: none;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* 순서 배지 */
+.orderBadge {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary, #6366f1);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 9px;
+  padding: 0 4px;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.imageSlot:hover .orderBadge {
+  opacity: 1;
+}
+
+/* 추가 슬롯 */
+.addSlot {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 2px dashed var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  background: var(--color-bg-secondary, #f9fafb);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.addSlot:hover {
+  border-color: var(--color-primary, #6366f1);
+  color: var(--color-primary, #6366f1);
+  background: var(--color-bg-tertiary, #f3f4f6);
+}
+
+.addText {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.addCount {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+/* 빈 상태 */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px 16px;
+  border: 2px dashed var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  background: var(--color-bg-secondary, #f9fafb);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.emptyState:hover {
+  border-color: var(--color-primary, #6366f1);
+  color: var(--color-primary, #6366f1);
+}
+
+.emptyText {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.emptyHint {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* 역할 힌트 */
+.roleHint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: var(--color-bg-tertiary, #f3f4f6);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.roleHintIcon {
+  flex-shrink: 0;
+}
+
+/* 반응형 */
+@media (max-width: 480px) {
+  .imageSlot,
+  .addSlot {
+    width: 80px;
+    height: 80px;
+  }
+
+  .container.compact .imageSlot,
+  .container.compact .addSlot {
+    width: 60px;
+    height: 60px;
+  }
+
+  .roleSelect {
+    font-size: 9px;
+  }
+
+  .emptyState {
+    padding: 24px 12px;
+  }
+}
