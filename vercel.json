@@ -3,7 +3,7 @@
   "framework": "create-react-app",
   "buildCommand": "CI=false npm run build",
   "outputDirectory": "build",
-  "installCommand": "npm install",
+  "installCommand": "npm install --legacy-peer-deps",
   "crons": [
     {
       "path": "/api/cleanup-temp-files",
