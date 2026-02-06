@@ -149,19 +149,16 @@ async function generateWithGemini3Pro(prompt, referenceImages = [], aspectRatio 
     throw new Error('No image in Gemini response');
 }
 
-// 스타일별 참조 이미지 URL (Vercel에서 접근 가능한 public 경로)
+// 스타일별 참조 이미지 URL (GitHub raw URL - public 접근 가능)
 const STYLE_REFERENCE_IMAGES = {
-    namoo: '/images/styles/namoo-sample.png'
+    namoo: 'https://raw.githubusercontent.com/fmdesign84/ow-design-tool/main/public/images/styles/namoo-sample.png'
 };
 
 // 스타일 참조 이미지를 base64로 로드
-async function loadStyleReferenceImage(styleImagePath) {
-    // 고정된 프로덕션 URL 사용
-    const baseUrl = 'https://wavenode.vercel.app';
+async function loadStyleReferenceImage(imageUrl) {
+    console.log('[CharacterGen] Loading style image from:', imageUrl);
 
-    console.log('[CharacterGen] Loading style image from:', `${baseUrl}${styleImagePath}`);
-
-    const response = await fetch(`${baseUrl}${styleImagePath}`);
+    const response = await fetch(imageUrl);
     if (!response.ok) {
         throw new Error(`Failed to load style reference image: ${response.status}`);
     }
