@@ -702,6 +702,10 @@ const CustomNodeComponent: React.FC<CustomNodeProps> = ({ id, data, selected }) 
                   onClick={(e) => {
                     e.stopPropagation();
                     handleConfigChange(configDef.id, '');
+                    // file input 초기화 (같은 파일 재업로드 가능하도록)
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = '';
+                    }
                   }}
                 >
                   ✕
