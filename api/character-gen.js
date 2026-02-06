@@ -156,27 +156,10 @@ const STYLE_REFERENCE_IMAGES = {
 
 // 스타일 참조 이미지를 base64로 로드
 async function loadStyleReferenceImage(styleImagePath) {
-    // Vercel 환경에서는 외부 URL로 접근해야 함
-    // 로컬/빌드 시에는 fs로 직접 읽기 시도
-    try {
-        const fs = require('fs');
-        const path = require('path');
+    // 고정된 프로덕션 URL 사용
+    const baseUrl = 'https://wavenode.vercel.app';
 
-        // public 폴더 경로
-        const publicPath = path.join(process.cwd(), 'public', styleImagePath);
-
-        if (fs.existsSync(publicPath)) {
-            const imageBuffer = fs.readFileSync(publicPath);
-            return imageBuffer.toString('base64');
-        }
-    } catch (e) {
-        // fs 사용 불가 시 (Vercel Edge 등) 무시
-    }
-
-    // Vercel 배포 환경에서는 fetch로 가져오기
-    const baseUrl = process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : 'http://localhost:3000';
+    console.log('[CharacterGen] Loading style image from:', `${baseUrl}${styleImagePath}`);
 
     const response = await fetch(`${baseUrl}${styleImagePath}`);
     if (!response.ok) {
@@ -184,7 +167,9 @@ async function loadStyleReferenceImage(styleImagePath) {
     }
 
     const arrayBuffer = await response.arrayBuffer();
-    return Buffer.from(arrayBuffer).toString('base64');
+    const base64 = Buffer.from(arrayBuffer).toString('base64');
+    console.log('[CharacterGen] Style image loaded, size:', base64.length);
+    return base64;
 }
 
 // 메인 핸들러
