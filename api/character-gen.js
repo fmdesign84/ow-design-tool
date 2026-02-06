@@ -204,22 +204,29 @@ module.exports = async function handler(req, res) {
 
         // 스타일 참조 이미지를 포함한 프롬프트
         const prompt = styleReferenceBase64
-            ? `Transform the person in the FIRST image into a 3D character that matches EXACTLY the style shown in the SECOND image.
+            ? `You are creating a 3D character portrait. You have TWO reference images:
 
-CRITICAL INSTRUCTIONS:
-1. The FIRST image is the person's face photo - preserve their EXACT facial features, face shape, eye shape, and identity.
-2. The SECOND image is the style reference - match this EXACT 3D rendering style, including:
-   - The same mint green fluffy hair texture and shape
-   - The same blue and white striped headband
-   - The same blue t-shirt
-   - The same 3D rendering quality, lighting, and shading
-   - The same cartoon proportions (large round eyes, round face)
-   - Clean white background
+IMAGE 1 (FACE SOURCE): This is the person whose face you MUST use. Copy their:
+- Exact facial structure and face shape
+- Eye shape, nose shape, mouth shape
+- Any unique facial features (moles, dimples, etc.)
+- Their identity must be clearly recognizable
 
-The person in the output MUST be clearly recognizable as the person from the first image, but rendered in the EXACT same style as the second image.
-Expression: ${expression === 'happy' ? 'smiling happily' : 'neutral expression'}
+IMAGE 2 (STYLE ONLY): This shows the artistic STYLE to apply. Copy ONLY:
+- The 3D rendering technique and quality
+- The mint green fluffy hair (like tree foliage)
+- The blue and white striped headband
+- The blue t-shirt
+- The lighting and shading style
+- The white background
+- DO NOT copy the face from this image. IGNORE the face in image 2.
 
-Output a single high-quality 3D character portrait.`
+CRITICAL: The output character must look like the PERSON from image 1, but drawn in the STYLE of image 2.
+The face identity comes from IMAGE 1. The artistic style comes from IMAGE 2.
+
+Expression: ${expression === 'happy' ? 'happy, smiling' : 'neutral'}
+
+Output a single 3D character portrait.`
             : `Create a cute 3D stylized character portrait of the EXACT same person shown in the reference image.
 
 STYLE REQUIREMENTS (Namoo Style):
