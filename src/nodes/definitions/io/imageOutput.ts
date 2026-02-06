@@ -47,8 +47,10 @@ export const imageOutputNode: NodeDefinition = {
 
   execute: async (inputs) => {
     // 이미지 출력 노드는 입력 이미지를 그대로 워크플로우 결과로 반환
+    // image 키도 추가해서 프리뷰/다운로드 버튼이 표시되도록 함
     return {
       outputs: {
+        image: inputs.image,
         _workflowResult: inputs.image,
         _outputType: 'image',
       },

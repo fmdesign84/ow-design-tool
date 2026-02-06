@@ -30,6 +30,8 @@ import { virtualTryonNode } from './virtualTryon';
 import { backgroundGenNode } from './backgroundGen';
 import { portraitStagingNode } from './portraitStaging';
 import { characterGenNode } from './characterGen';
+import { characterPoseNode } from './characterPose';
+import { characterAnimationNode } from './characterAnimation';
 
 // 영상 생성 노드
 import { textToVideoNode } from './textToVideo';
@@ -49,6 +51,8 @@ export { virtualTryonNode } from './virtualTryon';
 export { backgroundGenNode } from './backgroundGen';
 export { portraitStagingNode } from './portraitStaging';
 export { characterGenNode } from './characterGen';
+export { characterPoseNode } from './characterPose';
+export { characterAnimationNode } from './characterAnimation';
 
 // 영상 생성 노드 export
 export { textToVideoNode } from './textToVideo';
@@ -71,6 +75,8 @@ export const generationNodes = [
   virtualTryonNode,
   backgroundGenNode,
   characterGenNode,
+  characterPoseNode,
+  characterAnimationNode,
   // 영상 생성
   textToVideoNode,
   imageToVideoNode,

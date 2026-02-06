@@ -1046,9 +1046,9 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
           >
             <Background
               variant={BackgroundVariant.Dots}
-              gap={20}
-              size={1}
-              color="#E5E7EB"
+              gap={24}
+              size={2}
+              color="#D1D5DB"
             />
           </ReactFlow>
 

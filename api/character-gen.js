@@ -2,8 +2,13 @@ const { createClient } = require('@supabase/supabase-js');
 
 /**
  * Vercel Serverless Function - Character Generation (Gemini 3 Pro Image)
- * 
- * Specifically tuned for the "Namoo" (Tree) character style.
+ *
+ * "포레스트런" (현대자동차) 캐릭터 스타일 변환
+ *
+ * 핵심 전략: "블렌딩"이 아닌 "변환(Transform)"
+ * - Gemini Flash로 얼굴 분석 (성별, 안경, 얼굴형)
+ * - 분석 결과를 프롬프트에 반영
+ * - 이미지 순서: [스타일 참조, 얼굴 사진] - 마지막이 더 중요
  */
 
 // Supabase 이미지 저장
@@ -169,6 +174,159 @@ async function loadStyleReferenceImage(imageUrl) {
     return base64;
 }
 
+// Gemini Flash로 얼굴 분석 (성별, 안경, 얼굴형)
+async function analyzeFaceWithGeminiFlash(imageBase64) {
+    const geminiApiKey = process.env.GEMINI_API_KEY;
+    if (!geminiApiKey) {
+        throw new Error('GEMINI_API_KEY not configured');
+    }
+
+    const geminiFlashUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`;
+
+    let imageData = imageBase64;
+    let mimeType = 'image/jpeg';
+
+    if (imageBase64.startsWith('data:')) {
+        const matches = imageBase64.match(/^data:([^;]+);base64,(.+)$/);
+        if (matches) {
+            mimeType = matches[1];
+            imageData = matches[2];
+        }
+    }
+
+    const analysisPrompt = `Analyze this face photo and return ONLY a JSON object with these fields:
+{
+  "gender": "male" or "female",
+  "hasGlasses": true or false,
+  "faceShape": "round", "oval", "square", "heart", or "long",
+  "hairLength": "very short", "short", "medium", "long", or "very long",
+  "distinctiveFeatures": ["list of notable features like moles, dimples, freckles"]
+}
+
+Respond with ONLY the JSON, no other text.`;
+
+    const requestBody = {
+        contents: [{
+            parts: [
+                { text: analysisPrompt },
+                { inline_data: { mime_type: mimeType, data: imageData } }
+            ]
+        }],
+        generationConfig: {
+            temperature: 0.1,
+            maxOutputTokens: 256
+        }
+    };
+
+    try {
+        const response = await fetchWithTimeout(geminiFlashUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+        }, 15000);
+
+        if (!response.ok) {
+            console.warn('[CharacterGen] Face analysis failed, using defaults');
+            return { gender: 'unknown', hasGlasses: false, faceShape: 'oval', hairLength: 'medium', distinctiveFeatures: [] };
+        }
+
+        const data = await response.json();
+        const textContent = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+        // JSON 추출 (```json 블록 또는 순수 JSON)
+        const jsonMatch = textContent.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+            const parsed = JSON.parse(jsonMatch[0]);
+            console.log('[CharacterGen] Face analysis result:', parsed);
+            return parsed;
+        }
+
+        return { gender: 'unknown', hasGlasses: false, faceShape: 'oval', hairLength: 'medium', distinctiveFeatures: [] };
+    } catch (error) {
+        console.warn('[CharacterGen] Face analysis error:', error.message);
+        return { gender: 'unknown', hasGlasses: false, faceShape: 'oval', hairLength: 'medium', distinctiveFeatures: [] };
+    }
+}
+
+// 변환 프롬프트 생성
+function buildTransformPrompt(faceAnalysis, expression = 'original', faceStrength = 50) {
+    const { hasGlasses } = faceAnalysis;
+
+    const glassesText = hasGlasses ? '- Glasses (keep exactly as in photo)\n' : '';
+
+    // 표정 매핑
+    const expressionMap = {
+        'original': 'Keep the same facial expression as in the original photo',
+        'smile': 'Gentle smile, friendly look',
+        'big_smile': 'Big happy smile, laughing, very cheerful',
+        'neutral': 'Neutral expression, calm face',
+        'tired': 'Tired expression with sweat drops on forehead',
+        'angry': 'Angry expression, frowning'
+    };
+    const expressionText = expressionMap[expression] || expressionMap['original'];
+
+    // 얼굴 반영도에 따른 프롬프트 변경
+    let faceInstruction;
+    if (faceStrength <= 30) {
+        faceInstruction = `STYLE PRIORITY: Focus on Forest Run character style.
+- Simplify facial features into cute cartoon style
+- Face shape can be more rounded/stylized
+- Eyes bigger and more cartoon-like`;
+    } else if (faceStrength <= 50) {
+        faceInstruction = `BALANCED: Mix character style with original face.
+- Keep basic face proportions from photo
+- Apply cartoon rendering but maintain recognizable features`;
+    } else if (faceStrength <= 70) {
+        faceInstruction = `FACE PRIORITY: Preserve original face more.
+- Keep detailed facial features from photo
+- Face shape, eyes, nose should closely match original
+- Apply lighter cartoon stylization`;
+    } else {
+        faceInstruction = `MAXIMUM FACE DETAIL: Original face is priority.
+- Preserve exact facial features, proportions, details
+- Minimal cartoon stylization on face
+- Person must be immediately recognizable`;
+    }
+
+    return `Create a "Forest Run" style 3D character from this photo.
+
+${faceInstruction}
+
+CRITICAL - HAIR RULES:
+- Hair SHAPE: MUST follow the person's original photo exactly (short, long, curly, straight, parted, etc.)
+- Hair VOLUME: Keep the same volume as original photo - do NOT add bumpy/puffy/cabbage-like top
+- Hair RENDERING: Simplified, rounded, smooth cartoon style (not realistic strands)
+- Hair COLOR: Change to MINT GREEN only
+- IMPORTANT: The hair silhouette should match the original person, NOT the style reference
+- Do NOT add any bumps or protrusions on top of head that weren't in original photo
+
+FIXED ELEMENTS (ALWAYS PRESENT - copy EXACTLY from style reference):
+1. Blue/white striped HEADBAND - exact design from style reference
+2. Pair of LEAVES (나뭇잎 쌍) - SAME MINT GREEN as hair color, exact shape from style reference
+3. Blue T-SHIRT - same blue as headband stripes
+4. WHITE background
+
+FROM STYLE REFERENCE (copy these EXACTLY):
+- 3D cartoon rendering quality (Pixar-like)
+- Headband: blue/white striped design
+- Leaf pair: shape, position, and style (color = same mint green as hair)
+- T-shirt: blue color matching headband
+- EYES: Must have visible WHITE sclera (eye whites) - this is key character identity
+- Overall cute character aesthetic
+
+FROM ORIGINAL PHOTO (preserve these):
+- Face shape and proportions
+- Eyebrow shape
+- HAIRSTYLE SHAPE (length, volume, style - NOT from style reference!)
+${glassesText}
+EXPRESSION: ${expressionText}
+
+IMPORTANT:
+- The hair shape must match the ORIGINAL PHOTO, not the style reference
+- Only change hair COLOR to mint green
+- T-shirt color = headband blue color`;
+}
+
 // 메인 핸들러
 module.exports = async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -184,14 +342,15 @@ module.exports = async function handler(req, res) {
         const {
             referenceImages,    // base64 배열 (얼굴 사진)
             style = 'namoo',    // 'namoo' 스타일 고정 (확장 가능)
-            expression = 'happy'
+            expression = 'original',
+            faceStrength = 50   // 20~80, 낮을수록 캐릭터 스타일 강조
         } = req.body;
 
         if (!referenceImages || referenceImages.length === 0) {
             return res.status(400).json({ error: 'Reference image is required' });
         }
 
-        // 스타일 참조 이미지 로드
+        // 1단계: 스타일 참조 이미지 로드
         let styleReferenceBase64 = null;
         if (STYLE_REFERENCE_IMAGES[style]) {
             try {
@@ -202,61 +361,28 @@ module.exports = async function handler(req, res) {
             }
         }
 
-        // 스타일 참조 이미지를 포함한 프롬프트
-        const prompt = styleReferenceBase64
-            ? `You are creating a 3D character portrait. You have TWO reference images:
+        // 2단계: Gemini Flash로 얼굴 분석 (성별, 안경, 얼굴형)
+        console.log('[CharacterGen] Analyzing face...');
+        const faceAnalysis = await analyzeFaceWithGeminiFlash(referenceImages[0]);
+        console.log('[CharacterGen] Face analysis:', faceAnalysis);
 
-IMAGE 1 (FACE SOURCE): This is the person whose face you MUST use. Copy their:
-- Exact facial structure and face shape
-- Eye shape, nose shape, mouth shape
-- Any unique facial features (moles, dimples, etc.)
-- Their identity must be clearly recognizable
+        // 3단계: 변환 프롬프트 생성
+        const prompt = buildTransformPrompt(faceAnalysis, expression, faceStrength);
 
-IMAGE 2 (STYLE ONLY): This shows the artistic STYLE to apply. Copy ONLY:
-- The 3D rendering technique and quality
-- The mint green fluffy hair (like tree foliage)
-- The blue and white striped headband
-- The blue t-shirt
-- The lighting and shading style
-- The white background
-- DO NOT copy the face from this image. IGNORE the face in image 2.
-
-CRITICAL: The output character must look like the PERSON from image 1, but drawn in the STYLE of image 2.
-The face identity comes from IMAGE 1. The artistic style comes from IMAGE 2.
-
-Expression: ${expression === 'happy' ? 'happy, smiling' : 'neutral'}
-
-Output a single 3D character portrait.`
-            : `Create a cute 3D stylized character portrait of the EXACT same person shown in the reference image.
-
-STYLE REQUIREMENTS (Namoo Style):
-- Cute 3D rendering style, similar to Pixar or Toy Story
-- Hair color: Vibrant Mint or Light Green
-- Hair texture: Fluffy, cloud-like shape resembling tree foliage
-- Headband: Wearing a blue and white striped headband
-- Clothing: Wearing a simple blue t-shirt
-- Background: Clean, solid white background
-- Composition: Close-up portrait (head and shoulders)
-- Lighting: Bright, soft 3D studio lighting with subtle shadows
-
-CRITICAL IDENTITY PRESERVATION:
-- Maintain the EXACT facial features, face shape, and eye shape of the person in the reference photo.
-- The character must be clearly recognizable as the person in the reference photo.
-- Expression: ${expression === 'happy' ? 'smiling happily' : 'neutral professional expression'}
-
-Final output should be a single, high-quality 3D rendered image on a white background.`;
-
-        // 이미지 배열 구성: [얼굴 사진들..., 스타일 참조 이미지]
-        const allImages = [...referenceImages];
+        // 4단계: 이미지 배열 구성
+        // 핵심: [스타일 참조, 얼굴 사진] - 마지막 이미지가 더 중요하게 처리됨
+        const allImages = [];
         if (styleReferenceBase64) {
-            allImages.push(styleReferenceBase64);
+            allImages.push(styleReferenceBase64);  // 스타일 먼저
         }
+        allImages.push(...referenceImages);  // 얼굴 나중 (더 중요)
 
         console.log('[CharacterGen] Starting generation...', {
             style,
             expression,
             faceRefCount: referenceImages.length,
-            hasStyleRef: !!styleReferenceBase64
+            hasStyleRef: !!styleReferenceBase64,
+            faceAnalysis
         });
 
         const result = await generateWithGemini3Pro(prompt, allImages, '1:1');

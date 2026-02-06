@@ -153,8 +153,7 @@
 
 /* 입력 필드들 */
 .textInput,
-.numberInput,
-.select {
+.numberInput {
   width: 100%;
   padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
   border: 1px solid var(--color-neutral-300, #E8E8E8);
@@ -166,18 +165,67 @@
 }
 
 .textInput:focus,
-.numberInput:focus,
-.select:focus {
+.numberInput:focus {
   outline: none;
   border-color: var(--color-primary, #FF6B00);
 }
 
+/* 셀렉트 드롭다운 */
+.select {
+  width: 100%;
+  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+  padding-right: 32px;
+  border: 1px solid var(--color-neutral-300, #E8E8E8);
+  border-radius: var(--radius-md, 6px);
+  font-size: var(--font-size-sm, 11px);
+  color: var(--color-neutral-800, #3C3C3C);
+  background-color: var(--color-white, #FFFFFF);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23757575' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.select:hover {
+  border-color: var(--color-neutral-400, #D1D5DB);
+  background-color: var(--color-neutral-50, #FAFBFC);
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--color-primary, #FF6B00);
+  box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.1);
+}
+
+.select option {
+  padding: var(--spacing-2, 8px);
+  background: var(--color-white, #FFFFFF);
+  color: var(--color-neutral-800, #3C3C3C);
+}
+
+.select option:hover,
+.select option:checked {
+  background: var(--color-primary-light, #FFF4ED);
+  color: var(--color-primary, #FF6B00);
+}
+
 .embedded .textInput,
-.embedded .numberInput,
-.embedded .select {
+.embedded .numberInput {
   padding: var(--spacing-1, 4px) var(--spacing-2, 8px);
   font-size: 10px;
   border-radius: var(--radius-sm, 4px);
+}
+
+.embedded .select {
+  padding: var(--spacing-1, 4px) var(--spacing-2, 8px);
+  padding-right: 24px;
+  font-size: 10px;
+  border-radius: var(--radius-sm, 4px);
+  background-position: right 6px center;
 }
 
 /* 토글 스위치 */

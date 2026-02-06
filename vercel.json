@@ -30,8 +30,17 @@
     "api/generate-idphoto.js": {
       "maxDuration": 60
     },
+    "api/character-gen.js": {
+      "maxDuration": 60
+    },
+    "api/character-pose.js": {
+      "maxDuration": 60
+    },
     "api/cleanup-temp-files.js": {
       "maxDuration": 60
+    },
+    "api/character-animation.js": {
+      "maxDuration": 300
     }
   }
 }
