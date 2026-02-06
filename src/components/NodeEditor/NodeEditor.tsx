@@ -943,8 +943,8 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
             <span className={styles.brandName}>Wave</span>
             <span className={styles.betaBadge}>Beta</span>
           </div>
-          {/* 웨이브 홈 버튼 - 노드가 있을 때만 표시 */}
-          {nodes.length > 0 && (
+          {/* 웨이브 홈 버튼 - 노드가 있거나 시작된 상태일 때 표시 */}
+          {(nodes.length > 0 || isStarted) && (
             <>
               <div className={styles.headerDivider} />
               <button
@@ -959,9 +959,9 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
         </div>
 
         {/* 중앙: 워크플로우 이름 */}
-        {nodes.length > 0 && (
+        {(nodes.length > 0 || isStarted) && (
           <div className={styles.headerCenter}>
-            <span className={styles.workflowName}>{workflowName}</span>
+            <span className={styles.workflowName}>{workflowName || '새 워크플로우'}</span>
             {workflowSession.isDirty && (
               <span className={styles.unsavedBadge}>저장 안 됨</span>
             )}
@@ -971,7 +971,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
         {/* 우측: 줌, 저장, 실행 */}
         <div className={styles.headerRight}>
           {/* 줌 컨트롤 */}
-          {nodes.length > 0 && (
+          {(nodes.length > 0 || isStarted) && (
             <div className={styles.zoomControl}>
               <button
                 className={styles.zoomButton}
@@ -1053,7 +1053,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
           </ReactFlow>
 
           {/* 플로팅 툴바 (레퍼런스 스타일) */}
-          {nodes.length > 0 && (
+          {(nodes.length > 0 || isStarted) && (
             <div className={styles.floatingToolbar}>
               {/* 노드 추가 */}
               <button
