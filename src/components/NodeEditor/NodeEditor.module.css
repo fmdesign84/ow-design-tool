@@ -510,6 +510,17 @@
   background: var(--color-primary-light, #FFF5F0);
 }
 
+/* 하단 버튼 그룹 */
+.emptyActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.emptyActions .uploadButton {
+  margin-top: 0;
+}
+
 /* ===== 반응형 ===== */
 @media (max-width: 1024px) {
   .floatingToolbar {

@@ -303,6 +303,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
   const [isNodePickerOpen, setIsNodePickerOpen] = useState(false);
   const [isResultPanelOpen, setIsResultPanelOpen] = useState(true);
   const [isWaveListExpanded, setIsWaveListExpanded] = useState(true);
+  const [isStarted, setIsStarted] = useState(false); // 직접 만들기로 빈 캔버스 시작 여부
   const [currentTool, setCurrentTool] = useState<'select' | 'pan'>('select');
   const { screenToFlowPosition, zoomIn, zoomOut } = useReactFlow();
   const viewport = useViewport();
@@ -372,6 +373,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
       // 변경사항 없으면 바로 클리어
       setNodes([]);
       setEdges([]);
+      setIsStarted(false);
       resetSession();
       workflow.reset();
     }
@@ -685,7 +687,8 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
    */
   const handleTemplateSelect = useCallback((templateId: string) => {
     if (templateId === 'empty') {
-      setIsNodePickerOpen(true);
+      // 빈 캔버스로 시작 (노드 피커 열지 않음)
+      setIsStarted(true);
       return;
     }
 
@@ -1142,7 +1145,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
           />
 
           {/* 빈 상태: 템플릿 선택 */}
-          {nodes.length === 0 && (
+          {nodes.length === 0 && !isStarted && (
             <div className={styles.emptyState}>
               <h2 className={styles.emptyTitle}>워크플로우를 시작하세요</h2>
               <p className={styles.emptySubtitle}>템플릿을 선택하거나 빈 캔버스에서 시작하세요</p>
@@ -1164,15 +1167,25 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
                   );
                 })}
               </div>
-              {/* 워크플로우 업로드 */}
-              <button
-                className={styles.uploadButton}
-                onClick={handleUploadClick}
-                title="로컬 컴퓨터에서 워크플로우 불러오기"
-              >
-                <UploadIcon />
-                <span>워크플로우 불러오기 (.png)</span>
-              </button>
+              {/* 하단 버튼 영역 */}
+              <div className={styles.emptyActions}>
+                <button
+                  className={styles.uploadButton}
+                  onClick={handleUploadClick}
+                  title="로컬 컴퓨터에서 워크플로우 불러오기"
+                >
+                  <UploadIcon />
+                  <span>워크플로우 불러오기</span>
+                </button>
+                <button
+                  className={styles.uploadButton}
+                  onClick={() => setIsNodePickerOpen(true)}
+                  title="노드를 선택해서 시작"
+                >
+                  <TemplateEmptyIcon />
+                  <span>노드로 시작하기</span>
+                </button>
+              </div>
             </div>
           )}
 
