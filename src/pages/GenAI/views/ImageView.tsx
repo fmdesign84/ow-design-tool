@@ -35,7 +35,8 @@ type ImageSubMenu =
   | 'id-photo-studio'
   | 'free-photo'
   | 'composite-photo'
-  | 'product-photo';
+  | 'product-photo'
+  | 'character-gen-studio';
 
 interface ImageViewProps {
   activeSubMenu: ImageSubMenu;
@@ -340,6 +341,13 @@ export const ImageView: React.FC<ImageViewProps> = ({
           <p>준비 중입니다.</p>
         </div>
       );
+
+    case 'character-gen-studio':
+      // 노드 에디터로 연동되는 메뉴는 null 반환 또는 별도 처리
+      // ImageGenPage에서 setActiveMenu('wave')로 리다이렉트하거나
+      // 여기서 NodeEditor를 직접 보여줄 수 있음.
+      // 하지만 CLAUDE.md에 따르면 모든 기능은 노드로 구현되어야 함.
+      return null;
 
     default:
       return (

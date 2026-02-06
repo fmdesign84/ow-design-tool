@@ -6,6 +6,10 @@
  * - imageToImage: 이미지 → 이미지 (참조 기반)
  * - inpainting: 부분 편집
  * - idPhoto: 증명사진
+ * - locationComposite: 장소 합성
+ * - virtualTryon: 가상 피팅
+ * - backgroundGen: 배경 생성
+ * - portraitStaging: 연출 생성
  *
  * 영상 생성:
  * - textToVideo: 텍스트 → 영상
@@ -21,6 +25,11 @@ import { textToImageNode } from './textToImage';
 import { imageToImageNode } from './imageToImage';
 import { inpaintingNode } from './inpainting';
 import { idPhotoNode } from './idPhoto';
+import { locationCompositeNode } from './locationComposite';
+import { virtualTryonNode } from './virtualTryon';
+import { backgroundGenNode } from './backgroundGen';
+import { portraitStagingNode } from './portraitStaging';
+import { characterGenNode } from './characterGen';
 
 // 영상 생성 노드
 import { textToVideoNode } from './textToVideo';
@@ -35,6 +44,11 @@ export { textToImageNode } from './textToImage';
 export { imageToImageNode } from './imageToImage';
 export { inpaintingNode } from './inpainting';
 export { idPhotoNode } from './idPhoto';
+export { locationCompositeNode } from './locationComposite';
+export { virtualTryonNode } from './virtualTryon';
+export { backgroundGenNode } from './backgroundGen';
+export { portraitStagingNode } from './portraitStaging';
+export { characterGenNode } from './characterGen';
 
 // 영상 생성 노드 export
 export { textToVideoNode } from './textToVideo';
@@ -47,11 +61,16 @@ export { mockupNode } from './mockup';
 export const generationNodes = [
   // 디자인 (맨 위)
   mockupNode,
+  portraitStagingNode,
   // 이미지 생성
   textToImageNode,
   imageToImageNode,
   inpaintingNode,
   idPhotoNode,
+  locationCompositeNode,
+  virtualTryonNode,
+  backgroundGenNode,
+  characterGenNode,
   // 영상 생성
   textToVideoNode,
   imageToVideoNode,

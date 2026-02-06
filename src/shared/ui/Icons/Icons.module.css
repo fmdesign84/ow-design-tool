@@ -1,0 +1,104 @@
+/**
+ * 아이콘 시스템 스타일
+ * FM ERP 패턴 기반
+ */
+
+/* ===== 기본 아이콘 ===== */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  vertical-align: middle;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+/* ===== 인터랙티브 아이콘 ===== */
+.interactive {
+  cursor: pointer;
+}
+
+.interactive:hover {
+  transform: scale(1.05);
+}
+
+.interactive:active {
+  transform: scale(0.95);
+}
+
+/* 포커스 상태 - 접근성 */
+.interactive:focus-visible {
+  outline: 2px solid var(--color-primary, #FF6B00);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ===== 색상 변형 ===== */
+.variant-default {
+  color: currentColor;
+}
+
+.variant-primary {
+  color: var(--color-primary, #FF6B00);
+}
+
+.variant-secondary {
+  color: var(--color-neutral-500, #9E9E9E);
+}
+
+.variant-success {
+  color: var(--color-success, #10B981);
+}
+
+.variant-warning {
+  color: var(--color-warning, #F59E0B);
+}
+
+.variant-danger {
+  color: var(--color-danger, #EF4444);
+}
+
+.variant-muted {
+  color: var(--color-neutral-400, #BDBDBD);
+}
+
+/* ===== 애니메이션 ===== */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ===== 접근성: 모션 감소 ===== */
+@media (prefers-reduced-motion: reduce) {
+  .icon {
+    transition: none;
+  }
+
+  .interactive:hover,
+  .interactive:active {
+    transform: none;
+  }
+
+  .spin,
+  .pulse {
+    animation: none;
+  }
+}

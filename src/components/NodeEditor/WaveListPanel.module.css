@@ -6,15 +6,17 @@
   background: var(--color-white, #FFFFFF);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--color-neutral-300, #E8E8E8);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* 헤더 */
+/* 헤더 - GNB 스타일과 통일 */
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 14px;
+  height: 36px;
+  padding: 0 10px;
   cursor: pointer;
   user-select: none;
   transition: background 0.15s ease;
@@ -27,49 +29,52 @@
 .headerTitle {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary, #1F2937);
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-neutral-600, #757575);
 }
 
 .headerIcon {
-  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-neutral-500, #757575);
 }
 
 .count {
-  padding: 2px 6px;
-  background: var(--color-neutral-100, #F5F6F8);
-  color: var(--text-secondary, #6B7280);
   font-size: 11px;
   font-weight: 500;
-  border-radius: 4px;
+  color: var(--color-neutral-500, #757575);
+  background: var(--color-neutral-100, #F5F6F8);
+  padding: 2px 6px;
+  border-radius: 9999px;
+  margin-left: 2px;
 }
 
 .headerActions {
   display: flex;
   align-items: center;
   gap: 4px;
-  color: var(--text-tertiary, #9CA3AF);
 }
 
 .refreshBtn {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: transparent;
   border: none;
   border-radius: 6px;
-  color: var(--text-tertiary, #9CA3AF);
+  color: var(--color-neutral-500, #757575);
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .refreshBtn:hover:not(:disabled) {
   background: var(--color-neutral-100, #F5F6F8);
-  color: var(--text-secondary, #6B7280);
+  color: var(--color-neutral-700, #424242);
 }
 
 .refreshBtn:disabled {
@@ -79,7 +84,7 @@
 
 /* 목록 */
 .list {
-  max-height: 280px;
+  max-height: 160px;
   overflow-y: auto;
   border-top: 1px solid var(--color-neutral-100, #F5F6F8);
 }
@@ -93,7 +98,7 @@
 }
 
 .list::-webkit-scrollbar-thumb {
-  background: var(--color-neutral-300, #D1D5DB);
+  background: var(--color-neutral-300, #E8E8E8);
   border-radius: 4px;
 }
 
@@ -105,13 +110,13 @@
 
 .emptyState p {
   font-size: 13px;
-  color: var(--text-secondary, #6B7280);
+  color: var(--text-secondary, #757575);
   margin: 0 0 4px 0;
 }
 
 .emptyState span {
   font-size: 12px;
-  color: var(--text-tertiary, #9CA3AF);
+  color: var(--text-tertiary, #9E9E9E);
 }
 
 /* 아이템 */
@@ -157,7 +162,7 @@
 .name {
   font-size: 13px;
   font-weight: 500;
-  color: var(--text-primary, #1F2937);
+  color: var(--color-neutral-800, #3C3C3C);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -173,7 +178,7 @@
   background: transparent;
   border: none;
   border-radius: 4px;
-  color: var(--text-tertiary, #9CA3AF);
+  color: var(--text-tertiary, #9E9E9E);
   cursor: pointer;
   opacity: 0;
   transition: all 0.15s ease;
@@ -185,7 +190,7 @@
 
 .editBtn:hover {
   background: var(--color-neutral-100, #F5F6F8);
-  color: var(--text-secondary, #6B7280);
+  color: var(--text-secondary, #757575);
 }
 
 /* 이름 편집 */
@@ -229,7 +234,7 @@
 }
 
 .editName button:last-of-type {
-  color: var(--text-tertiary, #9CA3AF);
+  color: var(--text-tertiary, #9E9E9E);
 }
 
 .editName button:last-of-type:hover {
@@ -242,7 +247,7 @@
   align-items: center;
   gap: 8px;
   font-size: 11px;
-  color: var(--text-tertiary, #9CA3AF);
+  color: var(--text-tertiary, #9E9E9E);
 }
 
 .date {
@@ -275,7 +280,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
-  color: var(--text-tertiary, #9CA3AF);
+  color: var(--text-tertiary, #9E9E9E);
 }
 
 .loadBtn:hover {
@@ -314,7 +319,7 @@
 .deleteConfirm p {
   font-size: 12px;
   font-weight: 500;
-  color: var(--text-primary, #1F2937);
+  color: var(--color-neutral-800, #3C3C3C);
   margin: 0;
 }
 
@@ -346,8 +351,8 @@
 
 .deleteNo {
   background: var(--color-white, #FFFFFF);
-  border: 1px solid var(--color-neutral-300, #D1D5DB);
-  color: var(--text-secondary, #6B7280);
+  border: 1px solid var(--color-neutral-300, #E8E8E8);
+  color: var(--text-secondary, #757575);
 }
 
 .deleteNo:hover {

@@ -3,7 +3,6 @@
  * 사이드바, 서브메뉴 정의
  */
 import {
-    HomeIcon,
     ImageGenIcon,
     VideoGenIcon,
     DesignGenIcon,
@@ -31,14 +30,13 @@ import {
     PortraitStagingIcon,
 } from '../../../components/common/Icons';
 
-// 사이드바 메뉴 옵션 (홈 포함)
+// 사이드바 메뉴 옵션 (Wave 기본)
 export const SIDEBAR_MENUS = [
-    { key: 'home', label: '홈', Icon: HomeIcon },
+    { key: 'wave', label: 'Wave', Icon: OrangeWaveIcon },
     { key: 'image', label: '이미지', Icon: ImageGenIcon },
     { key: 'tools', label: '편집', Icon: UpscaleIcon },
     { key: 'video', label: '영상', Icon: VideoGenIcon },
     { key: 'design', label: '템플릿', Icon: DesignGenIcon },
-    { key: 'wave', label: 'Wave', Icon: OrangeWaveIcon, isNew: true },
     { key: 'library', label: '라이브러리', Icon: LibraryIcon },
 ];
 
@@ -53,13 +51,14 @@ export const STUDIO_MENUS = [
 export const IMAGE_SUB_MENUS = [
     { key: 'text-to-image', label: '텍스트로', Icon: TextToIcon },
     { key: 'image-to-image', label: '이미지로', Icon: ImageToIcon },
-    { key: 'inpainting', label: '부분 편집', Icon: InpaintToIcon, isNew: true },
+    { key: 'inpainting', label: '부분 편집', Icon: InpaintToIcon },
     { divider: true },
-    { key: 'id-photo-studio', label: '증명사진', Icon: IdPhotoIcon, isNew: true },
-    { key: 'free-photo', label: '자유사진', Icon: PoseChangeIcon, isNew: true },
-    { key: 'location-composite', label: '장소 합성', Icon: LocationCompositeIcon, isNew: true },
-    { key: 'virtual-tryon', label: '가상 피팅', Icon: VirtualTryonIcon, isNew: true },
-    { key: 'background-gen', label: '배경 생성', Icon: BackgroundGenIcon, isNew: true },
+    { key: 'id-photo-studio', label: '증명사진', Icon: IdPhotoIcon },
+    { key: 'free-photo', label: '자유사진', Icon: PoseChangeIcon },
+    { key: 'location-composite', label: '장소 합성', Icon: LocationCompositeIcon },
+    { key: 'virtual-tryon', label: '가상 피팅', Icon: VirtualTryonIcon },
+    { key: 'background-gen', label: '배경 생성', Icon: BackgroundGenIcon },
+    { key: 'character-gen-studio', label: '캐릭터 생성', Icon: PoseChangeIcon },
     { key: 'product-photo', label: '제품 사진', Icon: ImageToIcon, comingSoon: true },
 ];
 
@@ -81,7 +80,7 @@ export const VIDEO_SUB_MENUS = [
 // 디자인(템플릿) 하위 메뉴
 export const DESIGN_SUB_MENUS = [
     { key: 'mockup-generator', label: '목업 생성', Icon: MockupFrameIcon },
-    { key: 'portrait-staging', label: '연출 생성', Icon: PortraitStagingIcon, isNew: true },
+    { key: 'portrait-staging', label: '연출 생성', Icon: PortraitStagingIcon },
 ];
 
 // 라이브러리 하위 메뉴 (핀터레스트 스타일)

@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
-import useIsMobile from '../../hooks/useIsMobile';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ConfirmDialog } from '../../components';
-import { MobileGNB } from '../../components/layout/MobileGNB';
 import { normalizeModelKey, toLegacyModelKey } from '../../components/genai';
 import { calculatePoints, getActionKey, POINT_COSTS } from '../../constants/pointPolicy';
 import { compressAndUploadImage } from '../../utils/imageUtils';
@@ -12,10 +10,11 @@ import { AdvancedOptions } from '../../components/genai';
 // Wave 노드 에디터
 import { NodeEditor } from '../../components/NodeEditor';
 import { useWorkflowStore } from '../../stores/useWorkflowStore';
+import getNodePreset from '../../utils/nodePresets';
 import { useVideoStore } from '../../stores/useVideoStore';
 import { useImageGenStore } from '../../stores/useImageGenStore';
 // 분리된 View 컴포넌트
-import { WaveView, DesignView, ToolsView, VideoView, LibraryView, ImageView, HomeView } from './views';
+import { WaveView, DesignView, ToolsView, VideoView, LibraryView, ImageView } from './views';
 // 아이콘 (상수 파일에서 사용하지 않는 것만)
 import {
     TrashIcon,
@@ -81,7 +80,6 @@ import { usePointSystem } from './hooks';
 const ImageGenPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const isMobile = useIsMobile();
 
     // URL 경로에서 초기 메뉴 결정
     const getInitialMenu = () => {
@@ -89,9 +87,8 @@ const ImageGenPage = () => {
         if (path.includes('/video')) return 'video';
         if (path.includes('/tools')) return 'tools';  // 이미지 편집 도구
         if (path.includes('/design')) return 'design';
-        if (path.includes('/wave')) return 'wave';  // Wave 노드 에디터
         if (path.includes('/image')) return 'image';
-        return 'home'; // 기본값은 홈
+        return 'wave'; // 기본값은 Wave
     };
 
     const getInitialSubMenu = (menu) => {
@@ -128,6 +125,7 @@ const ImageGenPage = () => {
     const [aspectRatio, setAspectRatio] = useState('1:1');
     const [stylePreset, setStylePreset] = useState('auto');
     const [imageHistory, setImageHistory] = useState([]); // 이미지 히스토리
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false); // 라이트박스 열림 상태
 
     // 이미지 URL 압축 (Supabase transform)
     const compressImageUrl = (url, width = 300) => {
@@ -336,27 +334,27 @@ const ImageGenPage = () => {
                     const inferredType = img.type || (isMockup ? 'mockup' : 'image');
 
                     return {
-                    id: img.id,
-                    image: img.image_url,
-                    prompt: img.prompt,
-                    model: img.model,
-                    imagenModel: img.model,
-                    aspectRatio: img.aspect_ratio,
-                    quality: img.quality,
-                    style: img.style,
-                    mockupType: isMockup ? img.style : null,
-                    mockupLabel: isMockup ? img.prompt?.replace(' 목업', '') : null,
-                    createdAt: new Date(img.created_at),
-                    // 타입 및 메타데이터 (영상/이미지 구분)
-                    type: inferredType,
-                    metadata: img.metadata ? (typeof img.metadata === 'string' ? JSON.parse(img.metadata) : img.metadata) : null,
-                    // 스타일 분석 데이터
-                    detectedStyles: img.detected_styles || [],
-                    mood: img.mood || null,
-                    colors: img.colors || [],
-                    analysisStatus: img.detected_styles?.length > 0 ? 'completed' : 'none',
-                    // 추천 상태
-                    is_featured: img.is_featured || false
+                        id: img.id,
+                        image: img.image_url,
+                        prompt: img.prompt,
+                        model: img.model,
+                        imagenModel: img.model,
+                        aspectRatio: img.aspect_ratio,
+                        quality: img.quality,
+                        style: img.style,
+                        mockupType: isMockup ? img.style : null,
+                        mockupLabel: isMockup ? img.prompt?.replace(' 목업', '') : null,
+                        createdAt: new Date(img.created_at),
+                        // 타입 및 메타데이터 (영상/이미지 구분)
+                        type: inferredType,
+                        metadata: img.metadata ? (typeof img.metadata === 'string' ? JSON.parse(img.metadata) : img.metadata) : null,
+                        // 스타일 분석 데이터
+                        detectedStyles: img.detected_styles || [],
+                        mood: img.mood || null,
+                        colors: img.colors || [],
+                        analysisStatus: img.detected_styles?.length > 0 ? 'completed' : 'none',
+                        // 추천 상태
+                        is_featured: img.is_featured || false
                     };
                 });
 
@@ -476,12 +474,12 @@ const ImageGenPage = () => {
     // URL 변경 시 메뉴 동기화
     useEffect(() => {
         const path = location.pathname;
-        let newMenu = 'home';
+        let newMenu = 'wave'; // 기본값은 Wave
         if (path.includes('/video')) newMenu = 'video';
         else if (path.includes('/tools')) newMenu = 'tools';
         else if (path.includes('/design')) newMenu = 'design';
-        else if (path.includes('/wave')) newMenu = 'wave';
         else if (path.includes('/image')) newMenu = 'image';
+        else if (path.includes('/library')) newMenu = 'library';
 
         if (newMenu !== activeMenu) {
             setActiveMenu(newMenu);
@@ -498,9 +496,8 @@ const ImageGenPage = () => {
         else if (menuKey === 'tools') navigate('/tools');
         else if (menuKey === 'video') navigate('/video');
         else if (menuKey === 'design') navigate('/design');
-        else if (menuKey === 'wave') navigate('/wave');
-        else if (menuKey === 'home') navigate('/');
-        else if (menuKey === 'library') navigate('/');
+        else if (menuKey === 'wave') navigate('/');
+        else if (menuKey === 'library') navigate('/library');
     };
 
     // 배경 없애기용 상태
@@ -1950,8 +1947,8 @@ const ImageGenPage = () => {
         // activeSubMenu에서 실제 모드 결정
         const effectiveMode = activeSubMenu === 'location-composite' ? 'location'
             : activeSubMenu === 'virtual-tryon' ? 'tryon'
-            : activeSubMenu === 'background-gen' ? 'background'
-            : compositeMode;
+                : activeSubMenu === 'background-gen' ? 'background'
+                    : compositeMode;
 
         try {
             let response;
@@ -2316,7 +2313,64 @@ const ImageGenPage = () => {
     };
 
     // 워크플로우 스토어
-    const { loadWorkflow } = useWorkflowStore();
+    const { loadWorkflow, setNodes, setEdges } = useWorkflowStore();
+
+    // 서브메뉴 클릭 → 노드 프리셋 로드 (기존 캔버스에 추가)
+    const handleSubMenuClick = useCallback((menuKey) => {
+        // 캐릭터 생성의 경우 Wave 모드로 전환
+        if (menuKey === 'character-gen-studio') {
+            const preset = getNodePreset('image', 'character-gen-studio');
+            if (preset) {
+                setNodes(prevNodes => {
+                    const maxX = prevNodes.length > 0
+                        ? Math.max(...prevNodes.map(n => n.position.x)) + 400
+                        : 0;
+
+                    const offsetNodes = preset.nodes.map(node => ({
+                        ...node,
+                        position: {
+                            x: node.position.x + maxX,
+                            y: node.position.y
+                        }
+                    }));
+                    return [...prevNodes, ...offsetNodes];
+                });
+                setEdges(prevEdges => [...prevEdges, ...preset.edges]);
+            }
+            setActiveMenu('wave');
+            setActiveSubMenu('editor');
+            navigate('/wave');
+            return;
+        }
+
+        setActiveSubMenu(menuKey);
+
+        // 해당 기능의 노드 프리셋 가져오기
+        const preset = getNodePreset(activeMenu === 'wave' ? 'image' : activeMenu, menuKey);
+        if (preset) {
+            // 기존 노드들의 위치를 고려해서 오프셋 계산
+            setNodes(prevNodes => {
+                // 기존 노드 중 가장 오른쪽 위치 찾기
+                const maxX = prevNodes.length > 0
+                    ? Math.max(...prevNodes.map(n => n.position.x)) + 400
+                    : 0;
+
+                // 새 노드들 위치 조정해서 추가
+                const offsetNodes = preset.nodes.map(node => ({
+                    ...node,
+                    position: {
+                        x: node.position.x + maxX,
+                        y: node.position.y
+                    }
+                }));
+
+                return [...prevNodes, ...offsetNodes];
+            });
+
+            // 엣지도 추가
+            setEdges(prevEdges => [...prevEdges, ...preset.edges]);
+        }
+    }, [activeMenu, setNodes, setEdges, setActiveMenu, setActiveSubMenu, navigate]);
 
     // Wave 에디터로 이동 (워크플로우 로드)
     const handleNavigateToWave = useCallback(async (workflowId) => {
@@ -2348,792 +2402,116 @@ const ImageGenPage = () => {
         return menu.label;
     };
 
+    // 서브메뉴 가져오기 헬퍼
+    const getSubMenus = () => {
+        if (activeMenu === 'image') return IMAGE_SUB_MENUS.filter(m => !m.divider);
+        if (activeMenu === 'tools') return TOOLS_SUB_MENUS;
+        if (activeMenu === 'video') return VIDEO_SUB_MENUS;
+        if (activeMenu === 'design') return DESIGN_SUB_MENUS;
+        if (activeMenu === 'library') return LIBRARY_SUB_MENUS;
+        return [];
+    };
+
     return (
-        <div className={`${styles.studioWrapper} ${isMobile ? styles.mobileWrapper : ''}`}>
-            {/* ========== 모바일 GNB ========== */}
-            {isMobile && (
-                <MobileGNB
-                    pageTitle="Orange Whale Studio"
-                    userName="윤국현"
-                    userRole="BM Leader"
-                />
-            )}
+        <div className={styles.studioWrapper}>
+            {/* ========== 메인 컨텐츠 ========== */}
+            <div className={styles.mainContent}>
+                <div className={styles.mainCard} onClick={() => activeMenu !== 'wave' && handleMenuChange('wave')}>
+                    {/* Wave 노드 에디터 (항상 배경) */}
+                    <WaveView onLightboxChange={setIsLightboxOpen} />
 
-            {/* ========== 좌측 사이드바 (데스크탑만) ========== */}
-            {!isMobile && (
-            <div className={styles.sidebar}>
-                <div className={styles.sidebarCard}>
-                    {/* 로고 */}
-                    <div
-                        className={styles.sidebarLogo}
-                        onClick={() => handleMenuChange('home')}
-                        title="Orange Whale Studio"
-                    >
-                        <OrangeWhaleIcon size={36} />
-                    </div>
-
-                    {/* 네비게이션 */}
-                    <nav className={styles.sidebarNav}>
-                        {SIDEBAR_MENUS.map((menu) => (
-                            <button
-                                key={menu.key}
-                                className={`${styles.sidebarItem} ${activeMenu === menu.key ? styles.active : ''} ${menu.locked ? styles.locked : ''}`}
-                                onClick={() => !menu.locked && handleMenuChange(menu.key)}
-                                disabled={menu.locked}
-                                title={menu.label}
-                            >
-                                <menu.Icon size={20} />
-                                <span className={styles.sidebarItemLabel}>{menu.label}</span>
-                            </button>
-                        ))}
-                    </nav>
-
-                    {/* 사용자 프로필 */}
-                    <div className={styles.sidebarBottom}>
-                        {/* 포인트 프로그레스 바 (상시 표시) */}
-                        <div className={styles.tokenSlider}>
-                            <div className={styles.tokenProgress}>
-                                <div
-                                    className={styles.tokenProgressFill}
-                                    style={{ height: `${Math.min((pointUsage.used / pointUsage.limit) * 100, 100)}%` }}
-                                />
+                    {/* 플로팅 서브메뉴 - wave가 아닐 때 표시, 라이트박스 열리면 숨김 */}
+                    {activeMenu !== 'wave' && !isLightboxOpen && (
+                        <div className={styles.floatingSubMenu} onClick={(e) => e.stopPropagation()}>
+                            <div className={styles.floatingSubMenuCard}>
+                                {getSubMenus().map((menu) => (
+                                    <button
+                                        key={menu.key}
+                                        className={`${styles.floatingSubMenuItem} ${activeSubMenu === menu.key ? styles.active : ''} ${menu.locked || menu.comingSoon ? styles.locked : ''}`}
+                                        onClick={() => !menu.locked && !menu.comingSoon && handleSubMenuClick(menu.key)}
+                                        disabled={menu.locked || menu.comingSoon}
+                                        title={menu.label}
+                                    >
+                                        <menu.Icon size={16} />
+                                        <span className={styles.floatingSubMenuLabel}>{menu.label}</span>
+                                    </button>
+                                ))}
                             </div>
-                            <span className={styles.tokenValue}>
-                                <span className={styles.tokenUsed}>{pointUsage.used}</span>
-                                <span className={styles.tokenDivider}></span>
-                                <span className={styles.tokenLimit}>{pointUsage.limit}P</span>
-                            </span>
                         </div>
-                        <div
-                            className={styles.sidebarProfile}
-                            onClick={() => handleMenuChange('admin')}
-                            style={{ cursor: 'pointer' }}
-                            title="관리자 페이지"
-                        >
-                            <div className={styles.sidebarUserInfo}>
-                                <span className={styles.sidebarUserName}>윤국현</span>
-                                <span className={styles.sidebarUserTitle}>BM Leader</span>
+                    )}
+
+                    {/* 하단 GNB - 라이트박스 열리면 숨김 */}
+                    {!isLightboxOpen && (
+                    <div className={styles.bottomGnb} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.bottomGnbCard}>
+                            {/* 로고 */}
+                            <div
+                                className={styles.bottomGnbLogo}
+                                onClick={() => handleMenuChange('wave')}
+                                title="Wave"
+                            >
+                                <OrangeWhaleIcon size={28} />
                             </div>
-                            <div className={styles.sidebarAvatar}>
+                            {/* 네비게이션 */}
+                            <nav className={styles.bottomGnbNav}>
+                                {SIDEBAR_MENUS.map((menu) => (
+                                    <button
+                                        key={menu.key}
+                                        className={`${styles.bottomGnbItem} ${activeMenu === menu.key ? styles.active : ''} ${menu.locked ? styles.locked : ''}`}
+                                        onClick={() => !menu.locked && handleMenuChange(menu.key)}
+                                        disabled={menu.locked}
+                                        title={menu.label}
+                                    >
+                                        <menu.Icon size={18} />
+                                        <span className={styles.bottomGnbLabel}>{menu.label}</span>
+                                    </button>
+                                ))}
+                            </nav>
+                            {/* 프로필 */}
+                            <div
+                                className={styles.bottomGnbProfile}
+                                onClick={() => handleMenuChange('admin')}
+                                title="관리자"
+                            >
                                 <img src="/images/profile-avatar.png" alt="윤국현" />
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            )}
-
-            {/* ========== 서브 사이드바 (홈, 대화형, Wave, Swimming 제외, 데스크탑만) ========== */}
-            {!isMobile && activeMenu !== 'home' && activeMenu !== 'chat' && activeMenu !== 'wave' && activeMenu !== 'swimming' && (
-                <div className={styles.subSidebar}>
-                    <div className={styles.subSidebarCard}>
-                        <div className={styles.subSidebarTitle}>{getCurrentMenuTitle()}</div>
-                        <nav className={`${styles.subSidebarNav} ${activeMenu === 'library' ? styles.libraryNav : ''}`}>
-                            {activeMenu === 'library' ? (
-                                /* 라이브러리: 이미지 버튼 스타일 */
-                                LIBRARY_SUB_MENUS.map((menu) => {
-                                    const sampleImage = getLibrarySampleImage(menu.key);
-                                    return (
-                                        <button
-                                            key={menu.key}
-                                            className={`${styles.libraryNavBtn} ${activeSubMenu === menu.key ? styles.active : ''}`}
-                                            onClick={() => setActiveSubMenu(menu.key)}
-                                        >
-                                            <div className={styles.libraryNavImageWrapper}>
-                                                {sampleImage ? (
-                                                    <img
-                                                        src={sampleImage}
-                                                        alt={menu.label}
-                                                        className={styles.libraryNavImage}
-                                                    />
-                                                ) : (
-                                                    <div className={styles.libraryNavPlaceholder}>
-                                                        <menu.Icon size={20} />
-                                                    </div>
-                                                )}
-                                                <div className={styles.libraryNavOverlay}>
-                                                    <span className={styles.libraryNavLabel}>{menu.label}</span>
-                                                </div>
-                                            </div>
-                                        </button>
-                                    );
-                                })
-                            ) : (
-                                /* 기타 메뉴: 기존 스타일 */
-                                (activeMenu === 'image' ? IMAGE_SUB_MENUS : activeMenu === 'tools' ? TOOLS_SUB_MENUS : activeMenu === 'video' ? VIDEO_SUB_MENUS : activeMenu === 'copilot' ? COPILOT_SUB_MENUS : DESIGN_SUB_MENUS).map((menu, idx) => (
-                                    menu.divider ? (
-                                        <div key={`divider-${idx}`} className={`${styles.subSidebarDivider} ${!menu.label ? styles.noLabel : ''}`}>
-                                            {menu.label && <span>{menu.label}</span>}
-                                        </div>
-                                    ) : (
-                                        <button
-                                            key={menu.key}
-                                            className={`${styles.subSidebarItem} ${activeSubMenu === menu.key ? styles.active : ''} ${menu.locked || menu.comingSoon ? styles.locked : ''}`}
-                                            onClick={() => !menu.locked && !menu.comingSoon && setActiveSubMenu(menu.key)}
-                                            disabled={menu.locked || menu.comingSoon}
-                                        >
-                                            <menu.Icon size={18} />
-                                            <span>{menu.label}</span>
-                                            {menu.isNew && <span className={styles.newBadge}>NEW</span>}
-                                            {menu.comingSoon && <span className={styles.comingSoonBadge}>준비 중</span>}
-                                            {menu.locked && <LockIcon size={12} />}
-                                        </button>
-                                    )
-                                ))
-                            )}
-                        </nav>
-                    </div>
-                </div>
-            )}
-
-            {/* ========== 메인 컨텐츠 ========== */}
-            <div className={`${styles.mainContent} ${activeMenu === 'home' ? styles.mainContentHome : ''}`}>
-                <div className={`${styles.mainCard} ${activeMenu === 'home' ? styles.mainCardHome : ''}`}>
-                    {/* Wave 노드 에디터 (분리된 View) */}
-                    {activeMenu === 'wave' ? (
-                        <WaveView />
-                    ) : activeMenu === 'home' ? (
-                        /* ========== 홈 화면 (분리된 View) ========== */
-                        <HomeView
-                            isLoading={isLoading}
-                            setIsLoading={setIsLoading}
-                            onNavigate={handleMenuChange}
-                            onImageClick={setLightboxImage}
-                            isMobile={isMobile}
-                            onError={(err) => setError(err)}
-                        />
-                    ) : activeMenu === 'library' ? (
-                        /* ========== 라이브러리 (분리된 View) ========== */
-                        <LibraryView
-                            activeSubMenu={activeSubMenu}
-                            imageHistory={imageHistory}
-                            onImageClick={setLightboxImage}
-                            onDeleteImage={(item) => setImageHistory(prev => prev.filter(h => h.id !== item.id))}
-                            onToggleFavorite={handleFeaturedClick}
-                            isLoading={isLoading}
-                        />
-                    ) : (
-                        <div className={styles.detailLayout}>
-                            {/* 프롬프트 입력 카드 - copilot, chat, design 제외 */}
-                            {activeMenu !== 'copilot' && activeMenu !== 'chat' && activeMenu !== 'design' && (
-                                <div className={styles.promptCard}>
-                                    <div className={styles.promptCardInner}>
-                                        <div
-                                            className={`${styles.promptLogo} ${isEnhancing ? styles.enhancing : ''}`}
-                                            onClick={() => !isEnhancing && handleEnhancePrompt(activeMenu === 'video' ? 'video' : 'image')}
-                                            title={isEnhancing ? '프롬프트 개선 중...' : '오렌지웨일에게 프롬프트 개선 요청'}
-                                        >
-                                            <OrangeWhaleIcon />
-                                        </div>
-                                        <input
-                                            type="text"
-                                            className={styles.promptInput}
-                                            placeholder={activeMenu === 'video' ? '영상으로 만들고 싶은 장면을 설명해주세요...' : '어떤 이미지를 만들고 싶으세요?'}
-                                            value={activeMenu === 'video' ? videoPrompt : prompt}
-                                            onChange={(e) => activeMenu === 'video' ? setVideoPrompt(e.target.value) : setPrompt(e.target.value)}
-                                            onKeyDown={(e) => {
-                                                if (e.key === 'Enter' && !e.shiftKey) {
-                                                    e.preventDefault();
-                                                    if (activeMenu === 'video') {
-                                                        handleGenerateVideo();
-                                                    } else {
-                                                        handleGenerate();
-                                                    }
-                                                }
-                                            }}
-                                            disabled={isLoading || isEnhancing}
-                                        />
-                                        <button
-                                            className={styles.promptGenerate}
-                                            onClick={() => activeMenu === 'video' ? handleGenerateVideo() : handleGenerate()}
-                                            disabled={isLoading || isEnhancing || (activeMenu === 'video' ? !videoPrompt.trim() : !prompt.trim())}
-                                        >
-                                            {isLoading ? '생성 중...' : '생성'}
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* 카드 2: 옵션 + 결과물 + 아카이브 */}
-                            <div className={styles.contentCard}>
-                                <div className={styles.studioContainer}>
-                                {/* Copilot/Chat일 때는 채팅 UI, 아니면 옵션 + 이미지 + 아카이브 */}
-                                {activeMenu === 'copilot' ? (
-                        /* ========== Copilot iframe 임베드 ========== */
-                        <div className={styles.chatContainer}>
-                            <div className={`content-box ${styles.chatCard}`}>
-                                <div className={styles.cardHeader}>
-                                    <span className={styles.cardTitle}>오렌지웨일 - 실험실</span>
-                                </div>
-                                <iframe
-                                    src="https://copilotstudio.microsoft.com/environments/Default-76fd3902-13e6-49bd-a588-896a153face3/bots/cr1c2_fmGlobalPr/webchat?__version__=2"
-                                    frameBorder="0"
-                                    className={styles.copilotIframe}
-                                    title="Copilot Assistant"
-                                />
-                            </div>
-                        </div>
-                    ) : activeMenu === 'chat' ? (
-                        /* ========== 대화형 - 전문가 챗봇 (v2: 내부 API 호출) ========== */
-                        <div className={styles.conversationalContainer}>
-                            <ExpertChat fullWidth={true} />
-                        </div>
-                    ) : (
-                        <div className={styles.bottomRow}>
-                            {/* 왼쪽: 옵션 카드 */}
-                            <div className={`content-box ${styles.optionsCard}`}>
-                                <div className={styles.cardHeader}>
-                                    {activeSubMenu === 'id-photo-studio' ? (
-                                        <>
-                                            {idPhotoHeader.showBack && (
-                                                <button
-                                                    className={styles.cardBackBtn}
-                                                    onClick={idPhotoHeader.onBack}
-                                                >
-                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                                                    </svg>
-                                                </button>
-                                            )}
-                                            <span className={styles.cardTitle}>{idPhotoHeader.title}</span>
-                                        </>
-                                    ) : activeSubMenu === 'free-photo' ? (
-                                        <>
-                                            {freePhotoHeader.showBack && (
-                                                <button
-                                                    className={styles.cardBackBtn}
-                                                    onClick={freePhotoHeader.onBack}
-                                                >
-                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                                                    </svg>
-                                                </button>
-                                            )}
-                                            <span className={styles.cardTitle}>{freePhotoHeader.title}</span>
-                                        </>
-                                    ) : (
-                                        <span className={styles.cardTitle}>옵션</span>
-                                    )}
-                                </div>
-                                <div className={styles.optionsArea}>
-                                    {activeMenu === 'tools' ? (
-                                        /* ========== 편집 도구 (분리된 View) ========== */
-                                        <ToolsView
-                                            activeSubMenu={activeSubMenu}
-                                            isLoading={isLoading}
-                                            setIsLoading={setIsLoading}
-                                            onError={(err) => setError(err)}
-                                        />
-                                    ) : activeMenu === 'image' && !['location-composite', 'virtual-tryon', 'background-gen'].includes(activeSubMenu) ? (
-                                        /* ========== 이미지 생성 (분리된 View) - 합성 기능 제외 ========== */
-                                        <ImageView
-                                            activeSubMenu={activeSubMenu}
-                                            prompt={prompt}
-                                            isLoading={isLoading}
-                                            setIsLoading={setIsLoading}
-                                            onIdPhotoHeaderChange={setIdPhotoHeader}
-                                            onFreePhotoHeaderChange={setFreePhotoHeader}
-                                            onError={(err) => setError(err)}
-                                        />
-                                    ) : activeMenu === 'image' && ['location-composite', 'virtual-tryon', 'background-gen'].includes(activeSubMenu) ? (
-                                        /* ========== 합성 기능 (장소합성/가상피팅/배경생성) ========== */
-                                        <CompositePhoto
-                                            mode={activeSubMenu === 'location-composite' ? 'location' : activeSubMenu === 'virtual-tryon' ? 'tryon' : 'background'}
-                                            hideModeSelector={true}
-                                            // Location 모드
-                                            backgroundImage={compositeBackground}
-                                            foregroundImage={compositeForeground}
-                                            onBackgroundImageChange={setCompositeBackground}
-                                            onForegroundImageChange={setCompositeForeground}
-                                            backgroundInputRef={compositeBackgroundRef}
-                                            foregroundInputRef={compositeForegroundRef}
-                                            // Try-On 모드
-                                            humanImage={compositeHuman}
-                                            garmentImage={compositeGarment}
-                                            onHumanImageChange={setCompositeHuman}
-                                            onGarmentImageChange={setCompositeGarment}
-                                            humanInputRef={compositeHumanRef}
-                                            garmentInputRef={compositeGarmentRef}
-                                            garmentCategory={compositeGarmentCategory}
-                                            onGarmentCategoryChange={setCompositeGarmentCategory}
-                                            garmentDescription={compositeGarmentDescription}
-                                            onGarmentDescriptionChange={setCompositeGarmentDescription}
-                                            // Background 모드
-                                            sourceImage={compositeSource}
-                                            onSourceImageChange={setCompositeSource}
-                                            sourceInputRef={compositeSourceRef}
-                                            backgroundPrompt={compositeBackgroundPrompt}
-                                            onBackgroundPromptChange={setCompositeBackgroundPrompt}
-                                            // 드래그 & 드롭
-                                            onDragOver={handleCompositeDragOver}
-                                            onDragLeave={handleCompositeDragLeave}
-                                            onDrop={handleCompositeDrop}
-                                            // 파일 입력
-                                            onFileInputChange={handleCompositeFileChange}
-                                            // 생성
-                                            isLoading={compositeLoading}
-                                            onGenerate={handleCompositeGenerate}
-                                            // 결과
-                                            resultImage={compositeResult}
-                                            onDownload={handleCompositeDownload}
-                                            onRetry={handleCompositeRetry}
-                                            // 에러
-                                            error={compositeError}
-                                        />
-                                    ) : activeMenu === 'video' ? (
-                                        /* ========== 영상 생성 (분리된 View) ========== */
-                                        <VideoView
-                                            activeSubMenu={activeSubMenu}
-                                            videoPrompt={videoPrompt}
-                                            isLoading={isLoading}
-                                            setIsLoading={setIsLoading}
-                                            onError={(err) => setError(err)}
-                                        />
-                                    ) : activeMenu === 'design' ? (
-                                        /* ========== 디자인 어시스턴트 (분리된 View) ========== */
-                                        <DesignView
-                                            activeSubMenu={activeSubMenu}
-                                            isLoading={isLoading}
-                                            setIsLoading={setIsLoading}
-                                            onMockupGenerated={(result) => {
-                                                // 목업 결과를 imageHistory에 추가
-                                                const newMockup = {
-                                                    id: Date.now().toString(),
-                                                    image: result.url,
-                                                    type: 'mockup',
-                                                    style: result.style,
-                                                    mockupLabel: result.mockupLabel,
-                                                    createdAt: new Date().toISOString(),
-                                                    is_featured: false,
-                                                };
-                                                setImageHistory(prev => [newMockup, ...prev]);
-                                            }}
-                                            onError={(err) => setError(err)}
-                                        />
-                                    ) : (
-                                        /* ========== 자유 생성 UI (기본) ========== */
-                                        <FreeGeneration
-                                            selectedModel={normalizedModel}
-                                            onModelChange={handleModelChange}
-                                            qualityOptions={QUALITY_OPTIONS}
-                                            quality={quality}
-                                            onQualityChange={setQuality}
-                                            aspectRatios={ASPECT_RATIOS}
-                                            aspectRatio={aspectRatio}
-                                            onAspectRatioChange={setAspectRatio}
-                                            stylePresets={STYLE_PRESETS}
-                                            stylePreset={stylePreset}
-                                            onStylePresetChange={setStylePreset}
-                                            negativePrompt={negativePrompt}
-                                            onNegativePromptChange={setNegativePrompt}
-                                            negativePresets={NEGATIVE_PRESETS}
-                                            selectedNegativePresets={selectedNegativePresets}
-                                            onNegativePresetToggle={handleNegativePresetToggle}
-                                            isLoading={isLoading}
-                                        />
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* 가운데: 이미지 카드 */}
-                            <div className={`content-box ${styles.imageCard}`}>
-                                <div className={styles.cardHeader}>
-                                    <span className={styles.cardTitle}>결과물</span>
-                                </div>
-                                <div className={styles.imageArea}>
-                                    {error && (
-                                        <div className={styles.errorBox}>
-                                            <span className={styles.errorIcon}>⚠️</span>
-                                            <div className={styles.errorContent}>
-                                                <div className={styles.errorMessage}>
-                                                    {typeof error === 'string' ? error : error.message}
-                                                </div>
-                                                {error.detail && (
-                                                    <div className={styles.errorDetail}>
-                                                        {error.detail}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* 로딩 중일 때 */}
-                                    {isLoading && (
-                                        <div
-                                            ref={loadingBoxRef}
-                                            className={`${styles.imagePlaceholder} ${styles.loading}`}
-                                        >
-                                            {/* SVG 테두리 애니메이션 - 사각형 라인을 따라 이동 */}
-                                            {boxSize.width > 0 && (
-                                                <svg
-                                                    className={styles.borderSvg}
-                                                    width={boxSize.width + 2}
-                                                    height={boxSize.height + 2}
-                                                    viewBox={`0 0 ${boxSize.width + 2} ${boxSize.height + 2}`}
-                                                >
-                                                    <rect
-                                                        className={styles.borderRect}
-                                                        x="1"
-                                                        y="1"
-                                                        width={boxSize.width}
-                                                        height={boxSize.height}
-                                                        rx="7"
-                                                        ry="7"
-                                                        pathLength="100"
-                                                    />
-                                                </svg>
-                                            )}
-                                            <div className={styles.spinner}>
-                                                <div className={`${styles.whaleLoader} ${styles.whaleSwim}`}>
-                                                    <OrangeWhaleIcon size={64} />
-                                                </div>
-                                                <span>Orange Whale is creating...</span>
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* 이미지 히스토리 */}
-                                    {imageHistory.map((item) => (
-                                        <div key={item.id} className={styles.imageItem}>
-                                            <div className={styles.imageTimestamp}>{formatDateTime(item.createdAt)}</div>
-                                            <div className={styles.imageRow}>
-                                                {/* 왼쪽: 정보카드 + 도구카드 (고정 너비) */}
-                                                <div className={styles.infoColumn}>
-                                                    <div className={styles.imageInfo}>
-                                                        <div className={styles.infoHeader}>
-                                                            <span className={styles.infoTitle}>{item.type === 'video' ? '영상 정보' : item.type === 'design' ? '디자인 정보' : item.type === 'mockup' ? '목업 정보' : item.type === 'inpainting' ? '부분 편집 정보' : '이미지 정보'}</span>
-                                                            <div className={styles.infoHeaderActions}>
-                                                                <button
-                                                                    className={`${styles.infoActionBtn} ${item.is_featured ? styles.infoActionBtnActive : ''}`}
-                                                                    onClick={() => handleFeaturedClick(item)}
-                                                                    title={item.is_featured ? '추천 해제' : '홈 갤러리에 추천'}
-                                                                >
-                                                                    <StarIcon size={14} filled={item.is_featured} />
-                                                                </button>
-                                                                <button
-                                                                    className={styles.infoActionBtn}
-                                                                    onClick={() => handleDeleteClick(item.id)}
-                                                                    title="삭제"
-                                                                >
-                                                                    <TrashIcon size={14} />
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div className={styles.infoDivider} />
-                                                        {/* 프롬프트 섹션 - 디자인/목업이 아닌 경우에만 표시 */}
-                                                        {item.type !== 'design' && item.type !== 'mockup' && item.type !== 'inpainting' && (
-                                                            <div
-                                                                className={`${styles.infoSection} ${styles.clickable}`}
-                                                                onClick={() => setExpandedPromptId(expandedPromptId === item.id ? null : item.id)}
-                                                            >
-                                                                <span className={styles.infoLabel}>입력 프롬프트</span>
-                                                                <p className={`${styles.infoText} ${expandedPromptId === item.id ? styles.infoTextExpanded : styles.infoTextClamped}`}>
-                                                                    {item.prompt}
-                                                                </p>
-                                                            </div>
-                                                        )}
-                                                        {(item.type === 'design' || item.type === 'mockup' || item.type === 'inpainting' || expandedPromptId !== item.id) && (
-                                                            <div className={styles.infoBadges}>
-                                                                {item.type === 'video' ? (
-                                                                    /* 영상 정보 */
-                                                                    <>
-                                                                        <div className={styles.badgeGroup}>
-                                                                            <span className={styles.badgeLabel}>생성</span>
-                                                                            <span className={`${styles.badge} ${styles.badgePrimary}`}>Veo 3.1</span>
-                                                                        </div>
-                                                                        <div className={styles.badgeGroup}>
-                                                                            <span className={styles.badgeLabel}>길이</span>
-                                                                            <span className={styles.badge}>{item.metadata?.duration || '4'}초</span>
-                                                                        </div>
-                                                                        <div className={styles.badgeGroup}>
-                                                                            <span className={styles.badgeLabel}>해상도</span>
-                                                                            <span className={styles.badge}>{item.metadata?.resolution || '720p'}</span>
-                                                                        </div>
-                                                                        <div className={styles.badgeGroup}>
-                                                                            <span className={styles.badgeLabel}>비율</span>
-                                                                            <span className={styles.badge}>{item.metadata?.aspectRatio || item.aspectRatio || '16:9'}</span>
-                                                                        </div>
-                                                                        <div className={styles.badgeGroup}>
-                                                                            <span className={styles.badgeLabel}>오디오</span>
-                                                                            <span className={styles.badge}>{item.metadata?.hasAudio ? '포함' : '없음'}</span>
-                                                                        </div>
-                                                                    </>
-                                                                ) : item.type === 'design' ? (
-                                                                    /* 디자인 이미지 - 타입과 비율만 표시 */
-                                                                    <>
-                                                                        <div className={styles.badgeGroup}>
-                                                                            <span className={styles.badgeLabel}>타입</span>
-                                                                            <span className={`${styles.badge} ${styles.badgePrimary}`}>{item.designLabel}</span>
-                                                                        </div>
-                                                                        <div className={styles.badgeGroup}>
-                                                                            <span className={styles.badgeLabel}>비율</span>
-                                                                            <span className={styles.badge}>{item.aspectRatio}</span>
-                                                                        </div>
-                                                                    </>
-                                                                ) : item.type === 'mockup' ? (
-                                                                    /* 목업 이미지 - 목업 타입과 비율 표시 */
-                                                                    <>
-                                                                        <div className={styles.badgeGroup}>
-                                                                            <span className={styles.badgeLabel}>타입</span>
-                                                                            <span className={`${styles.badge} ${styles.badgePrimary}`}>{item.mockupLabel}</span>
-                                                                        </div>
-                                                                        <div className={styles.badgeGroup}>
-                                                                            <span className={styles.badgeLabel}>비율</span>
-                                                                            <span className={styles.badge}>{item.aspectRatio || '자동'}</span>
-                                                                        </div>
-                                                                    </>
-                                                                ) : item.type === 'inpainting' ? (
-                                                                    /* 부분 편집 - 프롬프트만 표시 */
-                                                                    <div className={styles.infoSection}>
-                                                                        <span className={styles.infoLabel}>수정 내용</span>
-                                                                        <p className={styles.infoText}>{item.prompt}</p>
-                                                                    </div>
-                                                                ) : item.prompt === '배경 없애기 (투명)' ? (
-                                                                    /* 배경 제거 이미지 - 간소화된 정보 */
-                                                                    <div className={styles.badgeGroup}>
-                                                                        <span className={styles.badgeLabel}>처리</span>
-                                                                        <span className={`${styles.badge} ${styles.badgePrimary}`}>
-                                                                            {item.quality === 'edge-soft' ? '부드럽게' :
-                                                                                item.quality === 'edge-medium' ? '보통' :
-                                                                                    item.quality === 'edge-sharp' ? '선명하게' : '투명 배경'}
-                                                                        </span>
-                                                                    </div>
-                                                                ) : (
-                                                                    /* 일반 생성 이미지 - 전체 정보 */
-                                                                    <>
-                                                                        <div className={styles.badgeGroup}>
-                                                                            <span className={styles.badgeLabel}>생성</span>
-                                                                            <span className={`${styles.badge} ${styles.badgePrimary}`}>{item.imagenModel}</span>
-                                                                        </div>
-                                                                        <div className={styles.badgeGroup}>
-                                                                            <span className={styles.badgeLabel}>품질</span>
-                                                                            <span className={styles.badge}>{item.quality}</span>
-                                                                        </div>
-                                                                        <div className={styles.badgeGroup}>
-                                                                            <span className={styles.badgeLabel}>비율</span>
-                                                                            <span className={styles.badge}>{item.aspectRatio}</span>
-                                                                        </div>
-                                                                        {item.mood && (
-                                                                            <div className={styles.badgeGroup}>
-                                                                                <span className={styles.badgeLabel}>무드</span>
-                                                                                <span className={styles.badge}>{item.mood}</span>
-                                                                            </div>
-                                                                        )}
-                                                                        <div className={styles.badgeGroupFull}>
-                                                                            <span className={styles.badgeLabel}>스타일</span>
-                                                                            <div className={styles.badgeWrap}>
-                                                                                {item.analysisStatus === 'pending' ? (
-                                                                                    <span className={`${styles.badge} ${styles.badgeLoading}`}>분석 중...</span>
-                                                                                ) : item.detectedStyles?.length > 0 ? (
-                                                                                    item.detectedStyles.map((style, idx) => (
-                                                                                        <span key={idx} className={styles.badge}>{style}</span>
-                                                                                    ))
-                                                                                ) : (
-                                                                                    <span className={styles.badge}>-</span>
-                                                                                )}
-                                                                            </div>
-                                                                        </div>
-                                                                    </>
-                                                                )}
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    {/* 도구 카드 */}
-                                                    <div className={styles.toolsCard}>
-                                                        <button
-                                                            className={styles.toolItem}
-                                                            onClick={() => handleDownload(item)}
-                                                        >
-                                                            <DownloadIcon size={20} />
-                                                            <span>다운로드</span>
-                                                        </button>
-                                                        {item.type !== 'video' && item.prompt !== '배경 없애기 (투명)' && (
-                                                            <>
-                                                                <button
-                                                                    className={styles.toolItem}
-                                                                    onClick={() => handleSendToRemoveBg(item)}
-                                                                >
-                                                                    <RemoveBgIcon size={20} />
-                                                                    <span>배경제거</span>
-                                                                </button>
-                                                                <button
-                                                                    className={styles.toolItem}
-                                                                    onClick={() => handleSendToVideo(item)}
-                                                                >
-                                                                    <VideoGenIcon size={20} />
-                                                                    <span>영상</span>
-                                                                </button>
-                                                                <button
-                                                                    className={styles.toolItem}
-                                                                    onClick={() => handleSendToUpscale(item)}
-                                                                >
-                                                                    <UpscaleIcon size={20} />
-                                                                    <span>업스케일</span>
-                                                                </button>
-                                                                <button
-                                                                    className={styles.toolItem}
-                                                                    onClick={() => handleSendToImageToImage(item)}
-                                                                >
-                                                                    <ImageToIcon size={20} />
-                                                                    <span>이미지수정</span>
-                                                                </button>
-                                                                <button
-                                                                    className={styles.toolItem}
-                                                                    onClick={() => handleSendToInpainting(item)}
-                                                                >
-                                                                    <InpaintToIcon size={20} />
-                                                                    <span>부분수정</span>
-                                                                </button>
-                                                            </>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                                {/* 오른쪽: 이미지/영상 */}
-                                                <div
-                                                    className={styles.imageWrapper}
-                                                    onClick={() => setLightboxImage(item)}
-                                                >
-                                                    {item.type === 'video' ? (
-                                                        <video
-                                                            src={item.image}
-                                                            className={styles.resultImage}
-                                                            muted
-                                                            loop
-                                                            playsInline
-                                                            onMouseEnter={(e) => e.target.play().catch(() => {})}
-                                                            onMouseLeave={(e) => { e.target.pause(); e.target.currentTime = 0; }}
-                                                        />
-                                                    ) : (
-                                                        <img src={item.image} alt={item.prompt} className={styles.resultImage} />
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-
-                                    {/* 무한 스크롤 감지 + 로딩 (결과물) */}
-                                    {imageHistory.length > 0 && (
-                                        <div ref={resultEndRef} className={styles.archiveScrollEnd}>
-                                            {isLoadingMore && (
-                                                <div className={styles.archiveLoadingMore}>
-                                                    <span>불러오는 중...</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-
-                                    {/* 이미지가 없고 로딩 중이 아닐 때 */}
-                                    {imageHistory.length === 0 && !isLoading && (
-                                        <div className={styles.imagePlaceholder}>
-                                            <span className={styles.placeholderText}>결과물이 여기에 표시됩니다</span>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-
-                            {/* 오른쪽: 아카이브 카드 */}
-                            <div className={`content-box ${styles.archiveCard}`}>
-                                <div className={styles.cardHeader}>
-                                    <span className={styles.cardTitle}>아카이브</span>
-                                    <span className={styles.archiveCount}>{imageHistory.length}개</span>
-                                </div>
-                                <div className={styles.archiveArea}>
-                                    {imageHistory.length === 0 ? (
-                                        <div className={styles.archiveEmpty}>
-                                            <span>결과물이 없습니다</span>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            {/* 이미지/영상 */}
-                                            {imageHistory.map((item) => (
-                                                <div key={item.id} className={styles.archiveItem}>
-                                                    <div className={styles.archiveDateRow}>
-                                                        <span className={styles.archiveDate}>
-                                                            {formatDateTime(item.createdAt)}
-                                                        </span>
-                                                        <button
-                                                            className={styles.archiveDateDeleteBtn}
-                                                            onClick={() => handleDeleteClick(item.id)}
-                                                            title="삭제"
-                                                        >
-                                                            <TrashIcon />
-                                                        </button>
-                                                    </div>
-                                                    <div
-                                                        className={styles.archiveThumbnail}
-                                                        onClick={() => setLightboxImage(item)}
-                                                    >
-                                                        {item.type === 'video' ? (
-                                                            <>
-                                                                <video
-                                                                    src={item.image}
-                                                                    muted
-                                                                    loop
-                                                                    playsInline
-                                                                    onMouseEnter={(e) => e.target.play().catch(() => {})}
-                                                                    onMouseLeave={(e) => { e.target.pause(); e.target.currentTime = 0; }}
-                                                                />
-                                                                <div className={styles.videoPlayIcon}>▶</div>
-                                                            </>
-                                                        ) : (
-                                                            <img src={item.image} alt={item.prompt} />
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                            {/* 무한 스크롤 감지 + 로딩 */}
-                                            <div ref={archiveEndRef} className={styles.archiveScrollEnd}>
-                                                {isLoadingMore && (
-                                                    <div className={styles.archiveLoadingMore}>
-                                                        <span>불러오는 중...</span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* 삭제 확인 모달 - ProjectEditModal 패턴 (confirmedMessage 사용) */}
-                    <ConfirmDialog
-                        isOpen={showDeleteConfirm}
-                        onCancel={handleDeleteCancel}
-                        onConfirm={handleDeleteConfirm}
-                        message={deleteTargetItem?.type === 'video'
-                            ? "영상을 삭제하시겠습니까?"
-                            : "이미지를 삭제하시겠습니까?"}
-                        confirmedMessage="삭제하였습니다"
-                        cancelText="아니오"
-                        confirmText="예"
-                        variant="delete"
-                    />
-
-                    {/* 추천 확인 모달 */}
-                    <ConfirmDialog
-                        isOpen={showFeaturedConfirm}
-                        onCancel={handleFeaturedCancel}
-                        onConfirm={handleFeaturedConfirm}
-                        message={featuredTargetItem?.is_featured
-                            ? "홈 갤러리에서 제외하시겠습니까?"
-                            : "이 작품을 홈 갤러리에 추천하시겠습니까?"}
-                        confirmedMessage={featuredTargetItem?.is_featured ? "추천이 해제되었습니다" : "홈 갤러리에 추가되었습니다"}
-                        cancelText="아니오"
-                        confirmText="예"
-                    />
-                                </div>
-                            </div>
-                        </div>
                     )}
                 </div>
             </div>
 
-            {/* 라이트박스 - 홈과 하위페이지 모두에서 사용 */}
+            {/* ========== 삭제 확인 모달 ========== */}
+            <ConfirmDialog
+                isOpen={showDeleteConfirm}
+                onCancel={handleDeleteCancel}
+                onConfirm={handleDeleteConfirm}
+                message={deleteTargetItem?.type === 'video'
+                    ? "영상을 삭제하시겠습니까?"
+                    : "이미지를 삭제하시겠습니까?"}
+                confirmedMessage="삭제하였습니다"
+                cancelText="아니오"
+                confirmText="예"
+                variant="delete"
+            />
+
+            {/* ========== 추천 확인 모달 ========== */}
+            <ConfirmDialog
+                isOpen={showFeaturedConfirm}
+                onCancel={handleFeaturedCancel}
+                onConfirm={handleFeaturedConfirm}
+                message={featuredTargetItem?.is_featured
+                    ? "홈 갤러리에서 제외하시겠습니까?"
+                    : "이 작품을 홈 갤러리에 추천하시겠습니까?"}
+                confirmedMessage={featuredTargetItem?.is_featured ? "추천이 해제되었습니다" : "홈 갤러리에 추가되었습니다"}
+                cancelText="아니오"
+                confirmText="예"
+            />
+
+            {/* ========== 라이트박스 ========== */}
             {lightboxImage && (
                 <div className={styles.lightboxOverlay} onClick={() => setLightboxImage(null)}>
                     <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
-                        {/* 이미지 + 툴바 래퍼 */}
                         <div className={styles.lightboxImageWrapper}>
                             {lightboxImage.type === 'video' ? (
                                 <video
@@ -3146,70 +2524,6 @@ const ImageGenPage = () => {
                             ) : (
                                 <img src={lightboxImage.image} alt={lightboxImage.prompt} />
                             )}
-                            {/* 툴바 - 이미지 위에 오버레이 */}
-                            <div className={styles.lightboxToolbar}>
-                                <button
-                                    className={styles.lightboxToolBtn}
-                                    onClick={() => handleDownload(lightboxImage)}
-                                    title="다운로드"
-                                >
-                                    <DownloadIcon size={18} />
-                                    <span>다운로드</span>
-                                </button>
-                                {lightboxImage.type !== 'video' && lightboxImage.prompt !== '배경 없애기 (투명)' && (
-                                    <>
-                                        <button
-                                            className={styles.lightboxToolBtn}
-                                            onClick={() => { handleSendToRemoveBg(lightboxImage); setLightboxImage(null); }}
-                                            title="배경 없애기"
-                                        >
-                                            <RemoveBgIcon size={18} />
-                                            <span>배경제거</span>
-                                        </button>
-                                        <button
-                                            className={styles.lightboxToolBtn}
-                                            onClick={() => { handleSendToVideo(lightboxImage); setLightboxImage(null); }}
-                                            title="영상 만들기"
-                                        >
-                                            <VideoGenIcon size={18} />
-                                            <span>영상</span>
-                                        </button>
-                                        <button
-                                            className={styles.lightboxToolBtn}
-                                            onClick={() => { handleSendToUpscale(lightboxImage); setLightboxImage(null); }}
-                                            title="업스케일"
-                                        >
-                                            <UpscaleIcon size={18} />
-                                            <span>업스케일</span>
-                                        </button>
-                                        <button
-                                            className={styles.lightboxToolBtn}
-                                            onClick={() => { handleSendToImageToImage(lightboxImage); setLightboxImage(null); }}
-                                            title="이미지 수정"
-                                        >
-                                            <ImageToIcon size={18} />
-                                            <span>이미지수정</span>
-                                        </button>
-                                        <button
-                                            className={styles.lightboxToolBtn}
-                                            onClick={() => { handleSendToInpainting(lightboxImage); setLightboxImage(null); }}
-                                            title="부분 수정"
-                                        >
-                                            <InpaintToIcon size={18} />
-                                            <span>부분수정</span>
-                                        </button>
-                                    </>
-                                )}
-                            </div>
-                        </div>
-                        <div className={styles.lightboxInfo}>
-                            <span className={styles.lightboxDate}>{formatDateTime(lightboxImage.createdAt)}</span>
-                            <p className={styles.lightboxPrompt}>{lightboxImage.prompt}</p>
-                            {lightboxImage.type === 'video' && lightboxImage.metadata && (
-                                <span className={styles.lightboxMeta}>
-                                    {lightboxImage.metadata.duration}초 · {lightboxImage.metadata.resolution}
-                                </span>
-                            )}
                         </div>
                         <button className={styles.lightboxClose} onClick={() => setLightboxImage(null)}>
                             ✕
@@ -3218,7 +2532,7 @@ const ImageGenPage = () => {
                 </div>
             )}
 
-            {/* 이미지 피커 모달 - 아카이브에서 이미지 선택 */}
+            {/* ========== 이미지 피커 모달 ========== */}
             {showImagePicker && (
                 <div className={styles.imagePickerOverlay} onClick={() => setShowImagePicker(false)}>
                     <div className={styles.imagePickerModal} onClick={(e) => e.stopPropagation()}>
@@ -3227,7 +2541,6 @@ const ImageGenPage = () => {
                             <button className={styles.imagePickerClose} onClick={() => setShowImagePicker(false)}>✕</button>
                         </div>
                         <div className={styles.imagePickerGrid}>
-                            {/* 시스템 업로드 버튼 */}
                             <div
                                 className={styles.imagePickerUploadBtn}
                                 onClick={() => {
@@ -3242,26 +2555,23 @@ const ImageGenPage = () => {
                                 <span className={styles.imagePickerUploadIcon}>+</span>
                                 <span className={styles.imagePickerUploadText}>파일 업로드</span>
                             </div>
-                            {/* 아카이브 이미지 목록 (이미지만, 영상 제외) - 페이지네이션 적용 */}
                             {imageHistory
                                 .filter(item => item.type !== 'video')
                                 .slice(0, imagePickerLimit)
                                 .map((item) => (
-                                <div
-                                    key={item.id}
-                                    className={styles.imagePickerItem}
-                                    onClick={() => handleSelectArchiveImage(item)}
-                                >
-                                    <img src={item.image} alt={item.prompt} />
-                                </div>
-                            ))}
-                            {/* 더보기 버튼 - 더 많은 이미지가 있을 때 표시 */}
+                                    <div
+                                        key={item.id}
+                                        className={styles.imagePickerItem}
+                                        onClick={() => handleSelectArchiveImage(item)}
+                                    >
+                                        <img src={item.image} alt={item.prompt} />
+                                    </div>
+                                ))}
                             {(imageHistory.filter(item => item.type !== 'video').length > imagePickerLimit || hasMoreImages) && (
                                 <button
                                     className={styles.imagePickerLoadMoreBtn}
                                     onClick={() => {
                                         setImagePickerLimit(prev => prev + 18);
-                                        // 현재 로드된 이미지가 부족하면 서버에서 추가 로드
                                         if (imageHistory.filter(item => item.type !== 'video').length <= imagePickerLimit + 18 && hasMoreImages) {
                                             loadImages(false);
                                         }
@@ -3280,5 +2590,7 @@ const ImageGenPage = () => {
     );
 };
 
+
 export default ImageGenPage;
-// force rebuild 2025년 12월 15일 월요일 20시 30분 27초 KST
+// force rebuild 2026년 2월 5일 목요일 18시 48분 KST (Import Fix)
+// End of component

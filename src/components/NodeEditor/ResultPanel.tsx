@@ -78,6 +78,22 @@ const RefreshIcon = () => (
   </svg>
 );
 
+const ChevronDownIcon = ({ expanded }: { expanded: boolean }) => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ transform: expanded ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.2s ease' }}
+  >
+    <polyline points="6 9 12 15 18 9" />
+  </svg>
+);
+
 const CloseIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <line x1="18" y1="6" x2="6" y2="18" />
@@ -110,6 +126,8 @@ interface ResultPanelProps {
   isLoadingHistory?: boolean;
   onDeleteHistoryItem?: (id: string) => void;
   onRefreshHistory?: () => void;
+  // 라이트박스 상태 콜백
+  onLightboxChange?: (isOpen: boolean) => void;
 }
 
 // 날짜 포맷 (오늘/어제/날짜)
@@ -194,11 +212,30 @@ const ResultPanel: React.FC<ResultPanelProps> = ({
   isLoadingHistory = false,
   onDeleteHistoryItem,
   onRefreshHistory,
+  onLightboxChange,
 }) => {
   const hasResults = results.length > 0 || Object.keys(finalOutputs).length > 0;
 
+  // 접기/펼치기 상태
+  const [isExpanded, setIsExpanded] = useState(true);
+
   // 라이트박스 상태
   const [lightboxItem, setLightboxItem] = useState<ImageHistoryItem | null>(null);
+
+  // 프롬프트 펼침 상태
+  const [isPromptExpanded, setIsPromptExpanded] = useState(false);
+
+  // 라이트박스 열기/닫기 핸들러
+  const openLightbox = (item: ImageHistoryItem) => {
+    setLightboxItem(item);
+    setIsPromptExpanded(false); // 프롬프트 초기화
+    onLightboxChange?.(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxItem(null);
+    onLightboxChange?.(false);
+  };
 
   // 캐러셀 인덱스
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -285,8 +322,8 @@ const ResultPanel: React.FC<ResultPanelProps> = ({
         className={`${styles.archivePanel} ${isOpen ? styles.open : ''}`}
         onWheel={handleWheel}
       >
-        {/* 패널 헤더 */}
-        <div className={styles.archiveHeader}>
+        {/* 패널 헤더 (클릭으로 접기/펼치기) */}
+        <div className={styles.archiveHeader} onClick={() => setIsExpanded(!isExpanded)}>
           <div className={styles.archiveTitle}>
             <GridIcon />
             <span>아카이브</span>
@@ -296,17 +333,22 @@ const ResultPanel: React.FC<ResultPanelProps> = ({
             {onRefreshHistory && (
               <button
                 className={styles.refreshBtn}
-                onClick={onRefreshHistory}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRefreshHistory();
+                }}
                 disabled={isLoadingHistory}
                 title="새로고침"
               >
                 <RefreshIcon />
               </button>
             )}
+            <ChevronDownIcon expanded={isExpanded} />
           </div>
         </div>
 
-        {/* 패널 컨텐츠 */}
+        {/* 패널 컨텐츠 (접을 수 있음) */}
+        {isExpanded && (
         <div className={styles.archiveContent}>
           {/* 실행 중 - 고래 애니메이션 */}
           {isRunning && (
@@ -479,7 +521,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({
                     </div>
                     <div
                       className={styles.historyThumbnail}
-                      onClick={() => setLightboxItem(item)}
+                      onClick={() => openLightbox(item)}
                     >
                       {item.type === 'video' ? (
                         <>
@@ -526,13 +568,14 @@ const ResultPanel: React.FC<ResultPanelProps> = ({
             </div>
           )}
         </div>
+        )}
       </div>
 
       {/* 라이트박스 */}
       {lightboxItem && (
-        <div className={styles.lightboxOverlay} onClick={() => setLightboxItem(null)}>
+        <div className={styles.lightboxOverlay} onClick={closeLightbox}>
           <div className={styles.lightboxContent} onClick={(e) => e.stopPropagation()}>
-            <button className={styles.lightboxClose} onClick={() => setLightboxItem(null)}>
+            <button className={styles.lightboxClose} onClick={closeLightbox}>
               <CloseIcon />
             </button>
             {lightboxItem.type === 'video' ? (
@@ -547,7 +590,28 @@ const ResultPanel: React.FC<ResultPanelProps> = ({
               <img src={lightboxItem.image} alt={lightboxItem.prompt} className={styles.lightboxImage} />
             )}
             <div className={styles.lightboxInfo}>
-              <p className={styles.lightboxPrompt}>{lightboxItem.prompt}</p>
+              {/* 프롬프트 - 기본 접힘 */}
+              {lightboxItem.prompt && (
+                <div className={styles.lightboxPromptWrapper}>
+                  {isPromptExpanded ? (
+                    <p className={styles.lightboxPrompt}>{lightboxItem.prompt}</p>
+                  ) : (
+                    <p className={styles.lightboxPromptCollapsed}>
+                      {lightboxItem.prompt.length > 50
+                        ? `${lightboxItem.prompt.substring(0, 50)}...`
+                        : lightboxItem.prompt}
+                    </p>
+                  )}
+                  {lightboxItem.prompt.length > 50 && (
+                    <button
+                      className={styles.promptToggleBtn}
+                      onClick={() => setIsPromptExpanded(!isPromptExpanded)}
+                    >
+                      {isPromptExpanded ? '접기' : '더보기'}
+                    </button>
+                  )}
+                </div>
+              )}
               <div className={styles.lightboxActions}>
                 <button
                   className={styles.lightboxBtn}

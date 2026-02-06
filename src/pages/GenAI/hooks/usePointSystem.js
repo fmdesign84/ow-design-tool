@@ -26,8 +26,8 @@ export const usePointSystem = () => {
                 limit: data.limit || 500,
                 remaining: data.remaining || 500
             });
-        } catch (err) {
-            console.error('Failed to load point usage:', err);
+        } catch {
+            // API 실패 시 기본값 유지 (500P)
         }
     }, []);
 

@@ -6,6 +6,8 @@ import React, { useCallback, useRef, useState, useEffect, useMemo } from 'react'
 import {
   ReactFlow,
   ReactFlowProvider,
+  Background,
+  BackgroundVariant,
   Connection,
   Edge,
   Node,
@@ -273,6 +275,7 @@ interface NodeEditorProps {
   onSave?: (workflow: { nodes: Node[]; edges: Edge[] }) => void;
   onLoad?: () => { nodes: Node[]; edges: Edge[] } | null;
   embedded?: boolean;
+  onLightboxChange?: (isOpen: boolean) => void;
 }
 
 /**
@@ -293,6 +296,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
   initialWorkflowName = '새 워크플로우',
   onSave,
   onLoad,
+  onLightboxChange,
 }) => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -1036,7 +1040,14 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
             selectionOnDrag={currentTool === 'select'}
             multiSelectionKeyCode="Shift"
             zoomOnScroll={!isNodePickerOpen}
-          />
+          >
+            <Background
+              variant={BackgroundVariant.Dots}
+              gap={20}
+              size={1}
+              color="#E5E7EB"
+            />
+          </ReactFlow>
 
           {/* 플로팅 툴바 (레퍼런스 스타일) */}
           {nodes.length > 0 && (
@@ -1186,6 +1197,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
                 isLoadingHistory={isLoadingHistory}
                 onDeleteHistoryItem={handleDeleteHistoryItem}
                 onRefreshHistory={loadImageHistory}
+                onLightboxChange={onLightboxChange}
               />
             </div>
           )}

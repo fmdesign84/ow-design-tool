@@ -6,8 +6,12 @@
 import React from 'react';
 import { NodeEditor } from '../../../components/NodeEditor';
 
-export const WaveView: React.FC = () => {
-  return <NodeEditor embedded />;
+interface WaveViewProps {
+  onLightboxChange?: (isOpen: boolean) => void;
+}
+
+export const WaveView: React.FC<WaveViewProps> = ({ onLightboxChange }) => {
+  return <NodeEditor embedded onLightboxChange={onLightboxChange} />;
 };
 
 export default WaveView;

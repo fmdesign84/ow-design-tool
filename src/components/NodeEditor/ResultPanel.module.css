@@ -3,42 +3,38 @@
  * Wave 스타일 플로팅 아카이브 패널
  */
 
-/* ===== 아카이브 패널 (플로팅 윈도우 - 왼쪽 툴바와 동일 스타일) ===== */
+/* ===== 아카이브 패널 (웨이브 리스트 아래에 위치) ===== */
 .archivePanel {
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  width: 220px;
-  max-height: 400px;
+  width: 100%;
+  max-height: 320px;
   background: #FFFFFF;
-  border: 1px solid #E5E7EB;
+  border: 1px solid #E8E8E8;
   display: flex;
   flex-direction: column;
-  opacity: 0;
-  transform: translateY(10px) scale(0.95);
-  pointer-events: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 100;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
-  padding: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
+/* open 상태는 더 이상 표시 토글이 아님 - 항상 표시 */
 .archivePanel.open {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
+  /* 이제 항상 표시됨 */
 }
 
-/* 패널 헤더 */
+/* 패널 헤더 (클릭 가능) */
 .archiveHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 4px 8px 4px;
-  border-bottom: 1px solid #F3F4F6;
+  padding: 12px 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease;
   flex-shrink: 0;
-  margin-bottom: 4px;
+}
+
+.archiveHeader:hover {
+  background: #F9FAFB;
 }
 
 .archiveTitle {
@@ -47,11 +43,11 @@
   gap: 6px;
   font-size: 12px;
   font-weight: 600;
-  color: #374151;
+  color: #3C3C3C;
 }
 
 .archiveIcon {
-  color: #6B7280;
+  color: #757575;
 }
 
 .archiveCloseBtn {
@@ -63,22 +59,34 @@
   background: transparent;
   border: none;
   border-radius: 4px;
-  color: #9CA3AF;
+  color: #9E9E9E;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .archiveCloseBtn:hover {
   background: #F0F0F0;
-  color: #374151;
+  color: #3C3C3C;
 }
 
 /* 패널 컨텐츠 */
 .archiveContent {
   flex: 1;
-  padding: 0;
+  padding: 8px;
   overflow-y: auto;
   min-height: 0;
+  max-height: 260px;
+  border-top: 1px solid #F5F6F8;
+}
+
+/* Chevron 아이콘 */
+.chevronIcon {
+  color: #9E9E9E;
+  transition: transform 0.2s ease;
+}
+
+.chevronIcon.collapsed {
+  transform: rotate(-90deg);
 }
 
 /* ===== 실행 중 상태 ===== */
@@ -113,14 +121,14 @@
 .runningText {
   font-size: 12px;
   font-weight: 500;
-  color: #6B7280;
+  color: #757575;
   margin: 0 0 10px 0;
 }
 
 .progressBar {
   width: 80px;
   height: 3px;
-  background: #F3F4F6;
+  background: #F5F6F8;
   border-radius: 2px;
   overflow: hidden;
 }
@@ -168,7 +176,7 @@
 .errorNode {
   margin-top: 6px;
   font-size: 10px;
-  color: #9CA3AF;
+  color: #9E9E9E;
 }
 
 /* ===== 완료 상태 ===== */
@@ -326,7 +334,7 @@
   border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
-  color: #374151;
+  color: #3C3C3C;
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
@@ -350,12 +358,12 @@
 }
 
 .mediaBtn.secondary {
-  background: #374151;
+  background: #3C3C3C;
   color: #FFFFFF;
 }
 
 .mediaBtn.secondary:hover {
-  background: #1F2937;
+  background: #3C3C3C;
 }
 
 /* ===== 메타데이터 섹션 ===== */
@@ -375,7 +383,7 @@
   display: block;
   font-size: 10px;
   font-weight: 600;
-  color: #9CA3AF;
+  color: #9E9E9E;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 4px;
@@ -383,13 +391,13 @@
 
 .resultValue {
   font-size: 13px;
-  color: #1F2937;
+  color: #3C3C3C;
   word-break: break-all;
 }
 
 .resultEmpty {
   font-size: 13px;
-  color: #D1D5DB;
+  color: #E8E8E8;
 }
 
 .resultLink {
@@ -409,7 +417,7 @@
   border-radius: 8px;
   font-family: 'SF Mono', Monaco, monospace;
   font-size: 10px;
-  color: #374151;
+  color: #3C3C3C;
   overflow-x: auto;
   max-height: 120px;
   margin: 0;
@@ -426,7 +434,7 @@
 .detailsSummary {
   font-size: 12px;
   font-weight: 600;
-  color: #6B7280;
+  color: #757575;
   cursor: pointer;
   user-select: none;
   padding: 6px 0;
@@ -483,12 +491,12 @@
   flex: 1;
   font-size: 12px;
   font-weight: 500;
-  color: #374151;
+  color: #3C3C3C;
 }
 
 .nodeResultTime {
   font-size: 10px;
-  color: #9CA3AF;
+  color: #9E9E9E;
 }
 
 .nodeResultError {
@@ -508,7 +516,7 @@
   justify-content: center;
   padding: 24px 12px;
   text-align: center;
-  color: #9CA3AF;
+  color: #9E9E9E;
 }
 
 .emptyIcon {
@@ -539,14 +547,14 @@
   background: transparent;
   border: none;
   border-radius: 6px;
-  color: #9CA3AF;
+  color: #9E9E9E;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .refreshBtn:hover {
   background: #F5F5F5;
-  color: #374151;
+  color: #3C3C3C;
 }
 
 .refreshBtn:disabled {
@@ -557,7 +565,7 @@
 .archiveCount {
   font-size: 10px;
   font-weight: 500;
-  color: #9CA3AF;
+  color: #9E9E9E;
   background: #F0F0F0;
   padding: 2px 6px;
   border-radius: 8px;
@@ -567,7 +575,7 @@
 /* ===== 구분선 ===== */
 .sectionDivider {
   height: 1px;
-  background: #E5E7EB;
+  background: #E8E8E8;
   margin: 10px 0;
 }
 
@@ -579,7 +587,7 @@
 .historyTitle {
   font-size: 10px;
   font-weight: 600;
-  color: #9CA3AF;
+  color: #9E9E9E;
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -602,7 +610,7 @@
   align-items: center;
   justify-content: space-between;
   font-size: 9px;
-  color: #9CA3AF;
+  color: #9E9E9E;
 }
 
 .historyDeleteBtn {
@@ -614,7 +622,7 @@
   background: transparent;
   border: none;
   border-radius: 3px;
-  color: #D1D5DB;
+  color: #E8E8E8;
   cursor: pointer;
   opacity: 0;
   transition: all 0.15s ease;
@@ -636,7 +644,7 @@
   overflow: hidden;
   cursor: pointer;
   background: #F5F5F5;
-  border: 1px solid #E5E7EB;
+  border: 1px solid #E8E8E8;
   transition: all 0.15s ease;
 }
 
@@ -691,14 +699,14 @@
   justify-content: center;
   padding: 24px 12px;
   gap: 8px;
-  color: #9CA3AF;
+  color: #9E9E9E;
   font-size: 11px;
 }
 
 .loadingSpinner {
   width: 20px;
   height: 20px;
-  border: 2px solid #E5E7EB;
+  border: 2px solid #E8E8E8;
   border-top-color: #FF6B00;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -767,11 +775,39 @@
   max-width: 500px;
 }
 
+.lightboxPromptWrapper {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
 .lightboxPrompt {
   color: rgba(255, 255, 255, 0.8);
   font-size: 13px;
   line-height: 1.5;
-  margin: 0 0 16px 0;
+  margin: 0 0 8px 0;
+}
+
+.lightboxPromptCollapsed {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 8px 0;
+}
+
+.promptToggleBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-primary, #FF6B00);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.promptToggleBtn:hover {
+  background: rgba(255, 107, 0, 0.1);
 }
 
 .lightboxActions {
