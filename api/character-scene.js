@@ -60,70 +60,71 @@ async function fetchWithTimeout(url, options, timeout = 50000) {
 }
 
 // 씬 프리셋 (카메라 앵글/방향/동행 캐릭터 포함)
+// 공통: 낮 시간대, 다른 캐릭터도 동일 마라톤 복장, 주인공과 동일 스케일
 const SCENE_PRESETS = {
     'marathon-start': {
-        scene: `A wide city road at the starting line of a marathon race. A large inflatable start arch gate spans across the road. Early morning golden hour sunlight. Urban cityscape with buildings and trees lining the street.`,
+        scene: `A wide city road at the starting line of a marathon race. A large inflatable start arch gate spans across the road. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street.`,
         camera: 'front wide shot, eye level',
         direction: 'facing camera (front view)',
         pose: 'standing with arms stretched up in pre-race warm-up, excited expression',
-        crowd: 'Many OTHER 3D cartoon characters (same Pixar art style but different: various hair colors, heights, body types, outfits with race bibs) gathered behind the starting line, all warming up. The main character (mint green hair) is among them at natural human scale, NOT larger than others.',
+        crowd: 'Many OTHER 3D cartoon characters (same Pixar art style but different: various hair colors, heights, body types) ALL wearing the SAME marathon outfit (blue vest over white t-shirt, race bib, blue shorts, running shoes) gathered behind the starting line, all warming up. The main character (mint green hair) is among them at EXACTLY the same human scale, NOT larger than others.',
         outfit: 'marathon'
     },
     'running-bridge': {
-        scene: `Running on a large modern cable-stayed bridge over a wide river (like Seogang Bridge in Seoul). Wide lanes with Seoul city skyline visible in the background. Clear blue sky, morning sunlight reflecting on the river water.`,
+        scene: `Running on a large modern cable-stayed bridge over a wide river (like Seogang Bridge in Seoul). Wide lanes with Seoul city skyline visible in the background. Bright daytime, clear blue sky, sunlight reflecting on the river water.`,
         camera: 'side tracking shot (3/4 angle), slightly low angle',
         direction: 'running from left to right (side/3/4 view)',
         pose: 'running dynamically, mid-stride, arms swinging, determined expression',
-        crowd: 'Several OTHER 3D cartoon characters (same Pixar art style but different appearances) running alongside in a group on the bridge. Characters vary in size, hair color, gender. The main character (mint green hair) runs among them at the SAME scale.',
+        crowd: 'Several OTHER 3D cartoon characters (same Pixar art style but different appearances) ALL wearing the SAME marathon outfit (blue vest, white shirt, race bib, blue shorts) running alongside in a group on the bridge. CRITICAL: ALL characters including the main character MUST be the EXACT SAME height and scale. Do NOT make the main character larger or taller than others.',
         outfit: 'marathon'
     },
     'running-forest': {
-        scene: `A beautiful forest trail path surrounded by tall green trees. Dappled sunlight filtering through leaves creating light patterns on the dirt path. Lush green vegetation on both sides.`,
+        scene: `A wide paved road with a lush green forest on one side. The road runs alongside the forest edge - tall green trees, dense foliage visible on the LEFT side of the road. The runners are on the paved road to the RIGHT of the forest. Bright daytime, clear sky, sunlight filtering through the tree canopy. Beautiful nature scenery alongside the marathon route.`,
         camera: 'front tracking shot, eye level',
         direction: 'running toward camera (front view)',
-        pose: 'running joyfully through the forest trail, smile on face',
-        crowd: 'A few OTHER 3D cartoon characters (same art style, different looks) running behind on the trail, slightly out of focus. Natural spacing between runners.',
+        pose: 'running joyfully along the road beside the forest, smile on face',
+        crowd: 'A few OTHER 3D cartoon characters (same art style, different looks) ALL wearing the SAME marathon outfit (blue vest, white shirt, race bib, blue shorts) running behind on the road beside the forest, slightly out of focus. Natural spacing between runners. All at the SAME scale as main character.',
         outfit: 'marathon'
     },
     'billboard-cheer': {
-        scene: `A city marathon road at night/dusk with a MASSIVE LED electronic billboard/jumbotron screen on the right side. The billboard screen displays a close-up image of the same mint-green-haired character smiling and waving, with text "화이팅!" (Fighting!) on screen. Neon city lights, urban atmosphere.`,
+        scene: null, // 동적으로 생성 (billboardName 사용)
         camera: 'side shot from the left, capturing both the running character AND the billboard in frame',
         direction: 'running from left to right (side view), head turned slightly to look up at the billboard',
-        pose: 'running past the billboard, looking up at it with a happy surprised expression, seeing themselves on the big screen',
-        crowd: 'Other 3D cartoon runners (same art style) ahead and behind on the road, some also looking up at the billboard. Spectators (also cartoon style) cheering from the sidewalk behind barriers.',
+        pose: 'running past the billboard, looking up at it with a happy surprised expression, fist pumping with one hand while running',
+        crowd: 'Other 3D cartoon runners (same art style) ALL wearing the SAME marathon outfit ahead and behind on the road, some also looking up at the billboard. Spectators (also cartoon style) cheering from the sidewalk behind barriers. All runners at the SAME scale.',
         outfit: 'marathon'
     },
     'aerial-runners': {
-        scene: `Aerial bird's-eye view looking straight down at a wide marathon road. Road markings and distance markers visible on the asphalt. Trees lining both sides of the road from above. The road curves gently.`,
+        scene: `Aerial bird's-eye view looking straight down at a wide marathon road. Bright daytime, clear weather. Road markings and distance markers visible on the asphalt. Trees lining both sides of the road from above. The road curves gently.`,
         camera: 'extreme high angle (top-down aerial/drone view)',
         direction: 'seen from directly above, running upward in frame',
         pose: 'tiny figure running, visible from above',
-        crowd: 'Dozens of tiny 3D cartoon characters (same art style) running on the road, seen from above like colorful dots. Various colors of outfits and hair. The main character (identifiable by mint green hair) is among them, SAME tiny scale. The runners form a flowing river-like stream on the road.',
+        crowd: 'Dozens of tiny 3D cartoon characters (same art style) ALL wearing the SAME marathon outfit (blue vests visible from above), running on the road, seen from above like colorful dots. The main character (identifiable by mint green hair) is among them, SAME tiny scale. The runners form a flowing river-like stream on the road.',
         outfit: 'marathon'
     },
     'runners-to-forest': {
-        scene: `A magical aerial view: in the BOTTOM half of the image, tiny 3D cartoon marathon runners are running on a road. As they move UPWARD in the image, the runners gradually TRANSFORM into small green trees. The TOP half of the image shows a beautiful dense green forest that the runners have become. A visual transition/morphing from runners to trees, symbolizing "running creates forests". Dreamy, magical atmosphere with golden light.`,
+        scene: `A magical aerial view showing a visual story: In the BOTTOM portion, a group of tiny 3D cartoon marathon runners are running forward on a road. Behind them (in the UPPER portion of the image), the road they have already passed through has TRANSFORMED into a beautiful lush green forest. The concept: "where they ran, a forest grew behind them". The transition from road to forest is gradual and magical with golden sparkle effects. Bright daytime, warm golden sunlight. Dreamy, hopeful atmosphere.`,
         camera: 'high aerial view, looking down at an angle',
-        direction: 'runners moving upward in frame, transitioning into trees',
-        pose: 'small figures running, gradually becoming trees',
-        crowd: 'Many tiny 3D cartoon characters (same art style) visible in the lower portion, their forms gradually morphing and blending into tree shapes in the upper portion. The main character (mint green hair) is visible among the runners. Magical particle effects during the transition.',
+        direction: 'runners moving upward/forward in frame, forest growing behind them',
+        pose: 'small figures running forward together as a group',
+        crowd: 'Many tiny 3D cartoon characters (same art style) ALL wearing the SAME marathon outfit, ALL at the SAME tiny scale, running together in a group. The main character (mint green hair) is among them. Behind the group, the road transforms into green trees and forest. The trees are normal trees (NOT human-shaped), growing naturally where the runners have already passed.',
         outfit: 'marathon'
     },
     'finish-line': {
-        scene: `A marathon finish line with a large overhead banner reading "FINISH". Confetti and streamers in the air. Urban road setting with buildings in the background. Celebration atmosphere. Timing clock display visible.`,
+        scene: `A marathon finish line with a large overhead banner reading "FINISH". Confetti and streamers in the air. Bright daytime, urban road setting with buildings and blue sky in the background. Celebration atmosphere. Timing clock display visible.`,
         camera: 'front wide shot, slightly low angle (heroic)',
         direction: 'running toward camera through the finish line (front view)',
         pose: 'breaking through the finish line with both arms raised HIGH in triumph, huge celebratory smile, eyes closed with joy',
-        crowd: 'Other 3D cartoon characters (same art style) cheering from both sides behind barriers. Some finishing runners behind. Confetti falling around everyone.',
+        crowd: 'Other 3D cartoon characters (same art style) ALL wearing the SAME marathon outfit, cheering from both sides behind barriers. Some finishing runners behind. Confetti falling around everyone. All at the SAME scale.',
         outfit: 'marathon'
     },
     'forest-made': {
-        scene: `A beautiful panoramic view of a lush young forest stretching across rolling green hills. Warm golden hour sunlight streaming through the trees. A rustic wooden sign in the foreground reads "WE MADE FOREST". Hopeful, proud atmosphere.`,
+        scene: `A beautiful panoramic view of a lush young forest stretching across rolling green hills. Bright daytime, warm golden hour sunlight streaming through the trees. A rustic wooden sign in the foreground reads "WE MADE FOREST". Hopeful, proud atmosphere. Clear blue sky.`,
         camera: 'wide establishing shot, eye level',
         direction: 'facing camera (front view)',
         pose: 'standing proudly with hands on hips, looking out at the vast forest, content smile, wind slightly moving hair',
-        crowd: 'A few OTHER 3D cartoon characters (same art style) standing nearby, also admiring the forest they helped create. Some have arms around each other, celebrating.',
-        outfit: 'casual'
+        crowd: 'A few OTHER 3D cartoon characters (same art style) ALL wearing the SAME marathon outfit, standing nearby, also admiring the forest they helped create. Some have arms around each other, celebrating. All at the SAME scale.',
+        outfit: 'marathon'
     }
 };
 
@@ -268,7 +269,8 @@ module.exports = async function handler(req, res) {
             characterImage,
             scene = 'marathon-start',
             customScene = '',
-            aspectRatio = '9:16'
+            aspectRatio = '9:16',
+            billboardName = '지원'
         } = req.body;
 
         if (!characterImage) {
@@ -279,7 +281,15 @@ module.exports = async function handler(req, res) {
         const scenePreset = SCENE_PRESETS[scene];
         let preset, outfitDescription;
 
-        if (scene === 'custom' && customScene) {
+        // 전광판 씬: 동적 텍스트 생성
+        if (scene === 'billboard-cheer' && scenePreset) {
+            const nameText = billboardName || '지원';
+            preset = {
+                ...scenePreset,
+                scene: `A city marathon road in bright daytime with a MASSIVE LED electronic billboard/jumbotron screen on the right side. The billboard screen shows the same mint-green-haired 3D cartoon character running energetically with a fist pump, cheering pose. Large bold text on the billboard reads "${nameText}! YOU MADE FOREST!" in bright glowing letters. Clear blue sky, urban atmosphere, sunlight.`,
+            };
+            outfitDescription = OUTFIT_PRESETS[scenePreset.outfit] || OUTFIT_PRESETS['default'];
+        } else if (scene === 'custom' && customScene) {
             preset = {
                 scene: `${customScene}. Photorealistic environment, cinematic lighting.`,
                 camera: 'cinematic wide shot',

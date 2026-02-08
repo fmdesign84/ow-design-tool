@@ -51,6 +51,13 @@ export const characterSceneNode: NodeDefinition = {
             description: '실사 배경 + 추천 포즈/의상 자동 적용',
         },
         {
+            id: 'billboardName',
+            name: '전광판 이름',
+            type: 'text',
+            default: '지원',
+            description: '전광판에 표시될 이름 (예: 지원 → "지원! YOU MADE FOREST!")',
+        },
+        {
             id: 'customScene',
             name: '씬 설명 (직접입력)',
             type: 'text',
@@ -89,6 +96,7 @@ export const characterSceneNode: NodeDefinition = {
                     scene: config.scene || 'marathon-start',
                     customScene: config.customScene || '',
                     aspectRatio: config.aspectRatio || '9:16',
+                    billboardName: config.billboardName || '지원',
                 }),
             });
 
