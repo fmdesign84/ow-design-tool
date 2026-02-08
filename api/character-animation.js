@@ -178,10 +178,11 @@ module.exports = async (req, res) => {
                 }
             }],
             parameters: {
-                aspectRatio: '9:16', // 캐릭터는 세로형이 자연스러움
+                aspectRatio: '9:16',
                 sampleCount: 1,
                 durationSeconds: parseInt(duration, 10),
-                personGeneration: 'allow_adult'
+                personGeneration: 'allow_all',
+                safetyFilterLevel: 'block_only_high'
             }
         };
 

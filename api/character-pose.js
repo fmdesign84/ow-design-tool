@@ -59,6 +59,30 @@ async function fetchWithTimeout(url, options, timeout = 50000) {
     }
 }
 
+// 씬 프리셋 (실사 배경 + 추천 포즈/의상)
+const SCENE_PRESETS = {
+    'marathon-start': {
+        background: 'A wide city road at the starting line of a marathon race. A large inflatable start arch gate with sponsor banners spans across the road. Early morning golden hour sunlight. Crowds of runners gathered behind the starting line. Urban cityscape in the background with buildings and trees lining the street. Photorealistic, high resolution photography.',
+        suggestedPose: 'standing with arms stretched up in pre-race warm-up',
+        suggestedOutfit: 'marathon'
+    },
+    'running-forest': {
+        background: 'A beautiful forest trail path surrounded by tall green trees. Dappled sunlight filtering through the leaves creating light and shadow patterns on the path. Lush green vegetation on both sides. A winding dirt trail disappearing into the forest. Nature photography, cinematic lighting, photorealistic.',
+        suggestedPose: 'running dynamically with arms swinging',
+        suggestedOutfit: 'marathon'
+    },
+    'tree-planting': {
+        background: 'A sunny green meadow with rich brown soil. A small tree sapling with visible root ball ready to be planted. A small mound of fresh dirt and a shovel nearby. Green grass field stretching to gentle hills in the background. Warm afternoon sunlight. Nature photography, photorealistic.',
+        suggestedPose: 'kneeling on one knee, hands reaching toward the ground as if planting a tree',
+        suggestedOutfit: 'casual'
+    },
+    'finish-line': {
+        background: 'A marathon finish line with a large overhead banner reading "FINISH". Confetti and streamers in the air. Cheering crowds on both sides behind barriers. Timing clock display visible. Urban road setting with buildings in the background. Celebration atmosphere. Photorealistic, cinematic photography.',
+        suggestedPose: 'running through the finish line with both arms raised high in celebration',
+        suggestedOutfit: 'marathon'
+    }
+};
+
 // 옷차림 프리셋
 const OUTFIT_PRESETS = {
     'default': {
@@ -114,7 +138,17 @@ function buildOutfitDescription(outfit, customTop, customBottom, customShoes, cu
 }
 
 // 배경 설명 생성
-function buildBackgroundDescription(background, customBackground, hasBackgroundImage) {
+function buildBackgroundDescription(background, customBackground, hasBackgroundImage, scene, customScene) {
+    // 씬 프리셋 우선
+    if (scene && scene !== 'none') {
+        if (scene === 'custom-scene' && customScene) {
+            return `${customScene}. Photorealistic environment, cinematic lighting, high resolution photography. Place the character naturally in this environment.`;
+        }
+        const scenePreset = SCENE_PRESETS[scene];
+        if (scenePreset) {
+            return scenePreset.background;
+        }
+    }
     if (hasBackgroundImage) {
         return 'Use the provided background image as the scene background. Place the character naturally in this environment.';
     }
@@ -125,7 +159,7 @@ function buildBackgroundDescription(background, customBackground, hasBackgroundI
 }
 
 // 프롬프트 생성
-function buildPosePrompt(direction, bodyRange, pose, outfitDescription, backgroundDescription) {
+function buildPosePrompt(direction, bodyRange, pose, outfitDescription, backgroundDescription, backgroundStyle = 'cartoon') {
     // 방향 설명
     const directionMap = {
         'front': 'facing directly toward the camera (front view)',
@@ -150,7 +184,17 @@ function buildPosePrompt(direction, bodyRange, pose, outfitDescription, backgrou
 
     const directionText = directionMap[direction] || directionMap['front'];
     const bodyRangeText = bodyRangeMap[bodyRange] || bodyRangeMap['full'];
-    const poseText = poseMap[pose] || poseMap['standing'];
+    const poseText = poseMap[pose] || pose;
+
+    const styleGuide = backgroundStyle === 'realistic'
+        ? `STYLE:
+- CHARACTER: High quality 3D cartoon rendering (Pixar/Disney-like) - keep the character stylized and cartoon
+- BACKGROUND/ENVIRONMENT: Photorealistic, high resolution photography quality
+- COMPOSITING: The 3D cartoon character is naturally composited into the photorealistic environment
+- LIGHTING: The character's lighting must match the environment lighting direction and color temperature
+- SHADOWS: Character casts realistic shadow on the ground matching the environment
+- SCALE: Character proportions are natural relative to the environment`
+        : `STYLE: High quality 3D cartoon rendering (Pixar-like)`;
 
     return `Generate this character in a new pose with specific clothing.
 
@@ -181,7 +225,7 @@ HAIR STYLE WARNING:
 
 BACKGROUND: ${backgroundDescription}
 
-STYLE: High quality 3D cartoon rendering (Pixar-like)`;
+${styleGuide}`;
 }
 
 // 이미지 데이터 추출 헬퍼
@@ -291,12 +335,20 @@ module.exports = async function handler(req, res) {
             customAccessory = '',
             background = 'white',
             backgroundImage = '',
-            customBackground = ''
+            customBackground = '',
+            scene = 'none',
+            customScene = '',
+            backgroundStyle = 'cartoon'
         } = req.body;
 
         if (!characterImage) {
             return res.status(400).json({ error: 'Character image is required' });
         }
+
+        // 씬 프리셋 적용 (씬 선택 시 추천 의상 적용)
+        const scenePreset = (scene && scene !== 'none' && scene !== 'custom-scene') ? SCENE_PRESETS[scene] : null;
+        const effectiveOutfit = (scenePreset && outfit === 'default') ? scenePreset.suggestedOutfit : outfit;
+        const effectiveBackgroundStyle = (scene && scene !== 'none') ? 'realistic' : backgroundStyle;
 
         // 범위에 따른 비율 설정
         const aspectRatioMap = {
@@ -307,23 +359,28 @@ module.exports = async function handler(req, res) {
         const aspectRatio = aspectRatioMap[bodyRange] || '9:16';
 
         // 옷차림 설명 생성
-        const outfitDescription = buildOutfitDescription(outfit, customTop, customBottom, customShoes, customAccessory);
+        const outfitDescription = buildOutfitDescription(effectiveOutfit, customTop, customBottom, customShoes, customAccessory);
 
         // 배경 설명 생성
         const hasBackgroundImage = background === 'image' && backgroundImage;
-        const backgroundDescription = buildBackgroundDescription(background, customBackground, hasBackgroundImage);
+        const backgroundDescription = buildBackgroundDescription(background, customBackground, hasBackgroundImage, scene, customScene);
+
+        // 씬 프리셋의 추천 포즈 적용
+        const effectivePose = scenePreset ? scenePreset.suggestedPose : pose;
 
         console.log('[CharacterPose] Starting generation...', {
             direction,
             bodyRange,
-            pose,
-            outfit,
+            pose: effectivePose,
+            outfit: effectiveOutfit,
             background,
+            scene,
+            backgroundStyle: effectiveBackgroundStyle,
             hasBackgroundImage: !!hasBackgroundImage,
             aspectRatio
         });
 
-        const prompt = buildPosePrompt(direction, bodyRange, pose, outfitDescription, backgroundDescription);
+        const prompt = buildPosePrompt(direction, bodyRange, effectivePose, outfitDescription, backgroundDescription, effectiveBackgroundStyle);
         const result = await generateWithGemini(prompt, characterImage, aspectRatio, hasBackgroundImage ? backgroundImage : null);
 
         const generationTime = Date.now() - startTime;

@@ -241,6 +241,32 @@ const createCharacterWorkflow = (): NodePreset => {
 };
 
 // ============================================================
+// 스토리보드 워크플로우 (이미지 → 캐릭터변환 → 캐릭터포즈(씬) → 출력)
+// ============================================================
+
+const createStoryboardWorkflow = (): NodePreset => {
+  const imageNode = createNode('image-upload', {}, START_X, START_Y);
+  const charGenNode = createNode('character-gen', { style: 'namoo', expression: 'original', faceStrength: 50 }, START_X + NODE_GAP, START_Y);
+  const charPoseNode = createNode('character-pose', {
+    scene: 'marathon-start',
+    backgroundStyle: 'realistic',
+    direction: 'front',
+    bodyRange: 'full',
+    pose: 'standing',
+  }, START_X + NODE_GAP * 2, START_Y);
+  const outputNode = createNode('image-output', {}, START_X + NODE_GAP * 3, START_Y);
+
+  return {
+    nodes: [imageNode, charGenNode, charPoseNode, outputNode],
+    edges: [
+      createEdge(imageNode.id, charGenNode.id, 'image', 'referenceImages', PORT_COLORS.image),
+      createEdge(charGenNode.id, charPoseNode.id, 'image', 'characterImage', PORT_COLORS.image),
+      createEdge(charPoseNode.id, outputNode.id, 'image', 'image', PORT_COLORS.image),
+    ],
+  };
+};
+
+// ============================================================
 // 연출 생성 워크플로우 (인물 + 키비주얼(선택) → 연출 → 출력)
 // ============================================================
 
@@ -305,6 +331,10 @@ export const getNodePreset = (menuKey: string, subMenuKey: string): NodePreset |
       // 캐릭터 생성: 이미지 → 캐릭터변환 → 캐릭터포즈 → 출력
       case 'character-gen-studio':
         return createCharacterWorkflow();
+
+      // 스토리보드: 이미지 → 캐릭터변환 → 캐릭터포즈(씬프리셋) → 출력
+      case 'storyboard-gen':
+        return createStoryboardWorkflow();
 
       default:
         return null;
