@@ -250,29 +250,34 @@ const STORYBOARD_SCENES = [
   { scene: 'running-forest', label: '숲속' },
   { scene: 'billboard-cheer', label: '전광판' },
   { scene: 'aerial-runners', label: '항공뷰' },
-  { scene: 'tree-planting', label: '나무심기' },
+  { scene: 'runners-to-forest', label: '러너→숲' },
   { scene: 'finish-line', label: '결승선' },
   { scene: 'forest-made', label: '숲완성' },
 ];
 
 const createStoryboardWorkflow = (): NodePreset => {
   const ROW_GAP = 250;
-  const SCENE_X = START_X + NODE_GAP * 2;
-  const OUTPUT_X = START_X + NODE_GAP * 3;
+  const POSE_X = START_X + NODE_GAP * 2;
+  const SCENE_X = START_X + NODE_GAP * 3;
+  const OUTPUT_X = START_X + NODE_GAP * 4;
 
-  // 입력 + 캐릭터 생성 (중앙 배치)
+  // 입력 + 캐릭터 생성 + 전신 포즈 (중앙 배치)
   const centerY = START_Y + (STORYBOARD_SCENES.length - 1) * ROW_GAP / 2;
   const imageNode = createNode('image-upload', {}, START_X, centerY);
   const charGenNode = createNode('character-gen', {
     style: 'namoo', expression: 'original', faceStrength: 50,
   }, START_X + NODE_GAP, centerY);
+  const charPoseNode = createNode('character-pose', {
+    direction: 'front', bodyRange: 'full', pose: 'standing', outfit: 'marathon',
+  }, POSE_X, centerY);
 
-  const nodes = [imageNode, charGenNode];
+  const nodes = [imageNode, charGenNode, charPoseNode];
   const edges = [
     createEdge(imageNode.id, charGenNode.id, 'image', 'referenceImages', PORT_COLORS.image),
+    createEdge(charGenNode.id, charPoseNode.id, 'image', 'characterImage', PORT_COLORS.image),
   ];
 
-  // 씬 8개 + 출력 8개 생성
+  // 씬 8개 + 출력 8개 생성 (전신 포즈에서 분배)
   STORYBOARD_SCENES.forEach((s, i) => {
     const y = START_Y + i * ROW_GAP;
     const sceneNode = createNode('character-scene', {
@@ -283,7 +288,7 @@ const createStoryboardWorkflow = (): NodePreset => {
 
     nodes.push(sceneNode, outputNode);
     edges.push(
-      createEdge(charGenNode.id, sceneNode.id, 'image', 'characterImage', PORT_COLORS.image),
+      createEdge(charPoseNode.id, sceneNode.id, 'image', 'characterImage', PORT_COLORS.image),
       createEdge(sceneNode.id, outputNode.id, 'image', 'image', PORT_COLORS.image),
     );
   });

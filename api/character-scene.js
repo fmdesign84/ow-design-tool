@@ -59,46 +59,70 @@ async function fetchWithTimeout(url, options, timeout = 50000) {
     }
 }
 
-// 씬 프리셋
+// 씬 프리셋 (카메라 앵글/방향/동행 캐릭터 포함)
 const SCENE_PRESETS = {
     'marathon-start': {
-        background: 'A wide city road at the starting line of a marathon race. A large inflatable start arch gate with sponsor banners spans across the road. Early morning golden hour sunlight. Crowds of runners gathered behind the starting line. Urban cityscape in the background with buildings and trees lining the street.',
+        scene: `A wide city road at the starting line of a marathon race. A large inflatable start arch gate spans across the road. Early morning golden hour sunlight. Urban cityscape with buildings and trees lining the street.`,
+        camera: 'front wide shot, eye level',
+        direction: 'facing camera (front view)',
         pose: 'standing with arms stretched up in pre-race warm-up, excited expression',
+        crowd: 'Many OTHER 3D cartoon characters (same Pixar art style but different: various hair colors, heights, body types, outfits with race bibs) gathered behind the starting line, all warming up. The main character (mint green hair) is among them at natural human scale, NOT larger than others.',
         outfit: 'marathon'
     },
     'running-bridge': {
-        background: 'Running on a large modern bridge over a river (like Seogang Bridge in Seoul). Wide lanes with city skyline visible in the background. Clear blue sky, morning sunlight reflecting on the river water below. Other runners visible in the distance.',
-        pose: 'running dynamically with arms swinging, mid-stride',
+        scene: `Running on a large modern cable-stayed bridge over a wide river (like Seogang Bridge in Seoul). Wide lanes with Seoul city skyline visible in the background. Clear blue sky, morning sunlight reflecting on the river water.`,
+        camera: 'side tracking shot (3/4 angle), slightly low angle',
+        direction: 'running from left to right (side/3/4 view)',
+        pose: 'running dynamically, mid-stride, arms swinging, determined expression',
+        crowd: 'Several OTHER 3D cartoon characters (same Pixar art style but different appearances) running alongside in a group on the bridge. Characters vary in size, hair color, gender. The main character (mint green hair) runs among them at the SAME scale.',
         outfit: 'marathon'
     },
     'running-forest': {
-        background: 'A beautiful forest trail path surrounded by tall green trees. Dappled sunlight filtering through the leaves creating light and shadow patterns on the path. Lush green vegetation on both sides. A winding dirt trail disappearing into the forest.',
-        pose: 'running dynamically with arms swinging through the forest trail',
+        scene: `A beautiful forest trail path surrounded by tall green trees. Dappled sunlight filtering through leaves creating light patterns on the dirt path. Lush green vegetation on both sides.`,
+        camera: 'front tracking shot, eye level',
+        direction: 'running toward camera (front view)',
+        pose: 'running joyfully through the forest trail, smile on face',
+        crowd: 'A few OTHER 3D cartoon characters (same art style, different looks) running behind on the trail, slightly out of focus. Natural spacing between runners.',
         outfit: 'marathon'
     },
     'billboard-cheer': {
-        background: 'A large LED electronic billboard/jumbotron screen on the side of a city road displaying cheering messages. The screen glows brightly with colorful graphics. Urban setting with buildings, spectators watching from the sidewalk.',
-        pose: 'running past the billboard, looking up at it with a happy smile, one arm pointing at the screen',
+        scene: `A city marathon road at night/dusk with a MASSIVE LED electronic billboard/jumbotron screen on the right side. The billboard screen displays a close-up image of the same mint-green-haired character smiling and waving, with text "화이팅!" (Fighting!) on screen. Neon city lights, urban atmosphere.`,
+        camera: 'side shot from the left, capturing both the running character AND the billboard in frame',
+        direction: 'running from left to right (side view), head turned slightly to look up at the billboard',
+        pose: 'running past the billboard, looking up at it with a happy surprised expression, seeing themselves on the big screen',
+        crowd: 'Other 3D cartoon runners (same art style) ahead and behind on the road, some also looking up at the billboard. Spectators (also cartoon style) cheering from the sidewalk behind barriers.',
         outfit: 'marathon'
     },
     'aerial-runners': {
-        background: 'Aerial top-down view of a wide city marathon road. Crowds of tiny runners visible below on the asphalt road. Road markings and distance markers visible. Trees lining both sides of the road from above.',
-        pose: 'running forward, seen from a high angle above, full body visible',
+        scene: `Aerial bird's-eye view looking straight down at a wide marathon road. Road markings and distance markers visible on the asphalt. Trees lining both sides of the road from above. The road curves gently.`,
+        camera: 'extreme high angle (top-down aerial/drone view)',
+        direction: 'seen from directly above, running upward in frame',
+        pose: 'tiny figure running, visible from above',
+        crowd: 'Dozens of tiny 3D cartoon characters (same art style) running on the road, seen from above like colorful dots. Various colors of outfits and hair. The main character (identifiable by mint green hair) is among them, SAME tiny scale. The runners form a flowing river-like stream on the road.',
         outfit: 'marathon'
     },
-    'tree-planting': {
-        background: 'A sunny green meadow with rich brown soil. A small tree sapling with visible root ball ready to be planted. A small mound of fresh dirt and a shovel nearby. Green grass field stretching to gentle hills in the background. Warm afternoon sunlight.',
-        pose: 'kneeling on one knee, hands reaching toward the ground as if carefully planting a small tree sapling',
-        outfit: 'casual'
+    'runners-to-forest': {
+        scene: `A magical aerial view: in the BOTTOM half of the image, tiny 3D cartoon marathon runners are running on a road. As they move UPWARD in the image, the runners gradually TRANSFORM into small green trees. The TOP half of the image shows a beautiful dense green forest that the runners have become. A visual transition/morphing from runners to trees, symbolizing "running creates forests". Dreamy, magical atmosphere with golden light.`,
+        camera: 'high aerial view, looking down at an angle',
+        direction: 'runners moving upward in frame, transitioning into trees',
+        pose: 'small figures running, gradually becoming trees',
+        crowd: 'Many tiny 3D cartoon characters (same art style) visible in the lower portion, their forms gradually morphing and blending into tree shapes in the upper portion. The main character (mint green hair) is visible among the runners. Magical particle effects during the transition.',
+        outfit: 'marathon'
     },
     'finish-line': {
-        background: 'A marathon finish line with a large overhead banner reading "FINISH". Confetti and streamers in the air. Cheering crowds on both sides behind barriers. Timing clock display visible. Urban road setting with buildings in the background. Celebration atmosphere.',
-        pose: 'running through the finish line with both arms raised high in triumph and celebration',
+        scene: `A marathon finish line with a large overhead banner reading "FINISH". Confetti and streamers in the air. Urban road setting with buildings in the background. Celebration atmosphere. Timing clock display visible.`,
+        camera: 'front wide shot, slightly low angle (heroic)',
+        direction: 'running toward camera through the finish line (front view)',
+        pose: 'breaking through the finish line with both arms raised HIGH in triumph, huge celebratory smile, eyes closed with joy',
+        crowd: 'Other 3D cartoon characters (same art style) cheering from both sides behind barriers. Some finishing runners behind. Confetti falling around everyone.',
         outfit: 'marathon'
     },
     'forest-made': {
-        background: 'A beautiful newly planted young forest with rows of small trees growing in rich soil. Green meadow landscape stretching into the distance. Sunlight streaming through with a warm, hopeful atmosphere. A wooden sign reading "WE MADE FOREST" in the foreground.',
-        pose: 'standing proudly with hands on hips, looking at the forest they helped create, slight smile',
+        scene: `A beautiful panoramic view of a lush young forest stretching across rolling green hills. Warm golden hour sunlight streaming through the trees. A rustic wooden sign in the foreground reads "WE MADE FOREST". Hopeful, proud atmosphere.`,
+        camera: 'wide establishing shot, eye level',
+        direction: 'facing camera (front view)',
+        pose: 'standing proudly with hands on hips, looking out at the vast forest, content smile, wind slightly moving hair',
+        crowd: 'A few OTHER 3D cartoon characters (same art style) standing nearby, also admiring the forest they helped create. Some have arms around each other, celebrating.',
         outfit: 'casual'
     }
 };
@@ -129,47 +153,47 @@ function extractImageData(imageInput) {
 }
 
 // 씬 프롬프트 생성
-function buildScenePrompt(sceneDescription, poseDescription, outfitDescription, aspectRatio) {
-    const cameraAngle = aspectRatio === '16:9'
-        ? 'Wide cinematic shot'
-        : aspectRatio === '1:1'
-            ? 'Medium shot'
-            : 'Full body portrait shot';
+function buildScenePrompt(preset, outfitDescription) {
+    return `Place this 3D cartoon character into a scene with other cartoon characters.
 
-    return `Place this 3D cartoon character into a photorealistic scene.
+MAIN CHARACTER (from provided image):
+- This is the MAIN character - keep EXACTLY: face, mint green hair, hair style, headband, leaf accessories
+- Keep the same 3D cartoon art style (Pixar/Disney quality)
+- The character is already in full body form in the provided image - match this appearance
 
-CHARACTER REFERENCE:
-- This is the character to place in the scene (the provided image)
-- Keep EXACTLY the same: face, hair color (mint green), hair style, headband, leaf accessories
-- Maintain the 3D cartoon art style for the character
+SCENE:
+${preset.scene}
 
-SCENE/ENVIRONMENT (PHOTOREALISTIC):
-${sceneDescription}
+CAMERA:
+${preset.camera}
 
-CHARACTER IN SCENE:
-- Pose: ${poseDescription}
+MAIN CHARACTER POSE & DIRECTION:
+- Direction: ${preset.direction}
+- Pose: ${preset.pose}
 - Outfit: ${outfitDescription}
-- Camera: ${cameraAngle}
 
-MUST KEEP FROM REFERENCE:
-- Mint green hair color and EXACT hair style from reference
+OTHER CHARACTERS IN SCENE:
+${preset.crowd}
+
+MUST KEEP FOR MAIN CHARACTER:
+- Mint green hair color and EXACT hair style
 - Blue/white striped headband
-- Leaf pair (same mint green as hair)
-- Face features and expression style
-- Eyes with visible white sclera
+- Leaf pair accessories
+- Face features from reference
+- Do NOT enlarge the main character - SAME scale as others
 
-HAIR STYLE WARNING:
-- Do NOT add bumpy/puffy/cabbage-like volume on top of head
-- Keep the EXACT hair shape from the reference image
+HAIR WARNING:
+- Do NOT add bumpy/puffy volume on top of head
+- Keep the EXACT hair shape from the reference
 
 STYLE (CRITICAL):
-- CHARACTER: High quality 3D cartoon rendering (Pixar/Disney-like) - keep stylized and cartoon
-- BACKGROUND/ENVIRONMENT: Photorealistic, high resolution photography quality
-- COMPOSITING: The 3D cartoon character is naturally placed into the photorealistic environment
-- LIGHTING: Character lighting matches the environment lighting direction and color temperature
-- SHADOWS: Character casts realistic shadow on the ground matching the environment
-- SCALE: Character proportions are natural relative to the environment
-- DEPTH: Proper depth of field, character is in focus`;
+- ALL characters (main + others): Same 3D cartoon style (Pixar/Disney-like)
+- BACKGROUND/ENVIRONMENT: Photorealistic, cinematic photography quality
+- ALL cartoon characters naturally composited into the photorealistic environment
+- Lighting on characters matches environment lighting
+- Characters cast realistic shadows
+- SCALE: Main character is the SAME size as other characters, NOT bigger
+- Cinematic composition, professional quality`;
 }
 
 // Gemini 이미지 생성
@@ -253,15 +277,19 @@ module.exports = async function handler(req, res) {
 
         // 씬 프리셋 또는 커스텀 씬 결정
         const scenePreset = SCENE_PRESETS[scene];
-        let sceneDescription, poseDescription, outfitDescription;
+        let preset, outfitDescription;
 
         if (scene === 'custom' && customScene) {
-            sceneDescription = `${customScene}. Photorealistic environment, cinematic lighting, high resolution photography.`;
-            poseDescription = 'natural pose appropriate for the scene';
+            preset = {
+                scene: `${customScene}. Photorealistic environment, cinematic lighting.`,
+                camera: 'cinematic wide shot',
+                direction: 'natural direction for the scene',
+                pose: 'natural pose appropriate for the scene',
+                crowd: 'If there are other people, they should be the SAME 3D cartoon art style as the main character, with various appearances.',
+            };
             outfitDescription = OUTFIT_PRESETS['default'];
         } else if (scenePreset) {
-            sceneDescription = scenePreset.background;
-            poseDescription = scenePreset.pose;
+            preset = scenePreset;
             outfitDescription = OUTFIT_PRESETS[scenePreset.outfit] || OUTFIT_PRESETS['default'];
         } else {
             return res.status(400).json({ error: `Unknown scene: ${scene}` });
@@ -273,7 +301,7 @@ module.exports = async function handler(req, res) {
             aspectRatio
         });
 
-        const prompt = buildScenePrompt(sceneDescription, poseDescription, outfitDescription, aspectRatio);
+        const prompt = buildScenePrompt(preset, outfitDescription);
         const result = await generateWithGemini(prompt, characterImage, aspectRatio);
 
         const generationTime = Date.now() - startTime;

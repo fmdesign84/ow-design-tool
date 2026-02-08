@@ -43,7 +43,7 @@ export const characterSceneNode: NodeDefinition = {
                 { value: 'running-forest', label: '숲속 달리기' },
                 { value: 'billboard-cheer', label: '전광판 응원' },
                 { value: 'aerial-runners', label: '항공뷰 (위에서)' },
-                { value: 'tree-planting', label: '나무 심기' },
+                { value: 'runners-to-forest', label: '러너→숲 트랜지션' },
                 { value: 'finish-line', label: '완주 결승선' },
                 { value: 'forest-made', label: '숲을 만들었다' },
                 { value: 'custom', label: '직접 입력' },
