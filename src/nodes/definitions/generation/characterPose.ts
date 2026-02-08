@@ -40,39 +40,6 @@ export const characterPoseNode: NodeDefinition = {
 
     config: [
         {
-            id: 'scene',
-            name: '씬 프리셋',
-            type: 'select',
-            default: 'none',
-            options: [
-                { value: 'none', label: '없음 (수동 설정)' },
-                { value: 'marathon-start', label: '마라톤 출발선' },
-                { value: 'running-forest', label: '숲속 달리기' },
-                { value: 'tree-planting', label: '나무 심기' },
-                { value: 'finish-line', label: '완주 결승선' },
-                { value: 'custom-scene', label: '직접 입력' },
-            ],
-            description: '씬 선택 시 실사 배경 + 추천 포즈/의상 자동 적용',
-        },
-        {
-            id: 'customScene',
-            name: '씬 설명 (직접입력)',
-            type: 'text',
-            default: '',
-            description: '예: 벚꽃이 만개한 공원, 해변 일몰',
-        },
-        {
-            id: 'backgroundStyle',
-            name: '배경 스타일',
-            type: 'select',
-            default: 'cartoon',
-            options: [
-                { value: 'cartoon', label: '3D 카툰' },
-                { value: 'realistic', label: '실사 배경' },
-            ],
-            description: '씬 프리셋 선택 시 자동으로 실사 적용',
-        },
-        {
             id: 'direction',
             name: '방향',
             type: 'select',
@@ -197,9 +164,6 @@ export const characterPoseNode: NodeDefinition = {
                     background: config.background || 'white',
                     backgroundImage: backgroundImage || '',
                     customBackground: config.customBackground || '',
-                    scene: config.scene || 'none',
-                    customScene: config.customScene || '',
-                    backgroundStyle: config.backgroundStyle || 'cartoon',
                 }),
             });
 

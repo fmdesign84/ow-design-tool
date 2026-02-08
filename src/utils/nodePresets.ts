@@ -241,27 +241,24 @@ const createCharacterWorkflow = (): NodePreset => {
 };
 
 // ============================================================
-// 스토리보드 워크플로우 (이미지 → 캐릭터변환 → 캐릭터포즈(씬) → 출력)
+// 스토리보드 워크플로우 (이미지 → 캐릭터변환 → 캐릭터씬 → 출력)
 // ============================================================
 
 const createStoryboardWorkflow = (): NodePreset => {
   const imageNode = createNode('image-upload', {}, START_X, START_Y);
   const charGenNode = createNode('character-gen', { style: 'namoo', expression: 'original', faceStrength: 50 }, START_X + NODE_GAP, START_Y);
-  const charPoseNode = createNode('character-pose', {
+  const charSceneNode = createNode('character-scene', {
     scene: 'marathon-start',
-    backgroundStyle: 'realistic',
-    direction: 'front',
-    bodyRange: 'full',
-    pose: 'standing',
+    aspectRatio: '9:16',
   }, START_X + NODE_GAP * 2, START_Y);
   const outputNode = createNode('image-output', {}, START_X + NODE_GAP * 3, START_Y);
 
   return {
-    nodes: [imageNode, charGenNode, charPoseNode, outputNode],
+    nodes: [imageNode, charGenNode, charSceneNode, outputNode],
     edges: [
       createEdge(imageNode.id, charGenNode.id, 'image', 'referenceImages', PORT_COLORS.image),
-      createEdge(charGenNode.id, charPoseNode.id, 'image', 'characterImage', PORT_COLORS.image),
-      createEdge(charPoseNode.id, outputNode.id, 'image', 'image', PORT_COLORS.image),
+      createEdge(charGenNode.id, charSceneNode.id, 'image', 'characterImage', PORT_COLORS.image),
+      createEdge(charSceneNode.id, outputNode.id, 'image', 'image', PORT_COLORS.image),
     ],
   };
 };

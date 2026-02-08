@@ -32,6 +32,7 @@ import { portraitStagingNode } from './portraitStaging';
 import { characterGenNode } from './characterGen';
 import { characterPoseNode } from './characterPose';
 import { characterAnimationNode } from './characterAnimation';
+import { characterSceneNode } from './characterScene';
 
 // 영상 생성 노드
 import { textToVideoNode } from './textToVideo';
@@ -53,6 +54,7 @@ export { portraitStagingNode } from './portraitStaging';
 export { characterGenNode } from './characterGen';
 export { characterPoseNode } from './characterPose';
 export { characterAnimationNode } from './characterAnimation';
+export { characterSceneNode } from './characterScene';
 
 // 영상 생성 노드 export
 export { textToVideoNode } from './textToVideo';
@@ -77,6 +79,7 @@ export const generationNodes = [
   characterGenNode,
   characterPoseNode,
   characterAnimationNode,
+  characterSceneNode,
   // 영상 생성
   textToVideoNode,
   imageToVideoNode,
