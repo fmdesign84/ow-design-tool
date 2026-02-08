@@ -2313,33 +2313,47 @@ const ImageGenPage = () => {
     };
 
     // 워크플로우 스토어
-    const { loadWorkflow, setNodes, setEdges } = useWorkflowStore();
+    const { loadWorkflow, setNodes, setEdges, updateSession } = useWorkflowStore();
+
+    // 프리셋별 워크플로우 이름
+    const PRESET_NAMES = {
+        'character-gen-studio': '캐릭터 생성',
+        'storyboard-gen': '포레스트런 스토리보드',
+    };
+
+    // Wave 전환 + 프리셋 로드 헬퍼
+    const loadPresetAndSwitchToWave = useCallback((menuKey) => {
+        const preset = getNodePreset('image', menuKey);
+        if (preset) {
+            setNodes(prevNodes => {
+                const maxX = prevNodes.length > 0
+                    ? Math.max(...prevNodes.map(n => n.position.x)) + 400
+                    : 0;
+                const offsetNodes = preset.nodes.map(node => ({
+                    ...node,
+                    position: {
+                        x: node.position.x + maxX,
+                        y: node.position.y
+                    }
+                }));
+                return [...prevNodes, ...offsetNodes];
+            });
+            setEdges(prevEdges => [...prevEdges, ...preset.edges]);
+        }
+        const presetName = PRESET_NAMES[menuKey];
+        if (presetName) {
+            updateSession({ name: presetName });
+        }
+        setActiveMenu('wave');
+        setActiveSubMenu('editor');
+        navigate('/wave');
+    }, [setNodes, setEdges, updateSession, setActiveMenu, setActiveSubMenu, navigate]);
 
     // 서브메뉴 클릭 → 노드 프리셋 로드 (기존 캔버스에 추가)
     const handleSubMenuClick = useCallback((menuKey) => {
-        // 캐릭터 생성의 경우 Wave 모드로 전환
-        if (menuKey === 'character-gen-studio') {
-            const preset = getNodePreset('image', 'character-gen-studio');
-            if (preset) {
-                setNodes(prevNodes => {
-                    const maxX = prevNodes.length > 0
-                        ? Math.max(...prevNodes.map(n => n.position.x)) + 400
-                        : 0;
-
-                    const offsetNodes = preset.nodes.map(node => ({
-                        ...node,
-                        position: {
-                            x: node.position.x + maxX,
-                            y: node.position.y
-                        }
-                    }));
-                    return [...prevNodes, ...offsetNodes];
-                });
-                setEdges(prevEdges => [...prevEdges, ...preset.edges]);
-            }
-            setActiveMenu('wave');
-            setActiveSubMenu('editor');
-            navigate('/wave');
+        // Wave 전환이 필요한 프리셋들
+        if (menuKey === 'character-gen-studio' || menuKey === 'storyboard-gen') {
+            loadPresetAndSwitchToWave(menuKey);
             return;
         }
 
@@ -2370,7 +2384,7 @@ const ImageGenPage = () => {
             // 엣지도 추가
             setEdges(prevEdges => [...prevEdges, ...preset.edges]);
         }
-    }, [activeMenu, setNodes, setEdges, setActiveMenu, setActiveSubMenu, navigate]);
+    }, [activeMenu, setNodes, setEdges, setActiveMenu, setActiveSubMenu, navigate, loadPresetAndSwitchToWave]);
 
     // Wave 에디터로 이동 (워크플로우 로드)
     const handleNavigateToWave = useCallback(async (workflowId) => {
