@@ -174,16 +174,20 @@ CLOTHING (IMPORTANT - follow exactly):
 ${outfitDescription}
 
 MUST KEEP FROM REFERENCE:
-- Mint green hair color and EXACT hair style from reference
-- Blue/white striped headband
-- Leaf pair (same mint green as hair)
+- EXACT hair color from reference image
+- EXACT hair style, length, and shape from reference image
+- All head accessories (headband, hair clips, etc.) from reference
 - Face features and expression style
 - Eyes with visible white sclera
 
-HAIR STYLE WARNING:
-- Do NOT add bumpy/puffy/cabbage-like volume on top of head
-- Keep the EXACT hair shape from the reference image
-- The bumpy top hair is NOT a required character element
+HAIR STYLE (CRITICAL - #1 IDENTITY FEATURE):
+- The character's HAIR is their most recognizable feature
+- Study the reference image hair CAREFULLY: color, length, volume, parting, bangs, texture
+- Reproduce the EXACT same hair when viewed from the ${direction} angle
+- Do NOT simplify, shorten, or change the hair style in any way
+- Do NOT add bumpy/puffy/cabbage-like volume that doesn't exist in the reference
+- Do NOT replace the hairstyle with a generic one${direction === 'side' || direction === 'profile' || direction === 'back' ? `
+- IMPORTANT FOR ${direction.toUpperCase()} VIEW: Even though the reference shows the front, you must imagine how THIS EXACT hair would look from the ${direction}. The hair volume, length, and flow must be CONSISTENT with the front reference. Do NOT default to a generic hairstyle.` : ''}
 
 BACKGROUND: ${backgroundDescription}
 
