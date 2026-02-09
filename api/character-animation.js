@@ -119,6 +119,7 @@ module.exports = async (req, res) => {
             action = 'running',
             duration = '5',
             loop = 'none',
+            batch = false,
         } = req.body;
 
         if (!characterImage) {
@@ -152,11 +153,14 @@ module.exports = async (req, res) => {
         console.log('[CharacterAnimation] Action:', action);
         console.log('[CharacterAnimation] Duration:', videoDuration, 's');
 
-        // 병렬 호출 시 rate limit 방지: 랜덤 딜레이 (0~90초)
-        // Replicate 동시 prediction 제한 대응 - 충분히 분산
-        const jitter = Math.floor(Math.random() * 90000);
-        console.log(`[CharacterAnimation] Stagger delay: ${jitter}ms`);
-        await new Promise(resolve => setTimeout(resolve, jitter));
+        // 병렬 호출 시에만 rate limit 방지 지터 적용 (단일 실행은 즉시 시작)
+        if (batch) {
+            const jitter = Math.floor(Math.random() * 90000);
+            console.log(`[CharacterAnimation] Batch mode - stagger delay: ${jitter}ms`);
+            await new Promise(resolve => setTimeout(resolve, jitter));
+        } else {
+            console.log('[CharacterAnimation] Single mode - no stagger delay');
+        }
 
         // 이미지 URL 확보 (Replicate는 URL 필요)
         let imageUrl;
