@@ -301,7 +301,7 @@ const createStoryboardWorkflow = (): NodePreset => {
 // ============================================================
 
 const SCENE_ACTIONS: Record<string, string> = {
-  'marathon-start': 'running',
+  'marathon-start': 'stretching',
   'running-bridge': 'running',
   'running-forest': 'running',
   'billboard-cheer': 'cheering',

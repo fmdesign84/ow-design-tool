@@ -69,7 +69,7 @@ const SCENE_PRESETS = {
         scene: null, // 동적으로 생성 (startBannerText 사용)
         camera: 'front wide shot, eye level, shallow depth of field (background runners out of focus)',
         direction: 'facing camera (front view)',
-        pose: 'standing with arms stretched up in pre-race warm-up, excited expression, in sharp focus',
+        pose: 'doing pre-race warm-up stretching (leg lunges or arm circles or torso twists), focused determined expression, in sharp focus',
         crowd: `Many ${OTHER_CHARS} gathered behind the starting line - but they are OUT OF FOCUS (bokeh/blur effect). Only the main character and the start arch gate are IN SHARP FOCUS. The blurred runners create atmosphere without competing for attention.`,
         outfit: 'marathon'
     },

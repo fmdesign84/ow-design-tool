@@ -46,6 +46,7 @@ export const characterAnimationNode: NodeDefinition = {
                 { value: 'dancing', label: '춤추기' },
                 { value: 'walking', label: '걷기' },
                 { value: 'cheering', label: '환호하기' },
+                { value: 'stretching', label: '몸풀기' },
             ],
         },
         {
