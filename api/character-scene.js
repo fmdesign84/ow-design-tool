@@ -305,7 +305,7 @@ module.exports = async function handler(req, res) {
             const bannerText = startBannerText || 'FOREST RUN';
             preset = {
                 ...scenePreset,
-                scene: `A wide city road at the starting line of a marathon race. A large BLUE colored inflatable start arch gate spans across the road with bold white text "${bannerText}" written on it. The arch gate is blue. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street. The main character in the foreground and the blue start arch gate are BOTH in sharp focus. Background people warming up are blurred (bokeh depth of field effect).`,
+                scene: `A wide city road at the starting line of a marathon race. A large RECTANGULAR start gate frame spans across the road - it is a clean rectangular frame structure (NOT an arch, NOT inflatable). The frame has a WHITE background panel with "${bannerText}!" written in VERY BOLD, large, thick black or dark blue block letters. The text is prominent and clearly readable. The rectangular frame stands upright like a doorway/portal over the road. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street. The main character in the foreground and the rectangular start gate are BOTH in sharp focus. Background people warming up are blurred (bokeh depth of field effect).`,
             };
             outfitDescription = OUTFIT_PRESETS[scenePreset.outfit] || OUTFIT_PRESETS['default'];
         }
