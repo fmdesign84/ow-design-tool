@@ -68,10 +68,10 @@ const OUTFIT_PRESETS = {
         accessory: ''
     },
     'marathon': {
-        top: 'Blue athletic vest/singlet over white short-sleeve t-shirt underneath, with rectangular race number bib (4-digit number) pinned on blue vest',
+        top: 'Blue athletic vest/singlet over white short-sleeve t-shirt underneath, with rectangular race number bib showing "4-digit number" pinned on blue vest',
         bottom: 'Blue running shorts',
         shoes: 'Running shoes',
-        accessory: 'Race number bib clearly visible on chest, white inner shirt visible at sleeves'
+        accessory: 'Race number bib clearly visible on chest showing the number, white inner shirt visible at sleeves'
     },
     'suit': {
         top: 'White dress shirt with blue necktie',
@@ -94,7 +94,7 @@ const OUTFIT_PRESETS = {
 };
 
 // 옷차림 설명 생성
-function buildOutfitDescription(outfit, customTop, customBottom, customShoes, customAccessory) {
+function buildOutfitDescription(outfit, customTop, customBottom, customShoes, customAccessory, bibNumber = '2026') {
     if (outfit === 'custom') {
         const parts = [];
         if (customTop) parts.push(`Top: ${customTop}`);
@@ -106,7 +106,12 @@ function buildOutfitDescription(outfit, customTop, customBottom, customShoes, cu
 
     const preset = OUTFIT_PRESETS[outfit] || OUTFIT_PRESETS['default'];
     const parts = [];
-    if (preset.top) parts.push(`Top: ${preset.top}`);
+    // marathon 프리셋: bib number 동적 치환
+    if (outfit === 'marathon') {
+        parts.push(`Top: ${preset.top.replace('4-digit number', bibNumber)}`);
+    } else if (preset.top) {
+        parts.push(`Top: ${preset.top}`);
+    }
     if (preset.bottom) parts.push(`Bottom: ${preset.bottom}`);
     if (preset.shoes) parts.push(`Shoes: ${preset.shoes}`);
     if (preset.accessory) parts.push(`Accessory: ${preset.accessory}`);
@@ -289,6 +294,7 @@ module.exports = async function handler(req, res) {
             customBottom = '',
             customShoes = '',
             customAccessory = '',
+            bibNumber = '2026',
             background = 'white',
             backgroundImage = '',
             customBackground = ''
@@ -307,7 +313,7 @@ module.exports = async function handler(req, res) {
         const aspectRatio = aspectRatioMap[bodyRange] || '9:16';
 
         // 옷차림 설명 생성
-        const outfitDescription = buildOutfitDescription(outfit, customTop, customBottom, customShoes, customAccessory);
+        const outfitDescription = buildOutfitDescription(outfit, customTop, customBottom, customShoes, customAccessory, bibNumber);
 
         // 배경 설명 생성
         const hasBackgroundImage = background === 'image' && backgroundImage;

@@ -88,6 +88,14 @@ export const characterPoseNode: NodeDefinition = {
             ],
         },
         {
+            id: 'bibNumber',
+            name: '마라톤 번호',
+            type: 'text',
+            default: '2026',
+            description: '번호판에 표시될 번호',
+            showWhen: { field: 'outfit', value: 'marathon' },
+        },
+        {
             id: 'customTop',
             name: '상의 (직접입력)',
             type: 'text',
@@ -157,6 +165,7 @@ export const characterPoseNode: NodeDefinition = {
                     bodyRange: config.bodyRange || 'full',
                     pose: config.pose || 'standing',
                     outfit: config.outfit || 'default',
+                    bibNumber: config.bibNumber || '2026',
                     customTop: config.customTop || '',
                     customBottom: config.customBottom || '',
                     customShoes: config.customShoes || '',
