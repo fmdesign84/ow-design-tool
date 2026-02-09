@@ -21,8 +21,8 @@ const ACTION_PROMPTS = {
         negativePrompt: 'real person, photorealistic, live action, blurry, camera movement, running, jogging',
     },
     'finish': {
-        prompt: 'A 3D Pixar-style animated cartoon character runs forward and crosses a finish line tape. The character bursts through the tape with chest forward, arms spread wide in triumph. The broken tape flutters and falls down to the ground. After breaking through, the character slows down and celebrates with both arms raised. Character stays centered. Fixed camera.',
-        negativePrompt: 'real person, photorealistic, live action, blurry, camera pan, scene transition, tape disappearing, tape floating',
+        prompt: 'A 3D Pixar-style animated cartoon character runs forward and crosses a finish line tape. The character bursts through the tape with chest forward, arms spread wide in triumph. The broken tape flutters and falls down to the ground. After breaking through, the character slows down and celebrates with both arms raised. Character stays centered. Fixed camera. IMPORTANT: Any text, numbers, or timer display in the scene must remain COMPLETELY FIXED and UNCHANGED throughout the entire video. Do NOT animate, change, or morph any text or numbers. The time display must show the exact same digits from first frame to last frame.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera pan, scene transition, tape disappearing, tape floating, changing text, changing numbers, morphing digits',
     },
     'waving': {
         prompt: 'A 3D Pixar-style animated cartoon character waving hello. One hand raised and moving side to side in a friendly greeting gesture. Warm smile, head slightly tilted. The waving arm moves naturally left-right. Other arm relaxed at side. Feet stay on the ground, NOT jumping, NOT jogging. Character stays centered. Fixed camera.',
