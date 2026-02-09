@@ -107,12 +107,13 @@ const SCENE_PRESETS = {
         noBlur: true,
     },
     'runners-to-forest': {
-        scene: `A stunning top-down aerial view of a long straight road. The image shows a smooth GRADIENT transition from LEFT to RIGHT (or BOTTOM to TOP): On the LEFT/BOTTOM side is a gray concrete urban city with buildings, roads, and asphalt. This gradually transitions through a gradient zone where pavement cracks and grass/saplings start appearing, then small bushes, then young trees, until the RIGHT/TOP side is a completely lush dense green forest. A single tiny 3D cartoon character is running at the CENTER of this gradient transition point - the boundary between city and nature. The character is small (seen from high above). Bright daytime, warm golden sunlight illuminating the scene. The gradient from gray city to green forest is smooth and visually striking, like a before/after split image.`,
-        camera: 'high aerial/bird-eye view, looking straight down',
-        direction: 'character at the center of the city-to-forest gradient, running from city side toward forest side',
-        pose: 'tiny figure running at the transition point between city and forest',
-        crowd: 'NO other characters. The main character runs ALONE at the boundary between city and forest. This is a solo conceptual scene.',
-        outfit: 'marathon'
+        scene: `Aerial bird's-eye view looking straight down from very high above (drone view). A running path/road goes vertically through the image from BOTTOM to TOP. The BOTTOM HALF of the path is a normal gray asphalt city road with lane markings. Starting from the MIDDLE of the image, the road surface GRADUALLY TRANSFORMS into a lush green forest trail - asphalt cracks open revealing grass, then dirt path with moss, then full green forest floor with fallen leaves and roots. By the TOP of the image, the road has completely become a dense forest path surrounded by tree canopy seen from above. Tiny 3D cartoon runners are on the path, running from the city road (bottom) upward into the forest trail (top). The transition from gray road to green forest is smooth and magical. Bright daytime.`,
+        camera: 'extreme high angle (top-down aerial/drone view), very far away',
+        direction: 'runners moving from bottom (city road) toward top (forest trail)',
+        pose: 'tiny figures running along the path as it transforms from road to forest',
+        crowd: `Many VERY tiny 3D cartoon characters seen from far above, running along the path. They appear as small colorful dots flowing from the city road into the forest trail. ALL characters are the same tiny size. The stream of runners flows from asphalt into the green forest.`,
+        outfit: 'marathon',
+        noBlur: true,
     },
     'finish-line': {
         scene: null, // 동적으로 생성 (finishTime 사용)
