@@ -317,6 +317,7 @@ FROM STYLE REFERENCE (copy these EXACTLY):
 FROM ORIGINAL PHOTO (preserve these):
 - Face shape and proportions
 - Eyebrow shape
+- Double eyelids (쌍꺼풀): If the original photo shows double eyelids, preserve them with a visible crease line above each eye. This is an important facial feature for likeness.
 - HAIRSTYLE SHAPE (length, volume, style - NOT from style reference!)
 ${glassesText}
 EXPRESSION: ${expressionText}
