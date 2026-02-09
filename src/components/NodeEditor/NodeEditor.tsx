@@ -1055,6 +1055,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
             panOnDrag={currentTool === 'pan' ? true : [1]}
             selectionOnDrag={currentTool === 'select'}
             multiSelectionKeyCode="Shift"
+            deleteKeyCode={['Backspace', 'Delete']}
             zoomOnScroll={!isNodePickerOpen}
           >
             <Background
