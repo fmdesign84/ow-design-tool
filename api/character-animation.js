@@ -168,25 +168,34 @@ module.exports = async (req, res) => {
             return res.status(400).json({ error: 'Invalid image format' });
         }
 
-        // Veo 3.1 요청 (safety filter 재시도 포함)
-        const MODEL_ID = 'veo-3.1-fast-generate-preview';
-        const endpoint = `https://us-central1-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/${MODEL_ID}:predictLongRunning`;
-        const fetchEndpoint = `https://us-central1-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/${MODEL_ID}:fetchPredictOperation`;
+        // 모델별 엔드포인트 생성 헬퍼
+        const makeEndpoints = (modelId) => ({
+            predict: `https://us-central1-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/${modelId}:predictLongRunning`,
+            fetch: `https://us-central1-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/${modelId}:fetchPredictOperation`,
+        });
 
-        // 재시도 전략: safety 레벨 단계적 완화 + 프롬프트 변형
+        // 재시도 전략: 모델 변경 + safety 완화
+        const VEO_31 = 'veo-3.1-fast-generate-preview';
+        const VEO_20 = 'veo-2.0-generate-001';
+
+        const basePrompt = CARTOON_PREFIX + actionConfig.prompt + loopSuffix;
+
         const attempts = [
             {
-                prompt: CARTOON_PREFIX + actionConfig.prompt + loopSuffix,
-                safetyFilterLevel: 'block_only_high',
-                withImage: true,
-            },
-            {
-                prompt: CARTOON_PREFIX + actionConfig.prompt + loopSuffix,
+                model: VEO_31,
+                prompt: basePrompt,
                 safetyFilterLevel: 'block_none',
                 withImage: true,
             },
             {
-                prompt: CARTOON_PREFIX + actionConfig.prompt.replace(/character/g, 'animated figure').replace(/cartoon/g, 'CGI animated') + loopSuffix + ' This is a fully computer-generated 3D animation, no real humans.',
+                model: VEO_20,
+                prompt: basePrompt,
+                safetyFilterLevel: 'block_none',
+                withImage: true,
+            },
+            {
+                model: VEO_31,
+                prompt: CARTOON_PREFIX + actionConfig.prompt.replace(/character/g, 'animated figure') + loopSuffix + ' Fully computer-generated 3D animation.',
                 safetyFilterLevel: 'block_none',
                 withImage: true,
             },
@@ -194,11 +203,13 @@ module.exports = async (req, res) => {
 
         let result = null;
         let lastError = null;
+        let usedModel = VEO_31;
 
         for (let attempt = 0; attempt < attempts.length; attempt++) {
-            const config = attempts[attempt];
-            console.log(`[CharacterAnimation] Attempt ${attempt + 1}/${attempts.length} (safety: ${config.safetyFilterLevel})`);
-            console.log('[CharacterAnimation] Prompt:', config.prompt.substring(0, 120));
+            const attemptConfig = attempts[attempt];
+            const endpoints = makeEndpoints(attemptConfig.model);
+            console.log(`[CharacterAnimation] Attempt ${attempt + 1}/${attempts.length} (model: ${attemptConfig.model}, safety: ${attemptConfig.safetyFilterLevel})`);
+            console.log('[CharacterAnimation] Prompt:', attemptConfig.prompt.substring(0, 120));
 
             // 재시도 간 딜레이 (rate limit 방지)
             if (attempt > 0) {
@@ -206,14 +217,14 @@ module.exports = async (req, res) => {
             }
 
             try {
-                const instances = config.withImage ? [{
-                    prompt: config.prompt,
+                const instances = attemptConfig.withImage ? [{
+                    prompt: attemptConfig.prompt,
                     image: {
                         bytesBase64Encoded: imgData.base64,
                         mimeType: imgData.mime
                     }
                 }] : [{
-                    prompt: config.prompt,
+                    prompt: attemptConfig.prompt,
                 }];
 
                 const requestBody = {
@@ -223,11 +234,11 @@ module.exports = async (req, res) => {
                         sampleCount: 1,
                         durationSeconds: parseInt(duration, 10),
                         personGeneration: 'allow_all',
-                        safetyFilterLevel: config.safetyFilterLevel,
+                        safetyFilterLevel: attemptConfig.safetyFilterLevel,
                     }
                 };
 
-                const response = await fetch(endpoint, {
+                const response = await fetch(endpoints.predict, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${accessToken}`,
@@ -255,7 +266,7 @@ module.exports = async (req, res) => {
 
                 console.log('[CharacterAnimation] Operation started:', operationName);
 
-                result = await pollForResult(fetchEndpoint, operationName, accessToken);
+                result = await pollForResult(endpoints.fetch, operationName, accessToken);
 
                 // 폴링 결과에서 safety error 체크
                 if (result.error && (result.error.message || '').includes('safety')) {
@@ -265,6 +276,7 @@ module.exports = async (req, res) => {
                     continue;
                 }
 
+                usedModel = attemptConfig.model;
                 break; // 성공
             } catch (err) {
                 lastError = err;
@@ -318,7 +330,7 @@ module.exports = async (req, res) => {
             action,
             duration,
             generationTime,
-            model: 'veo-3.1-fast'
+            model: usedModel
         });
 
     } catch (error) {
