@@ -256,6 +256,9 @@ async function generateWithGemini(prompt, characterImage, aspectRatio, backgroun
 
     if (!response.ok) {
         const errText = await response.text();
+        if (response.status === 429) {
+            throw new Error('Gemini API 일일 사용량 초과 - 잠시 후 다시 시도해주세요');
+        }
         throw new Error(`Gemini API failed (${response.status}): ${errText}`);
     }
 
@@ -263,8 +266,8 @@ async function generateWithGemini(prompt, characterImage, aspectRatio, backgroun
 
     const candidates = data.candidates || [];
     for (const candidate of candidates) {
-        const parts = candidate.content?.parts || [];
-        for (const part of parts) {
+        const candidateParts = candidate.content?.parts || [];
+        for (const part of candidateParts) {
             if (part.inlineData?.mimeType?.startsWith('image/')) {
                 return {
                     imageData: part.inlineData.data,
