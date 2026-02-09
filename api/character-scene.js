@@ -69,7 +69,7 @@ const SCENE_PRESETS = {
         scene: null, // 동적으로 생성 (startBannerText 사용)
         camera: 'front wide shot, eye level',
         direction: 'facing camera (front view)',
-        pose: 'doing a DYNAMIC full-body stretch IN PLACE - deep lunge with one leg far forward, back leg fully extended, both arms reaching up high or one arm pulling across the chest in an athletic stretch. Body twisted slightly, showing energy and determination. A powerful, photogenic warm-up pose that looks dynamic even while stationary. NOT running, NOT walking. Focused intense expression',
+        pose: 'doing a typical RUNNER warm-up stretch IN PLACE - standing on one leg while pulling the other foot up behind with one hand (quad stretch), or bending forward touching toes (hamstring stretch), or doing a standing calf stretch against an invisible wall. A classic pre-marathon runner stretch pose. NOT running, NOT walking, NOT doing yoga. Stationary runner warm-up. Focused determined expression',
         crowd: 'NO other characters. The main character stretches ALONE underneath/inside the start gate. Empty road ahead. This is a solo hero moment before the race.',
         outfit: 'marathon'
     },
