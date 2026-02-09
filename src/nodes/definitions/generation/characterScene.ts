@@ -51,6 +51,14 @@ export const characterSceneNode: NodeDefinition = {
             description: '실사 배경 + 추천 포즈/의상 자동 적용',
         },
         {
+            id: 'startBannerText',
+            name: '출발선 문구',
+            type: 'text',
+            default: 'FOREST RUN',
+            description: '출발선 풍선 게이트에 표시될 문구',
+            showWhen: { field: 'scene', value: 'marathon-start' },
+        },
+        {
             id: 'billboardName',
             name: '전광판 이름',
             type: 'text',
@@ -99,6 +107,7 @@ export const characterSceneNode: NodeDefinition = {
                     customScene: config.customScene || '',
                     aspectRatio: config.aspectRatio || '9:16',
                     billboardName: config.billboardName || '지원',
+                    startBannerText: config.startBannerText || 'FOREST RUN',
                 }),
             });
 

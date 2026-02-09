@@ -66,19 +66,19 @@ const OTHER_CHARS = 'OTHER 3D cartoon characters (same Pixar/Disney art style) w
 
 const SCENE_PRESETS = {
     'marathon-start': {
-        scene: `A wide city road at the starting line of a marathon race. A large inflatable start arch gate spans across the road. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street.`,
-        camera: 'front wide shot, eye level',
+        scene: null, // 동적으로 생성 (startBannerText 사용)
+        camera: 'front wide shot, eye level, shallow depth of field (background runners out of focus)',
         direction: 'facing camera (front view)',
-        pose: 'standing with arms stretched up in pre-race warm-up, excited expression',
-        crowd: `Many ${OTHER_CHARS} gathered behind the starting line, all warming up. The main character (mint green hair, race bib #2026) is among them at EXACTLY the same human scale, NOT larger than others.`,
+        pose: 'standing with arms stretched up in pre-race warm-up, excited expression, in sharp focus',
+        crowd: `Many ${OTHER_CHARS} gathered behind the starting line - but they are OUT OF FOCUS (bokeh/blur effect). Only the main character and the start arch gate are IN SHARP FOCUS. The blurred runners create atmosphere without competing for attention.`,
         outfit: 'marathon'
     },
     'running-bridge': {
-        scene: `Running on Seogang Bridge (서강대교) in Seoul - a distinctive bridge with a large RED painted steel arch structure spanning over the Han River. The bridge has wide road lanes with metal guardrails on the sides. Seoul city skyline with apartment buildings visible in the background. Bright daytime, clear blue sky, sunlight reflecting on the Han River water below.`,
+        scene: `A pedestrian/running path ON Seogang Bridge (서강대교) in Seoul. The character is running on the bridge's sidewalk/pedestrian lane. The distinctive RED painted steel arch structure of the bridge is visible overhead/beside the runner. Metal guardrails line the path. The Han River is visible below/beside. Seoul city skyline with apartment buildings in the background. Bright daytime, clear blue sky.`,
         camera: 'side tracking shot (3/4 angle), slightly low angle',
         direction: 'running from left to right (side/3/4 view)',
-        pose: 'running dynamically, mid-stride, arms swinging, determined expression',
-        crowd: `Several ${OTHER_CHARS} running alongside in a group on the bridge. CRITICAL: ALL characters including the main character MUST be the EXACT SAME height and scale. The main character must NOT be larger or taller than any other runner.`,
+        pose: 'running dynamically on the bridge pedestrian path, mid-stride, arms swinging, determined expression',
+        crowd: 'NO other characters. The main character runs ALONE on the bridge path. This is a solo running scene on Seogang Bridge.',
         outfit: 'marathon'
     },
     'running-forest': {
@@ -106,11 +106,11 @@ const SCENE_PRESETS = {
         outfit: 'marathon'
     },
     'runners-to-forest': {
-        scene: `A magical aerial/high-angle view of a single 3D cartoon character running ALONE on a road. The image is split into two contrasting halves: AHEAD of the character (bottom/forward) is a gray urban city road with buildings and asphalt. BEHIND the character (top/back), the road has magically TRANSFORMED into a lush green forest with tall trees. The character is at the exact boundary between city and forest. The concept: "where I ran, a forest grew behind me". Bright daytime, warm golden sunlight. Magical golden sparkle particles at the transition line between road and forest. Dreamy, hopeful atmosphere.`,
-        camera: 'high aerial view, looking down at an angle',
-        direction: 'character running forward (downward in frame) from forest into city road',
-        pose: 'running forward alone, mid-stride, determined expression',
-        crowd: 'NO other characters. The main character runs ALONE. This is a solo scene showing the magical transformation of road into forest behind the character.',
+        scene: `A stunning top-down aerial view of a long straight road. The image shows a smooth GRADIENT transition from LEFT to RIGHT (or BOTTOM to TOP): On the LEFT/BOTTOM side is a gray concrete urban city with buildings, roads, and asphalt. This gradually transitions through a gradient zone where pavement cracks and grass/saplings start appearing, then small bushes, then young trees, until the RIGHT/TOP side is a completely lush dense green forest. A single tiny 3D cartoon character is running at the CENTER of this gradient transition point - the boundary between city and nature. The character is small (seen from high above). Bright daytime, warm golden sunlight illuminating the scene. The gradient from gray city to green forest is smooth and visually striking, like a before/after split image.`,
+        camera: 'high aerial/bird-eye view, looking straight down',
+        direction: 'character at the center of the city-to-forest gradient, running from city side toward forest side',
+        pose: 'tiny figure running at the transition point between city and forest',
+        crowd: 'NO other characters. The main character runs ALONE at the boundary between city and forest. This is a solo conceptual scene.',
         outfit: 'marathon'
     },
     'finish-line': {
@@ -282,7 +282,8 @@ module.exports = async function handler(req, res) {
             scene = 'marathon-start',
             customScene = '',
             aspectRatio = '9:16',
-            billboardName = '지원'
+            billboardName = '지원',
+            startBannerText = 'FOREST RUN'
         } = req.body;
 
         if (!characterImage) {
@@ -293,8 +294,17 @@ module.exports = async function handler(req, res) {
         const scenePreset = SCENE_PRESETS[scene];
         let preset, outfitDescription;
 
+        // 마라톤 출발선: 동적 풍선 문구
+        if (scene === 'marathon-start' && scenePreset) {
+            const bannerText = startBannerText || 'FOREST RUN';
+            preset = {
+                ...scenePreset,
+                scene: `A wide city road at the starting line of a marathon race. A large inflatable start arch gate spans across the road with bold text "${bannerText}" written on it. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street. The main character in the foreground and the start arch gate are BOTH in sharp focus. Background runners are blurred (bokeh depth of field effect).`,
+            };
+            outfitDescription = OUTFIT_PRESETS[scenePreset.outfit] || OUTFIT_PRESETS['default'];
+        }
         // 전광판 씬: 동적 텍스트 생성
-        if (scene === 'billboard-cheer' && scenePreset) {
+        else if (scene === 'billboard-cheer' && scenePreset) {
             const nameText = billboardName || '지원';
             preset = {
                 ...scenePreset,
