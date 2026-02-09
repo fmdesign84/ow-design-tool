@@ -70,7 +70,7 @@ const SCENE_PRESETS = {
         camera: 'front wide shot, eye level',
         direction: 'facing camera (front view)',
         pose: 'doing a DYNAMIC full-body stretch IN PLACE - deep lunge with one leg far forward, back leg fully extended, both arms reaching up high or one arm pulling across the chest in an athletic stretch. Body twisted slightly, showing energy and determination. A powerful, photogenic warm-up pose that looks dynamic even while stationary. NOT running, NOT walking. Focused intense expression',
-        crowd: 'NO other characters. The main character stretches ALONE in front of the start gate. Empty road behind. This is a solo hero moment before the race.',
+        crowd: 'NO other characters. The main character stretches ALONE underneath/inside the start gate. Empty road ahead. This is a solo hero moment before the race.',
         outfit: 'marathon'
     },
     'running-bridge': {
@@ -332,7 +332,7 @@ module.exports = async function handler(req, res) {
             const bannerText = startBannerText || 'FOREST RUN';
             preset = {
                 ...scenePreset,
-                scene: `A wide city road at the starting line of a marathon race. A large, THICK, STURDY rectangular start gate structure spans across the road - it has THICK solid pillars on both sides (the left and right pillars may be partially cropped at the frame edges, that's OK). The gate is a heavy, substantial 3D structure with real depth and thickness, NOT a flat sign. The top beam has a WHITE panel with "${bannerText}!" written in VERY BOLD, extra-large, thick black or dark blue block letters. The text is prominent and clearly readable. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street. The main character in the foreground and the start gate are BOTH in sharp focus.`,
+                scene: `A wide city road at the starting line of a marathon race. The camera is positioned BEHIND the start gate, looking through it. A large WHITE inflatable-style rectangular start gate structure frames the shot - the character is standing INSIDE/UNDERNEATH the gate, between the two pillars. The pillars are WHITE, slightly PUFFY and rounded like inflatable balloon columns (soft, air-filled look with gentle curves). The left and right pillars may be partially cropped at the frame edges. The top beam is also WHITE and puffy/inflatable-looking, with "${bannerText}!" written in VERY BOLD, extra-large, thick black or dark blue block letters. The entire gate structure is WHITE. The character is UNDER the gate, with the empty road stretching out ahead of them. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street.`,
             };
             outfitDescription = OUTFIT_PRESETS[scenePreset.outfit] || OUTFIT_PRESETS['default'];
         }
