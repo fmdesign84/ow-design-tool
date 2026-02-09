@@ -317,6 +317,8 @@ export async function captureNodeEditor(
       backgroundColor,
       width: imageWidth,
       height: imageHeight,
+      skipFonts: true,
+      cacheBust: true,
       style: {
         width: `${imageWidth}px`,
         height: `${imageHeight}px`,
@@ -332,6 +334,11 @@ export async function captureNodeEditor(
           classList.contains('react-flow__panel') ||
           classList.contains('react-flow__attribution')
         );
+      },
+      // 외부 이미지 CORS 에러 방지
+      fetchRequestInit: {
+        mode: 'cors',
+        credentials: 'omit',
       },
     });
 

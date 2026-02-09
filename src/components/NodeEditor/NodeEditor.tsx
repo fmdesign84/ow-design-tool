@@ -870,7 +870,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
     rlog('LocalSave', '저장 시작', { name: workflowData.name, nodeCount: nodes.length });
 
     try {
-      // 노드 에디터 캡쳐 (5초 타임아웃)
+      // 노드 에디터 캡쳐 (5초 타임아웃) - 실패 시 기본 이미지 사용
       let imageForEmbed: string | Blob;
       try {
         const capturePromise = captureNodeEditor(nodes);
@@ -880,7 +880,22 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
         imageForEmbed = await Promise.race([capturePromise, timeoutPromise]);
       } catch (captureError) {
         rlog('LocalSave', '캡쳐 실패, 기본 이미지 사용', { error: String(captureError) });
-        imageForEmbed = await createDefaultWorkflowImage(nodes.length, workflowName);
+        try {
+          imageForEmbed = await createDefaultWorkflowImage(nodes.length, workflowName);
+        } catch {
+          // 기본 이미지도 실패하면 1x1 투명 PNG 생성
+          const canvas = document.createElement('canvas');
+          canvas.width = 400;
+          canvas.height = 300;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.fillStyle = '#F5F6F8';
+            ctx.fillRect(0, 0, 400, 300);
+          }
+          imageForEmbed = await new Promise<Blob>((resolve) => {
+            canvas.toBlob((blob) => resolve(blob || new Blob()), 'image/png');
+          });
+        }
       }
 
       // 워크플로우 임베딩
@@ -901,7 +916,6 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        alert('PNG 저장 실패로 JSON으로 대체 저장했습니다.');
       } catch (fallbackError) {
         alert('워크플로우 저장에 실패했습니다: ' + String(error));
       }
