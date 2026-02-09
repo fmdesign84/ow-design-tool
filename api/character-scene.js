@@ -183,6 +183,37 @@ STYLE (CRITICAL - READ CAREFULLY):
 - Beautiful establishing shot, cinematic composition`;
     }
 
+    // 항공뷰/그룹샷: 주인공 강조 최소화
+    if (preset.noBlur) {
+        return `Create a 3D cartoon scene with many tiny characters.
+
+SCENE:
+${preset.scene}
+
+CAMERA:
+${preset.camera}
+
+CHARACTERS:
+- Direction: ${preset.direction}
+- Pose: ${preset.pose}
+- Outfit: ${outfitDescription}
+
+${preset.crowd}
+
+CRITICAL SIZE RULE:
+- ALL characters must be the EXACT SAME tiny size - absolutely NO character should be bigger or more prominent
+- The provided reference image is just for art style reference, NOT to make one character stand out
+- One character among many may have mint green hair, but it must be the SAME tiny size as everyone else
+- This is a wide aerial/overview shot where individual characters are barely distinguishable
+- Do NOT zoom in on, enlarge, highlight, or focus on any single character
+
+STYLE:
+- ALL characters: Same 3D cartoon style (Pixar/Disney-like), tiny dots from far above
+- BACKGROUND/ENVIRONMENT: Photorealistic, cinematic photography quality
+- Characters naturally composited into the photorealistic environment
+- Cinematic composition, professional quality`;
+    }
+
     return `Place this 3D cartoon character into a scene.
 
 MAIN CHARACTER (from provided image):
@@ -225,7 +256,9 @@ HAIR WARNING:
 - Keep the EXACT hair shape from the reference
 
 FOCUS PRIORITY:
-${preset.noBlur ? '- ALL characters are the same size and in focus (aerial/wide group shot)\n- No bokeh blur needed - this is a wide overview scene' : '- The MAIN CHARACTER must ALWAYS be the focal point, in sharp focus\n- Any other characters should be OUT OF FOCUS (bokeh blur) or only partially visible (cropped at frame edges)\n- The main character is the HERO of every scene'}
+- The MAIN CHARACTER must ALWAYS be the focal point, in sharp focus
+- Any other characters should be OUT OF FOCUS (bokeh blur) or only partially visible (cropped at frame edges)
+- The main character is the HERO of every scene
 
 STYLE (CRITICAL):
 - ALL characters (main + others): Same 3D cartoon style (Pixar/Disney-like)
