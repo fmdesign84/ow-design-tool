@@ -47,6 +47,7 @@ export const characterPoseNode: NodeDefinition = {
             options: [
                 { value: 'front', label: '앞' },
                 { value: 'side', label: '옆 (3/4)' },
+                { value: 'profile', label: '완전 옆 (프로필)' },
                 { value: 'back', label: '뒤' },
             ],
         },

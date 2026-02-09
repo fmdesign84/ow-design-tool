@@ -135,6 +135,7 @@ function buildPosePrompt(direction, bodyRange, pose, outfitDescription, backgrou
     const directionMap = {
         'front': 'facing directly toward the camera (front view)',
         'side': 'turned 3/4 to the side (three-quarter view)',
+        'profile': 'facing completely to the side, showing only the side profile (90-degree side view, like a silhouette angle). Camera is positioned exactly perpendicular to the character. Only one eye visible.',
         'back': 'facing away from camera (back view)'
     };
 
