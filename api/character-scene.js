@@ -98,11 +98,11 @@ const SCENE_PRESETS = {
         outfit: 'marathon'
     },
     'aerial-runners': {
-        scene: `Aerial bird's-eye view looking straight down at a wide marathon road. Bright daytime, clear weather. Road markings and distance markers visible on the asphalt. Trees lining both sides of the road from above. The road curves gently.`,
-        camera: 'extreme high angle (top-down aerial/drone view)',
-        direction: 'seen from directly above, running upward in frame',
-        pose: 'tiny figure running, visible from above, the SAME tiny size as all other runners',
-        crowd: `Dozens of tiny 3D cartoon characters (same art style) wearing various colored marathon outfits, running on the road, seen from above like colorful dots. The main character (identifiable by mint green hair dot) is among them at the EXACT SAME tiny scale as everyone else - do NOT make the main character bigger. The runners form a flowing river-like stream on the road.`,
+        scene: `Aerial bird's-eye view looking straight down at a wide marathon road from very high above (like a drone at 200m altitude). Bright daytime, clear weather. Road markings and distance markers visible on the asphalt. Trees lining both sides of the road from above. The road curves gently.`,
+        camera: 'extreme high angle (top-down aerial/drone view), very far away',
+        direction: 'all runners seen from directly above as tiny dots, running upward in frame',
+        pose: 'one of many tiny identical-sized dots running on the road, absolutely NO close-up, NO enlarged character',
+        crowd: `Dozens of VERY tiny 3D cartoon characters seen from extremely far above, appearing as small colorful dots on the road. ALL characters are the EXACT SAME tiny size - there is NO main character that stands out or is larger. The mint-green-haired character is just ONE of many tiny dots, completely blending in with the crowd at the same miniature scale. Do NOT feature, enlarge, or highlight any single character. This is a crowd scene from far above where individual details are barely visible. The runners form a flowing river-like stream of tiny colorful dots on the road.`,
         outfit: 'marathon'
     },
     'runners-to-forest': {
