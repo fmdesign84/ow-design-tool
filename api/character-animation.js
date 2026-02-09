@@ -132,6 +132,9 @@ module.exports = async (req, res) => {
         // 동작 프롬프트 가져오기
         const actionConfig = ACTION_PROMPTS[action] || ACTION_PROMPTS['running'];
 
+        // 표정 고정 지시 (얼굴이 계속 바뀌는 문제 방지)
+        const FACE_LOCK = ' IMPORTANT: Keep the character facial expression CONSISTENT throughout the entire video. Do NOT change or morph the face. The face must remain stable and identical in every frame.';
+
         // duration 정규화 (Kling은 5 또는 10만 지원)
         const videoDuration = parseInt(duration, 10) >= 8 ? 10 : 5;
 
@@ -169,7 +172,7 @@ module.exports = async (req, res) => {
                 },
                 body: JSON.stringify({
                     input: {
-                        prompt: actionConfig.prompt,
+                        prompt: actionConfig.prompt + FACE_LOCK,
                         start_image: imageUpload.url,
                         duration: videoDuration,
                         mode: 'standard',

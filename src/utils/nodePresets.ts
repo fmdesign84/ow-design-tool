@@ -438,6 +438,24 @@ const createPortraitStagingWorkflow = (): NodePreset => {
   };
 };
 
+// ============================================================
+// 단일 캐릭터 애니메이션 워크플로우 (이미지 업로드 → 애니메이션 → 비디오 출력)
+// ============================================================
+
+const createCharacterAnimationSingleWorkflow = (): NodePreset => {
+  const uploadNode = createNode('image-upload', {}, START_X, START_Y);
+  const animNode = createNode('character-animation', { action: 'running', duration: '5' }, START_X + NODE_GAP, START_Y);
+  const videoOutput = createNode('video-output', {}, START_X + NODE_GAP * 2, START_Y);
+
+  return {
+    nodes: [uploadNode, animNode, videoOutput],
+    edges: [
+      createEdge(uploadNode.id, animNode.id, 'image', 'characterImage', PORT_COLORS.image),
+      createEdge(animNode.id, videoOutput.id, 'video', 'video', PORT_COLORS.video),
+    ],
+  };
+};
+
 /**
  * 서브메뉴 키 → 노드 프리셋 매핑
  */
@@ -539,6 +557,10 @@ export const getNodePreset = (menuKey: string, subMenuKey: string): NodePreset |
       // 멀티이미지 영상: 이미지들 + 텍스트 → 멀티영상 → 출력
       case 'multi-image-to-video':
         return createMultiImageWorkflow('multi-image-video', { aspectRatio: '16:9', duration: '4' });
+
+      // 캐릭터 애니메이션: 이미지 업로드 → 캐릭터 애니메이션 → 비디오 출력
+      case 'character-animation':
+        return createCharacterAnimationSingleWorkflow();
 
       default:
         return null;

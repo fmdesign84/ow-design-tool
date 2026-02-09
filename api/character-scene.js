@@ -67,10 +67,10 @@ const OTHER_CHARS = 'OTHER 3D cartoon characters (same Pixar/Disney art style) w
 const SCENE_PRESETS = {
     'marathon-start': {
         scene: null, // 동적으로 생성 (startBannerText 사용)
-        camera: 'front wide shot, eye level, shallow depth of field (background people out of focus)',
+        camera: 'front wide shot, eye level',
         direction: 'facing camera (front view)',
-        pose: 'doing pre-race warm-up stretching IN PLACE (standing leg lunges or arm circles or torso twists). NOT running, NOT walking. Stationary warm-up exercise. Focused determined expression, in sharp focus',
-        crowd: `Many ${OTHER_CHARS} gathered behind the starting line, also doing warm-up stretches and preparing (NOT running). Some are stretching legs, some doing arm circles, some bending and twisting - all warming up in place before the race starts. They are OUT OF FOCUS (bokeh/blur effect). Only the main character and the start arch gate are IN SHARP FOCUS.`,
+        pose: 'doing a typical pre-running leg stretch IN PLACE - one leg forward in a lunge position, hands on knee, stretching the calf and hamstring. A classic runner warm-up pose. NOT running, NOT walking. Stationary. Focused determined expression',
+        crowd: 'NO other characters. The main character stretches ALONE in front of the start gate. Empty road behind. This is a solo hero moment before the race.',
         outfit: 'marathon'
     },
     'running-bridge': {
@@ -98,22 +98,23 @@ const SCENE_PRESETS = {
         outfit: 'marathon'
     },
     'aerial-runners': {
-        scene: `Aerial bird's-eye view looking straight down from very high above (drone at 200m altitude). A narrow pedestrian walking/running path winds through the scene. On the LEFT side of the path is a lush dense green forest seen from above (tree canopy). On the RIGHT side of the path is a wide blue river reflecting sunlight. The path runs between the forest and the river. Bright daytime, clear weather.`,
+        scene: `Aerial bird's-eye view looking straight down from very high above (drone at 200m altitude). A narrow pedestrian running path winds through the scene. On the LEFT side of the path is a lush dense green forest seen from above (tree canopy). On the RIGHT side of the path is a wide blue river reflecting sunlight - NO trees on the river side, only water. Between the path and the river there is a low concrete guardrail/barrier wall running along the edge. The path runs between the forest (left) and the river guardrail (right). Bright daytime, clear weather.`,
         camera: 'extreme high angle (top-down aerial/drone view), very far away',
-        direction: 'all runners seen from directly above as tiny dots, running along the path',
-        pose: 'one of many tiny identical-sized dots on the pedestrian path, absolutely NO close-up, NO enlarged character',
-        crowd: `Dozens of VERY tiny 3D cartoon characters seen from extremely far above, appearing as small colorful dots on the narrow pedestrian path between the forest and the river. ALL characters are the EXACT SAME tiny size - there is NO main character that stands out or is larger. Do NOT feature, enlarge, or highlight any single character. Individual details are barely visible. The runners form a flowing stream of tiny colorful dots along the path.`,
+        direction: 'all runners seen from directly above as tiny dots, ALL RUNNING (not walking) along the path',
+        pose: 'one of many tiny identical-sized dots on the pedestrian path, absolutely NO close-up, NO enlarged character. ALL figures are in RUNNING poses (arms and legs in stride)',
+        crowd: `Dozens of VERY tiny 3D cartoon characters seen from extremely far above, ALL RUNNING (not walking, not standing). Every character is in a running stride pose. They appear as small colorful dots on the narrow pedestrian path between the forest and the river. ALL characters are the EXACT SAME tiny size - there is NO main character that stands out or is larger. Do NOT feature, enlarge, or highlight any single character. The runners form a flowing stream of tiny running dots along the path.`,
         outfit: 'marathon',
         noBlur: true,
     },
     'runners-to-forest': {
-        scene: `Aerial bird's-eye view looking straight down from very high above (drone view). A running path/road goes vertically through the image from BOTTOM to TOP. The BOTTOM HALF of the path is a normal gray asphalt city road with lane markings. Starting from the MIDDLE of the image, the road surface GRADUALLY TRANSFORMS into a lush green forest trail - asphalt cracks open revealing grass, then dirt path with moss, then full green forest floor with fallen leaves and roots. By the TOP of the image, the road has completely become a dense forest path surrounded by tree canopy seen from above. Tiny 3D cartoon runners are on the path, running from the city road (bottom) upward into the forest trail (top). The transition from gray road to green forest is smooth and magical. Bright daytime.`,
+        scene: `Aerial bird's-eye view looking straight down from very high above (drone view). The ENTIRE frame is filled with a DENSE, LUSH GREEN FOREST canopy in 3D CARTOON style (Pixar/Disney quality). Stylized round tree crowns packed tightly together covering the whole image - vibrant shades of green (emerald, lime, dark green, forest green). The trees have the characteristic smooth, rounded, slightly exaggerated shapes of 3D animation. NO roads, NO paths, NO characters. Just an endless sea of beautiful cartoon-style treetops filling every corner of the frame. Bright, warm lighting with soft stylized shadows. Colorful and vibrant like a Pixar movie establishing shot.`,
         camera: 'extreme high angle (top-down aerial/drone view), very far away',
-        direction: 'runners moving from bottom (city road) toward top (forest trail)',
-        pose: 'tiny figures running along the path as it transforms from road to forest',
-        crowd: `Many VERY tiny 3D cartoon characters seen from far above, running along the path. They appear as small colorful dots flowing from the city road into the forest trail. ALL characters are the same tiny size. The stream of runners flows from asphalt into the green forest.`,
-        outfit: 'marathon',
+        direction: 'N/A (landscape only, no characters)',
+        pose: 'N/A (no characters in this scene)',
+        crowd: 'NO characters at all. This is a pure 3D cartoon landscape shot. Only stylized forest canopy filling the entire frame.',
+        outfit: 'none',
         noBlur: true,
+        landscapeOnly: true,
     },
     'finish-line': {
         scene: null, // 동적으로 생성 (finishTime 사용)
@@ -160,6 +161,25 @@ function extractImageData(imageInput) {
 
 // 씬 프롬프트 생성
 function buildScenePrompt(preset, outfitDescription) {
+    // 순수 풍경 씬 (캐릭터 없음)
+    if (preset.landscapeOnly) {
+        return `Generate a 3D cartoon style landscape image.
+
+SCENE:
+${preset.scene}
+
+CAMERA:
+${preset.camera}
+
+STYLE (CRITICAL):
+- Full 3D cartoon / Pixar / Disney animation style
+- Vibrant, saturated colors with stylized lighting
+- Smooth rounded shapes, NOT photorealistic
+- Beautiful establishing shot quality
+- NO characters, NO people, NO figures - pure landscape only
+- Cinematic composition, professional quality`;
+    }
+
     return `Place this 3D cartoon character into a scene.
 
 MAIN CHARACTER (from provided image):

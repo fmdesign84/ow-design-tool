@@ -78,6 +78,8 @@ export const VIDEO_SUB_MENUS = [
     { key: 'text-to-video', label: '텍스트로', Icon: TextToIcon },
     { key: 'image-to-video', label: '이미지로', Icon: ImageToIcon },
     { key: 'multi-image-to-video', label: '멀티 이미지', Icon: MultiImageIcon },
+    { divider: true },
+    { key: 'character-animation', label: '캐릭터', Icon: PoseChangeIcon },
 ];
 
 // 디자인(템플릿) 하위 메뉴

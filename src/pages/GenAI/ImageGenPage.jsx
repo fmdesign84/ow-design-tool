@@ -2321,11 +2321,16 @@ const ImageGenPage = () => {
         'storyboard-gen': '포레스트런 스토리보드',
         'storyboard-animation': '포레스트런 애니메이션',
         'storyboard-full': '포레스트런 통합',
+        'character-animation': '캐릭터 애니메이션',
     };
 
     // Wave 전환 + 프리셋 로드 헬퍼
+    const PRESET_MENU_MAP = {
+        'character-animation': 'video',
+    };
     const loadPresetAndSwitchToWave = useCallback((menuKey) => {
-        const preset = getNodePreset('image', menuKey);
+        const category = PRESET_MENU_MAP[menuKey] || 'image';
+        const preset = getNodePreset(category, menuKey);
         if (preset) {
             setNodes(prevNodes => {
                 const maxX = prevNodes.length > 0
@@ -2354,7 +2359,7 @@ const ImageGenPage = () => {
     // 서브메뉴 클릭 → 노드 프리셋 로드 (기존 캔버스에 추가)
     const handleSubMenuClick = useCallback((menuKey) => {
         // Wave 전환이 필요한 프리셋들
-        if (menuKey === 'character-gen-studio' || menuKey === 'storyboard-gen' || menuKey === 'storyboard-animation' || menuKey === 'storyboard-full') {
+        if (menuKey === 'character-gen-studio' || menuKey === 'storyboard-gen' || menuKey === 'storyboard-animation' || menuKey === 'storyboard-full' || menuKey === 'character-animation') {
             loadPresetAndSwitchToWave(menuKey);
             return;
         }
