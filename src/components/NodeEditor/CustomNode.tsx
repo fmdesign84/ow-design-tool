@@ -436,22 +436,39 @@ const CustomNodeComponent: React.FC<CustomNodeProps> = ({ id, data, selected }) 
     const visited = new Set<string>();
     const order: string[] = [];
 
-    const visit = (nodeId: string) => {
+    // 선행 노드 수집 (upstream: 현재 노드 포함)
+    const visitUpstream = (nodeId: string) => {
       if (visited.has(nodeId)) return;
       visited.add(nodeId);
 
-      // 이 노드로 들어오는 엣지들 찾기
       const incomingEdges = edges.filter(edge => edge.target === nodeId);
-
-      // 선행 노드들 먼저 방문
       for (const edge of incomingEdges) {
-        visit(edge.source);
+        visitUpstream(edge.source);
       }
 
       order.push(nodeId);
     };
 
-    visit(targetNodeId);
+    // 하위 노드 수집 (downstream: 현재 노드 이후)
+    const visitDownstream = (nodeId: string) => {
+      const outgoingEdges = edges.filter(edge => edge.source === nodeId);
+      for (const edge of outgoingEdges) {
+        if (visited.has(edge.target)) continue;
+        // 하위 노드의 다른 선행 노드도 먼저 수집
+        const otherIncoming = edges.filter(e => e.target === edge.target && e.source !== nodeId);
+        for (const otherEdge of otherIncoming) {
+          if (!visited.has(otherEdge.source)) {
+            visitUpstream(otherEdge.source);
+          }
+        }
+        visited.add(edge.target);
+        order.push(edge.target);
+        visitDownstream(edge.target);
+      }
+    };
+
+    visitUpstream(targetNodeId);
+    visitDownstream(targetNodeId);
     return order;
   }, [edges]);
 

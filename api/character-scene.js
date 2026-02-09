@@ -69,7 +69,7 @@ const SCENE_PRESETS = {
         scene: null, // 동적으로 생성 (startBannerText 사용)
         camera: 'front wide shot, eye level',
         direction: 'facing camera (front view)',
-        pose: 'doing a typical RUNNER warm-up stretch IN PLACE - standing on one leg while pulling the other foot up behind with one hand (quad stretch), or bending forward touching toes (hamstring stretch), or doing a standing calf stretch against an invisible wall. A classic pre-marathon runner stretch pose. NOT running, NOT walking, NOT doing yoga. Stationary runner warm-up. Focused determined expression',
+        pose: 'in a classic CROUCHING START position (크라우칭 스타트) - one knee down on the ground, one leg forward bent at 90 degrees, both hands fingertips touching the ground in front, body leaning forward ready to sprint. Like an Olympic sprinter at the starting blocks. Low powerful stance, intense focused eyes looking straight ahead. This is the iconic "on your marks, set" pose before a race starts',
         crowd: 'NO other characters. The main character stretches ALONE underneath/inside the start gate. Empty road ahead. This is a solo hero moment before the race.',
         outfit: 'marathon'
     },
