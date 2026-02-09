@@ -86,7 +86,7 @@ const SCENE_PRESETS = {
         camera: 'front tracking shot, eye level',
         direction: 'running toward camera (front view)',
         pose: 'running joyfully along the road beside the forest, smile on face',
-        crowd: `A few ${OTHER_CHARS} running behind on the road beside the forest, slightly out of focus. Natural spacing between runners. All at the SAME scale as main character.`,
+        crowd: `A few blurred runners visible far behind on the road, heavily OUT OF FOCUS (strong bokeh blur). Only partial bodies visible (legs, arms at frame edges). The main character is the ONLY character in sharp focus. Other runners are just soft blurry shapes in the background creating atmosphere.`,
         outfit: 'marathon'
     },
     'billboard-cheer': {
@@ -94,7 +94,7 @@ const SCENE_PRESETS = {
         camera: 'side shot from the left, capturing both the running character AND the billboard in frame',
         direction: 'running from left to right (side view), head turned slightly to look up at the billboard',
         pose: 'running past the billboard, looking up at it with a happy surprised expression, fist pumping with one hand while running',
-        crowd: `${OTHER_CHARS} running ahead and behind on the road, some also looking up at the billboard. Spectators (also cartoon style) cheering from the sidewalk behind barriers. All runners at the SAME scale.`,
+        crowd: `A few blurred runners visible ahead and behind, heavily OUT OF FOCUS (bokeh blur). Only partial bodies/silhouettes visible. Blurry spectator shapes on the sidewalk behind barriers. The main character is the ONLY character in sharp focus - all others are just soft blurry atmosphere.`,
         outfit: 'marathon'
     },
     'aerial-runners': {
@@ -199,14 +199,19 @@ HAIR WARNING:
 - Do NOT add bumpy/puffy volume on top of head
 - Keep the EXACT hair shape from the reference
 
+FOCUS PRIORITY:
+- The MAIN CHARACTER must ALWAYS be the focal point, in sharp focus
+- Any other characters should be OUT OF FOCUS (bokeh blur) or only partially visible (cropped at frame edges)
+- The main character is the HERO of every scene
+
 STYLE (CRITICAL):
 - ALL characters (main + others): Same 3D cartoon style (Pixar/Disney-like)
 - BACKGROUND/ENVIRONMENT: Photorealistic, cinematic photography quality
 - ALL cartoon characters naturally composited into the photorealistic environment
 - Lighting on characters matches environment lighting
 - Characters cast realistic shadows
-- SCALE: Main character is the SAME size as other characters, NOT bigger
-- Cinematic composition, professional quality`;
+- SCALE: When other characters are present, main character is the SAME size, NOT bigger
+- Cinematic composition, shallow depth of field where appropriate, professional quality`;
 }
 
 // Gemini 이미지 생성
