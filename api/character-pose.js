@@ -135,7 +135,7 @@ function buildPosePrompt(direction, bodyRange, pose, outfitDescription, backgrou
     const directionMap = {
         'front': 'facing directly toward the camera (front view)',
         'side': 'turned 3/4 to the side (three-quarter view)',
-        'profile': 'facing completely to the side, showing only the side profile (90-degree side view, like a silhouette angle). Camera is positioned exactly perpendicular to the character. Only one eye visible.',
+        'profile': 'EXACT 90-DEGREE SIDE PROFILE VIEW. The character faces PERFECTLY to the left or right. The camera is positioned EXACTLY perpendicular to the character body. You should see ONLY ONE EYE, ONE EAR, and the nose pointing sideways like a coin or medallion profile. The body is turned completely sideways - you see only one arm, one leg from the side. Think of how a person looks on a coin, passport photo side view, or Egyptian hieroglyph - a PURE flat side silhouette angle. NOT 3/4 view, NOT slightly turned - absolutely 90 degrees sideways.',
         'back': 'facing away from camera (back view)'
     };
 
@@ -168,7 +168,7 @@ CHARACTER REFERENCE:
 NEW POSE:
 - Direction: ${directionText}
 - Body range: ${bodyRangeText}
-- Pose: ${poseText}
+- Pose: ${poseText}${direction === 'profile' ? '\n\nCRITICAL DIRECTION: This MUST be a PERFECT 90-degree side profile. The nose points completely left or right. Both shoulders overlap into one silhouette line. This is the #1 priority of this image.' : ''}
 
 CLOTHING (IMPORTANT - follow exactly):
 ${outfitDescription}
