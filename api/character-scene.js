@@ -114,11 +114,11 @@ const SCENE_PRESETS = {
         outfit: 'marathon'
     },
     'finish-line': {
-        scene: `A marathon finish line with a large overhead banner reading "FINISH". Confetti and streamers in the air. Bright daytime, urban road setting with buildings and blue sky in the background. Grand celebration atmosphere. Timing clock display visible showing a time.`,
+        scene: `A marathon finish line with a large overhead banner. The finish line tape/ribbon stretched across the road has "YOU MADE FOREST" printed on it in bold letters. Confetti and streamers in the air. Bright daytime, urban road setting with buildings and blue sky in the background. Grand celebration atmosphere. Timing clock display visible.`,
         camera: 'front wide shot, slightly low angle (heroic)',
-        direction: 'running toward camera through the finish line (front view)',
-        pose: 'breaking through the finish line ALONE with both arms raised HIGH in triumph, huge celebratory smile, eyes closed with joy',
-        crowd: 'NO other runners in this scene. The main character crosses the finish line ALONE as the hero moment. Confetti and streamers falling. Empty road behind the character.',
+        direction: 'running toward camera, breaking through the finish tape (front view)',
+        pose: 'breaking through the "YOU MADE FOREST" finish tape ALONE with both arms raised HIGH in triumph, huge celebratory smile, eyes closed with joy, the tape stretching across the chest',
+        crowd: 'NO other characters in this scene. The main character crosses the finish line COMPLETELY ALONE as the hero moment. Confetti and streamers falling. Empty road behind.',
         outfit: 'marathon'
     },
     'forest-made': {
@@ -126,7 +126,7 @@ const SCENE_PRESETS = {
         camera: 'wide establishing shot, eye level',
         direction: 'facing camera (front view)',
         pose: 'standing proudly with hands on hips, looking out at the vast forest, content smile, wind slightly moving hair',
-        crowd: `A few ${OTHER_CHARS} standing nearby (no longer in marathon outfits - wearing casual clothes), also admiring the forest they helped create. Some have arms around each other, celebrating. All at the SAME scale.`,
+        crowd: 'NO other characters. The main character stands ALONE, admiring the vast forest. A peaceful, contemplative solo moment.',
         outfit: 'casual'
     }
 };
