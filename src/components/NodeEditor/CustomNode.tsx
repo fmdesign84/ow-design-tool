@@ -466,6 +466,8 @@ const CustomNodeComponent: React.FC<CustomNodeProps> = ({ id, data, selected }) 
 
     // 실행 결과를 임시 저장 (setNodes의 비동기 문제 해결)
     const executionResults: Record<string, Record<string, unknown>> = {};
+    // 에러난 노드 추적 (의존하는 후속 노드 스킵용)
+    const failedNodeIds = new Set<string>();
 
     // 순서대로 실행
     for (const execNodeId of executionOrder) {
@@ -475,6 +477,27 @@ const CustomNodeComponent: React.FC<CustomNodeProps> = ({ id, data, selected }) 
       const nodeData = node.data as CustomNodeData;
       const nodeDef = nodeRegistry.get(nodeData.nodeId);
       if (!nodeDef) continue;
+
+      // 선행 노드 중 에러난 노드에 의존하는 경우 스킵
+      const incomingEdges = edges.filter(edge => edge.target === execNodeId);
+      const dependsOnFailed = incomingEdges.some(edge => failedNodeIds.has(edge.source));
+      if (dependsOnFailed) {
+        failedNodeIds.add(execNodeId);
+        setNodes(nodes => nodes.map(n => {
+          if (n.id === execNodeId) {
+            return {
+              ...n,
+              data: {
+                ...n.data,
+                status: 'error' as NodeExecutionStatus,
+                error: '선행 노드 실패로 스킵됨',
+              },
+            };
+          }
+          return n;
+        }));
+        continue;
+      }
 
       // 이미 완료된 선행 노드는 건너뛰기 (결과 캐시만 수집)
       // 단, 현재 실행 대상 노드(id)는 항상 재실행
@@ -497,7 +520,6 @@ const CustomNodeComponent: React.FC<CustomNodeProps> = ({ id, data, selected }) 
       try {
         // 연결된 노드에서 입력 데이터 수집 (캐시된 결과 사용)
         const inputs: Record<string, unknown> = {};
-        const incomingEdges = edges.filter(edge => edge.target === execNodeId);
 
         for (const edge of incomingEdges) {
           // 먼저 캐시된 결과에서 찾기
@@ -546,10 +568,11 @@ const CustomNodeComponent: React.FC<CustomNodeProps> = ({ id, data, selected }) 
         }));
 
         if (result.error) {
-          // 에러 발생 시 중단
-          break;
+          // 에러난 노드 기록하고 계속 진행 (독립 브랜치는 실행)
+          failedNodeIds.add(execNodeId);
         }
       } catch (err) {
+        failedNodeIds.add(execNodeId);
         setNodes(nodes => nodes.map(n => {
           if (n.id === execNodeId) {
             return {
@@ -563,8 +586,7 @@ const CustomNodeComponent: React.FC<CustomNodeProps> = ({ id, data, selected }) 
           }
           return n;
         }));
-        // 에러 발생 시 중단
-        break;
+        // break 하지 않고 계속 진행
       }
     }
   }, [id, nodeDefResult, status, edges, getExecutionOrder, setNodes, getNodes]);
