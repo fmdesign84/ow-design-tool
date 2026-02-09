@@ -83,6 +83,8 @@ export interface ConfigDefinition {
   min?: number;
   max?: number;
   step?: number;
+  // 조건부 표시: 다른 config 값에 따라 표시/숨김
+  showWhen?: { field: string; value: string | string[] };
 }
 
 // ===== 노드 실행 결과 =====

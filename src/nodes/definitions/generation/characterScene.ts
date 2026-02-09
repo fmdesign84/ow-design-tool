@@ -40,7 +40,7 @@ export const characterSceneNode: NodeDefinition = {
             options: [
                 { value: 'marathon-start', label: '마라톤 출발선' },
                 { value: 'running-bridge', label: '다리 위 달리기' },
-                { value: 'running-forest', label: '숲속 달리기' },
+                { value: 'running-forest', label: '숲옆길 달리기' },
                 { value: 'billboard-cheer', label: '전광판 응원' },
                 { value: 'aerial-runners', label: '항공뷰 (위에서)' },
                 { value: 'runners-to-forest', label: '러너→숲 트랜지션' },
@@ -56,6 +56,7 @@ export const characterSceneNode: NodeDefinition = {
             type: 'text',
             default: '지원',
             description: '전광판에 표시될 이름 (예: 지원 → "지원! YOU MADE FOREST!")',
+            showWhen: { field: 'scene', value: 'billboard-cheer' },
         },
         {
             id: 'customScene',
@@ -63,6 +64,7 @@ export const characterSceneNode: NodeDefinition = {
             type: 'text',
             default: '',
             description: '예: 서강대교 위에서 달리는 장면, 벚꽃 공원',
+            showWhen: { field: 'scene', value: 'custom' },
         },
         {
             id: 'aspectRatio',

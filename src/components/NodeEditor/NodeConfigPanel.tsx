@@ -173,7 +173,16 @@ const NodeConfigPanel: React.FC<NodeConfigPanelProps> = ({
             설정 항목이 없습니다
           </div>
         ) : (
-          nodeDef.config.map(config => (
+          nodeDef.config
+            .filter(config => {
+              if (!config.showWhen) return true;
+              const depValue = nodeData.config[config.showWhen.field];
+              const allowed = config.showWhen.value;
+              return Array.isArray(allowed)
+                ? allowed.includes(depValue as string)
+                : depValue === allowed;
+            })
+            .map(config => (
             <div key={config.id} className={styles.configItem}>
               <label className={styles.configLabel}>
                 {config.name}
