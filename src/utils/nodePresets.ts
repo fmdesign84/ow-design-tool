@@ -297,6 +297,69 @@ const createStoryboardWorkflow = (): NodePreset => {
 };
 
 // ============================================================
+// 스토리보드 애니메이션 워크플로우 (사진 → 캐릭터 → 8개 씬 → 8개 영상)
+// ============================================================
+
+const SCENE_ACTIONS: Record<string, string> = {
+  'marathon-start': 'running',
+  'running-bridge': 'running',
+  'running-forest': 'running',
+  'billboard-cheer': 'cheering',
+  'aerial-runners': 'running',
+  'runners-to-forest': 'walking',
+  'finish-line': 'finish',
+  'forest-made': 'victory',
+};
+
+const createStoryboardAnimationWorkflow = (): NodePreset => {
+  const ROW_GAP = 250;
+  const POSE_X = START_X + NODE_GAP * 2;
+  const SCENE_X = START_X + NODE_GAP * 3;
+  const ANIM_X = START_X + NODE_GAP * 4;
+  const OUTPUT_X = START_X + NODE_GAP * 5;
+
+  // 입력 + 캐릭터 생성 + 전신 포즈 (중앙 배치)
+  const centerY = START_Y + (STORYBOARD_SCENES.length - 1) * ROW_GAP / 2;
+  const imageNode = createNode('image-upload', {}, START_X, centerY);
+  const charGenNode = createNode('character-gen', {
+    style: 'namoo', expression: 'original', faceStrength: 50,
+  }, START_X + NODE_GAP, centerY);
+  const charPoseNode = createNode('character-pose', {
+    direction: 'front', bodyRange: 'full', pose: 'standing', outfit: 'marathon',
+  }, POSE_X, centerY);
+
+  const nodes = [imageNode, charGenNode, charPoseNode];
+  const edges = [
+    createEdge(imageNode.id, charGenNode.id, 'image', 'referenceImages', PORT_COLORS.image),
+    createEdge(charGenNode.id, charPoseNode.id, 'image', 'characterImage', PORT_COLORS.image),
+  ];
+
+  // 씬 8개 + 애니메이션 8개 + 출력 8개 생성
+  STORYBOARD_SCENES.forEach((s, i) => {
+    const y = START_Y + i * ROW_GAP;
+    const sceneNode = createNode('character-scene', {
+      scene: s.scene,
+      aspectRatio: '9:16',
+    }, SCENE_X, y);
+    const animNode = createNode('character-animation', {
+      action: SCENE_ACTIONS[s.scene] || 'running',
+      duration: '4',
+      loop: true,
+    }, ANIM_X, y);
+    const outputNode = createNode('video-output', {}, OUTPUT_X, y);
+
+    nodes.push(sceneNode, animNode, outputNode);
+    edges.push(
+      createEdge(charPoseNode.id, sceneNode.id, 'image', 'characterImage', PORT_COLORS.image),
+      createEdge(sceneNode.id, animNode.id, 'image', 'characterImage', PORT_COLORS.image),
+      createEdge(animNode.id, outputNode.id, 'video', 'video', PORT_COLORS.video),
+    );
+  });
+
+  return { nodes, edges };
+};
+
+// ============================================================
 // 연출 생성 워크플로우 (인물 + 키비주얼(선택) → 연출 → 출력)
 // ============================================================
 
@@ -365,6 +428,10 @@ export const getNodePreset = (menuKey: string, subMenuKey: string): NodePreset |
       // 스토리보드: 이미지 → 캐릭터변환 → 캐릭터포즈(씬프리셋) → 출력
       case 'storyboard-gen':
         return createStoryboardWorkflow();
+
+      // 스토리보드 애니메이션: 이미지 → 캐릭터 → 8씬 → 8영상 → 출력
+      case 'storyboard-animation':
+        return createStoryboardAnimationWorkflow();
 
       default:
         return null;
