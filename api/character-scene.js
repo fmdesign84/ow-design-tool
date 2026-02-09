@@ -98,11 +98,11 @@ const SCENE_PRESETS = {
         outfit: 'marathon'
     },
     'aerial-runners': {
-        scene: `Aerial bird's-eye view looking straight down at a wide marathon road from very high above (like a drone at 200m altitude). Bright daytime, clear weather. Road markings and distance markers visible on the asphalt. Trees lining both sides of the road from above. The road curves gently.`,
+        scene: `Aerial bird's-eye view looking straight down from very high above (drone at 200m altitude). A narrow pedestrian walking/running path winds through the scene. On the LEFT side of the path is a lush dense green forest seen from above (tree canopy). On the RIGHT side of the path is a wide blue river reflecting sunlight. The path runs between the forest and the river. Bright daytime, clear weather.`,
         camera: 'extreme high angle (top-down aerial/drone view), very far away',
-        direction: 'all runners seen from directly above as tiny dots, running upward in frame',
-        pose: 'one of many tiny identical-sized dots running on the road, absolutely NO close-up, NO enlarged character',
-        crowd: `Dozens of VERY tiny 3D cartoon characters seen from extremely far above, appearing as small colorful dots on the road. ALL characters are the EXACT SAME tiny size - there is NO main character that stands out or is larger. The mint-green-haired character is just ONE of many tiny dots, completely blending in with the crowd at the same miniature scale. Do NOT feature, enlarge, or highlight any single character. This is a crowd scene from far above where individual details are barely visible. The runners form a flowing river-like stream of tiny colorful dots on the road.`,
+        direction: 'all runners seen from directly above as tiny dots, running along the path',
+        pose: 'one of many tiny identical-sized dots on the pedestrian path, absolutely NO close-up, NO enlarged character',
+        crowd: `Dozens of VERY tiny 3D cartoon characters seen from extremely far above, appearing as small colorful dots on the narrow pedestrian path between the forest and the river. ALL characters are the EXACT SAME tiny size - there is NO main character that stands out or is larger. Do NOT feature, enlarge, or highlight any single character. Individual details are barely visible. The runners form a flowing stream of tiny colorful dots along the path.`,
         outfit: 'marathon'
     },
     'runners-to-forest': {
