@@ -140,7 +140,7 @@ module.exports = async (req, res) => {
 
         // 표정 고정 + 위치 유지 지시
         const FACE_LOCK = ' IMPORTANT: Keep the character facial expression CONSISTENT throughout the entire video. Do NOT change or morph the face. The face must remain stable and identical in every frame.';
-        const STAY_IN_FRAME = ' The character must stay WITHIN the frame at all times. Do NOT let the character move out of the image boundaries. Keep the character centered and visible throughout the entire video. If the character is inside a frame, sign, or display in the image, they must stay INSIDE it. CRITICAL BACKGROUND RULE: The background must move VERY SLOWLY or not at all. Maximum background drift is only a few pixels. The background must NOT scroll, pan, or transition quickly. All original background elements must remain visible throughout the entire video. No scene transitions. The environment stays essentially frozen - only the character body animates.';
+        const STAY_IN_FRAME = ' The character must stay WITHIN the frame at all times. Do NOT let the character move out of the image boundaries. Keep the character centered and visible throughout the entire video. If the character is inside a frame, sign, or display in the image, they must stay INSIDE it. BACKGROUND RULE: The background can have subtle natural motion (gentle tree sway, light flicker, soft wind effects, slight ambient movement) to feel alive and natural. However, the background must NOT rapidly scroll, pan far, or completely transition to a different scene. The overall composition and environment must remain recognizable from start to end.';
 
         // 루프 프롬프트
         let LOOP_INSTRUCTION = '';
