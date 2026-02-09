@@ -59,6 +59,14 @@ export const characterSceneNode: NodeDefinition = {
             showWhen: { field: 'scene', value: 'marathon-start' },
         },
         {
+            id: 'finishTime',
+            name: '골인 시간',
+            type: 'text',
+            default: '4:32:10',
+            description: '결승선 타이밍 시계에 표시될 시간',
+            showWhen: { field: 'scene', value: 'finish-line' },
+        },
+        {
             id: 'billboardName',
             name: '전광판 이름',
             type: 'text',
@@ -108,6 +116,7 @@ export const characterSceneNode: NodeDefinition = {
                     aspectRatio: config.aspectRatio || '9:16',
                     billboardName: config.billboardName || '지원',
                     startBannerText: config.startBannerText || 'FOREST RUN',
+                    finishTime: config.finishTime || '4:32:10',
                 }),
             });
 

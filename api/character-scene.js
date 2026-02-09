@@ -114,10 +114,10 @@ const SCENE_PRESETS = {
         outfit: 'marathon'
     },
     'finish-line': {
-        scene: `A marathon finish line with a large overhead banner. The finish line tape/ribbon stretched across the road has "YOU MADE FOREST" printed on it in bold letters. Confetti and streamers in the air. Bright daytime, urban road setting with buildings and blue sky in the background. Grand celebration atmosphere. Timing clock display visible.`,
+        scene: null, // 동적으로 생성 (finishTime 사용)
         camera: 'front wide shot, slightly low angle (heroic)',
         direction: 'running toward camera, breaking through the finish tape (front view)',
-        pose: 'breaking through the "YOU MADE FOREST" finish tape ALONE with both arms raised HIGH in triumph, huge celebratory smile, eyes closed with joy, the tape stretching across the chest',
+        pose: 'breaking through the BLUE "YOU MADE FOREST" finish tape ALONE with both arms raised HIGH in triumph, huge celebratory smile, eyes closed with joy, the blue tape stretching across the chest',
         crowd: 'NO other characters in this scene. The main character crosses the finish line COMPLETELY ALONE as the hero moment. Confetti and streamers falling. Empty road behind.',
         outfit: 'marathon'
     },
@@ -288,7 +288,8 @@ module.exports = async function handler(req, res) {
             customScene = '',
             aspectRatio = '9:16',
             billboardName = '지원',
-            startBannerText = 'FOREST RUN'
+            startBannerText = 'FOREST RUN',
+            finishTime = '4:32:10'
         } = req.body;
 
         if (!characterImage) {
@@ -305,6 +306,15 @@ module.exports = async function handler(req, res) {
             preset = {
                 ...scenePreset,
                 scene: `A wide city road at the starting line of a marathon race. A large inflatable start arch gate spans across the road with bold text "${bannerText}" written on it. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street. The main character in the foreground and the start arch gate are BOTH in sharp focus. Background runners are blurred (bokeh depth of field effect).`,
+            };
+            outfitDescription = OUTFIT_PRESETS[scenePreset.outfit] || OUTFIT_PRESETS['default'];
+        }
+        // 결승선: 동적 골인 시간
+        else if (scene === 'finish-line' && scenePreset) {
+            const timeText = finishTime || '4:32:10';
+            preset = {
+                ...scenePreset,
+                scene: `A REAL outdoor marathon finish line area - photorealistic environment with real asphalt road, real buildings, real sky (NOT computer-generated looking). A large overhead finish banner structure. A BLUE colored finish line tape/ribbon stretched across the road has "YOU MADE FOREST" printed on it in white bold letters. A large digital timing clock display prominently shows "${timeText}" in bright red LED digits. Confetti and blue streamers in the air. Bright daytime, real urban road with actual buildings and blue sky with clouds in the background. The environment must look like a REAL PHOTOGRAPH of a marathon finish area, not a 3D rendered background.`,
             };
             outfitDescription = OUTFIT_PRESETS[scenePreset.outfit] || OUTFIT_PRESETS['default'];
         }
