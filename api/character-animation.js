@@ -48,6 +48,10 @@ const ACTION_PROMPTS = {
         prompt: 'A 3D Pixar-style animated cartoon character does typical RUNNER warm-up stretches STANDING IN PLACE. Quad stretch (pulling foot behind), hamstring stretch (bending to touch toes), calf stretch, ankle rotations. Classic pre-marathon runner stretching routine. NOT running or walking. Stays in one spot. Focused determined expression. Fixed camera.',
         negativePrompt: 'real person, photorealistic, live action, blurry, running, walking, moving forward, camera movement',
     },
+    'aerial-running': {
+        prompt: 'Animate the tiny characters on the path so they are visibly RUNNING with actual running leg motion. Each small figure must show alternating leg strides and arm swings - real running gait, NOT sliding or gliding. The characters move FORWARD along the path with clear leg-pumping running animation. The background environment stays mostly still with only subtle natural motion. Bird eye view from above. Fixed camera, no camera movement.',
+        negativePrompt: 'sliding, gliding, floating, no leg motion, static figures, camera pan, camera movement, scene change',
+    },
     'billboard': {
         prompt: 'A subtle LED display animation effect. The image stays almost completely STILL. Only very subtle changes: slight LED screen flicker/glow pulsing effect on any display/billboard/screen areas, very gentle ambient light shifts. The character on the screen is a STILL IMAGE - absolutely NO body movement, NO jumping, NO running, NO arm waving. The character must remain FROZEN like a photograph. Only the LED screen surface has subtle electronic glow/flicker/scan-line effects. Everything else remains completely static. Absolutely fixed camera.',
         negativePrompt: 'running, walking, jumping, jogging, bouncing, movement, motion, camera pan, camera movement, scene change, character moving, dynamic motion, exercise, dancing',
