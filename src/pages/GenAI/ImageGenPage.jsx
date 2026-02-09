@@ -2427,7 +2427,7 @@ const ImageGenPage = () => {
     const getSubMenus = () => {
         if (activeMenu === 'image') return IMAGE_SUB_MENUS.filter(m => !m.divider);
         if (activeMenu === 'tools') return TOOLS_SUB_MENUS;
-        if (activeMenu === 'video') return VIDEO_SUB_MENUS;
+        if (activeMenu === 'video') return VIDEO_SUB_MENUS.filter(m => !m.divider);
         if (activeMenu === 'design') return DESIGN_SUB_MENUS;
         if (activeMenu === 'library') return LIBRARY_SUB_MENUS;
         return [];
