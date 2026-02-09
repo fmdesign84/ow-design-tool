@@ -1009,10 +1009,14 @@ const CustomNodeComponent: React.FC<CustomNodeProps> = ({ id, data, selected }) 
 
                   // 연결 가능 여부: output과 input 타입이 매칭되는지
                   // 'any' 타입은 모든 타입과 연결 가능
+                  // 'image'와 'images'는 호환 (단일 이미지 → 복수 이미지 입력)
+                  const isCompatible = (outType: string, inType: string) =>
+                    outType === inType ||
+                    outType === 'any' || inType === 'any' ||
+                    (outType === 'image' && inType === 'images') ||
+                    (outType === 'images' && inType === 'image');
                   const canConnect = currentOutputTypes.some(outType =>
-                    candidateInputTypes.some(inType =>
-                      outType === inType || outType === 'any' || inType === 'any'
-                    )
+                    candidateInputTypes.some(inType => isCompatible(outType, inType))
                   );
 
                   // 연결 불가능하면 목록에서 제외
