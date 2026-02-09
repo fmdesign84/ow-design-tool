@@ -45,8 +45,8 @@ const ACTION_PROMPTS = {
         negativePrompt: 'real person, photorealistic, live action, blurry',
     },
     'stretching': {
-        prompt: 'A 3D Pixar-style animated cartoon character does pre-race warm-up stretching exercises. Alternating between leg lunges, arm circles, and torso twists. Athletic preparation movements, focused determined expression. Clean white background.',
-        negativePrompt: 'real person, photorealistic, live action, blurry',
+        prompt: 'A 3D Pixar-style animated cartoon character does pre-race warm-up stretching exercises STANDING IN PLACE. NOT running or walking. Stationary stretching: leg lunges, arm circles, torso twists. Stays in one spot. Athletic preparation movements, focused determined expression. Clean white background.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, running, walking, moving forward',
     }
 };
 

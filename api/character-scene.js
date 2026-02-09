@@ -67,10 +67,10 @@ const OTHER_CHARS = 'OTHER 3D cartoon characters (same Pixar/Disney art style) w
 const SCENE_PRESETS = {
     'marathon-start': {
         scene: null, // 동적으로 생성 (startBannerText 사용)
-        camera: 'front wide shot, eye level, shallow depth of field (background runners out of focus)',
+        camera: 'front wide shot, eye level, shallow depth of field (background people out of focus)',
         direction: 'facing camera (front view)',
-        pose: 'doing pre-race warm-up stretching (leg lunges or arm circles or torso twists), focused determined expression, in sharp focus',
-        crowd: `Many ${OTHER_CHARS} gathered behind the starting line - but they are OUT OF FOCUS (bokeh/blur effect). Only the main character and the start arch gate are IN SHARP FOCUS. The blurred runners create atmosphere without competing for attention.`,
+        pose: 'doing pre-race warm-up stretching IN PLACE (standing leg lunges or arm circles or torso twists). NOT running, NOT walking. Stationary warm-up exercise. Focused determined expression, in sharp focus',
+        crowd: `Many ${OTHER_CHARS} gathered behind the starting line, also doing warm-up stretches and preparing (NOT running). Some are stretching legs, some doing arm circles, some bending and twisting - all warming up in place before the race starts. They are OUT OF FOCUS (bokeh/blur effect). Only the main character and the start arch gate are IN SHARP FOCUS.`,
         outfit: 'marathon'
     },
     'running-bridge': {
@@ -103,7 +103,8 @@ const SCENE_PRESETS = {
         direction: 'all runners seen from directly above as tiny dots, running along the path',
         pose: 'one of many tiny identical-sized dots on the pedestrian path, absolutely NO close-up, NO enlarged character',
         crowd: `Dozens of VERY tiny 3D cartoon characters seen from extremely far above, appearing as small colorful dots on the narrow pedestrian path between the forest and the river. ALL characters are the EXACT SAME tiny size - there is NO main character that stands out or is larger. Do NOT feature, enlarge, or highlight any single character. Individual details are barely visible. The runners form a flowing stream of tiny colorful dots along the path.`,
-        outfit: 'marathon'
+        outfit: 'marathon',
+        noBlur: true,
     },
     'runners-to-forest': {
         scene: `A stunning top-down aerial view of a long straight road. The image shows a smooth GRADIENT transition from LEFT to RIGHT (or BOTTOM to TOP): On the LEFT/BOTTOM side is a gray concrete urban city with buildings, roads, and asphalt. This gradually transitions through a gradient zone where pavement cracks and grass/saplings start appearing, then small bushes, then young trees, until the RIGHT/TOP side is a completely lush dense green forest. A single tiny 3D cartoon character is running at the CENTER of this gradient transition point - the boundary between city and nature. The character is small (seen from high above). Bright daytime, warm golden sunlight illuminating the scene. The gradient from gray city to green forest is smooth and visually striking, like a before/after split image.`,
@@ -200,9 +201,7 @@ HAIR WARNING:
 - Keep the EXACT hair shape from the reference
 
 FOCUS PRIORITY:
-- The MAIN CHARACTER must ALWAYS be the focal point, in sharp focus
-- Any other characters should be OUT OF FOCUS (bokeh blur) or only partially visible (cropped at frame edges)
-- The main character is the HERO of every scene
+${preset.noBlur ? '- ALL characters are the same size and in focus (aerial/wide group shot)\n- No bokeh blur needed - this is a wide overview scene' : '- The MAIN CHARACTER must ALWAYS be the focal point, in sharp focus\n- Any other characters should be OUT OF FOCUS (bokeh blur) or only partially visible (cropped at frame edges)\n- The main character is the HERO of every scene'}
 
 STYLE (CRITICAL):
 - ALL characters (main + others): Same 3D cartoon style (Pixar/Disney-like)
@@ -305,7 +304,7 @@ module.exports = async function handler(req, res) {
             const bannerText = startBannerText || 'FOREST RUN';
             preset = {
                 ...scenePreset,
-                scene: `A wide city road at the starting line of a marathon race. A large inflatable start arch gate spans across the road with bold text "${bannerText}" written on it. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street. The main character in the foreground and the start arch gate are BOTH in sharp focus. Background runners are blurred (bokeh depth of field effect).`,
+                scene: `A wide city road at the starting line of a marathon race. A large BLUE colored inflatable start arch gate spans across the road with bold white text "${bannerText}" written on it. The arch gate is blue. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street. The main character in the foreground and the blue start arch gate are BOTH in sharp focus. Background people warming up are blurred (bokeh depth of field effect).`,
             };
             outfitDescription = OUTFIT_PRESETS[scenePreset.outfit] || OUTFIT_PRESETS['default'];
         }
@@ -323,7 +322,7 @@ module.exports = async function handler(req, res) {
             const nameText = billboardName || '지원';
             preset = {
                 ...scenePreset,
-                scene: `A city marathon road in bright daytime with a MASSIVE LED electronic billboard/jumbotron screen on the right side. The billboard screen has TWO distinct text areas: (1) the name "${nameText}!" displayed VERY LARGE in bold, thick, glowing neon-style font at the top center - this is the hero text taking up most of the billboard, (2) below it in a smaller, thinner, clean sans-serif subtitle font: "YOU MADE FOREST!" as a tagline. The billboard also shows the same mint-green-haired 3D cartoon character running energetically with a fist pump. Clear blue sky, urban atmosphere, sunlight.`,
+                scene: `A city marathon road in bright daytime with a MASSIVE wide HORIZONTAL RECTANGULAR LED electronic billboard/jumbotron screen mounted on the right side (landscape orientation, much wider than tall, like a widescreen TV). The billboard is a clean RECTANGLE shape with sharp corners and a thin black frame border. On the billboard screen: (1) the name "${nameText}!" displayed VERY LARGE in bold, thick, glowing neon-style font at the top center - this is the hero text, (2) below it in a smaller, thinner subtitle: "YOU MADE FOREST!". The billboard also shows the same mint-green-haired 3D cartoon character running. The billboard blends naturally into the scene - no harsh cutout edges between billboard and environment. Clear blue sky, urban atmosphere, sunlight.`,
             };
             outfitDescription = OUTFIT_PRESETS[scenePreset.outfit] || OUTFIT_PRESETS['default'];
         } else if (scene === 'custom' && customScene) {
