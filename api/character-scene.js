@@ -69,15 +69,15 @@ const SCENE_PRESETS = {
         scene: null, // 동적으로 생성 (startBannerText 사용)
         camera: 'front wide shot, eye level',
         direction: 'facing camera (front view)',
-        pose: 'doing a typical pre-running leg stretch IN PLACE - one leg forward in a lunge position, hands on knee, stretching the calf and hamstring. A classic runner warm-up pose. NOT running, NOT walking. Stationary. Focused determined expression',
+        pose: 'doing a DYNAMIC full-body stretch IN PLACE - deep lunge with one leg far forward, back leg fully extended, both arms reaching up high or one arm pulling across the chest in an athletic stretch. Body twisted slightly, showing energy and determination. A powerful, photogenic warm-up pose that looks dynamic even while stationary. NOT running, NOT walking. Focused intense expression',
         crowd: 'NO other characters. The main character stretches ALONE in front of the start gate. Empty road behind. This is a solo hero moment before the race.',
         outfit: 'marathon'
     },
     'running-bridge': {
-        scene: `A pedestrian/running path ON Seogang Bridge (서강대교) in Seoul. The character is running on the bridge's sidewalk/pedestrian lane. The distinctive RED painted steel arch structure of the bridge is visible overhead/beside the runner. Metal guardrails line the path. The Han River is visible below/beside. Seoul city skyline with apartment buildings in the background. Bright daytime, clear blue sky.`,
-        camera: 'side tracking shot (3/4 angle), slightly low angle',
+        scene: `A pedestrian/running path ON Seogang Bridge (서강대교) in Seoul. The character is running energetically on the bridge's sidewalk/pedestrian lane. The distinctive RED painted steel arch structure of the bridge is visible overhead/beside. Metal guardrails line the path. The Han River is visible below/beside. Seoul city skyline with apartment buildings in the background. Bright daytime, clear blue sky. The lighting on the character MUST match the outdoor bridge lighting - warm sunlight from above, slight shadow on the ground matching the sun angle. The character's feet are firmly ON the ground surface, casting a natural shadow.`,
+        camera: 'side tracking shot (3/4 angle), slightly low angle, dynamic motion feel',
         direction: 'running from left to right (side/3/4 view)',
-        pose: 'running dynamically on the bridge pedestrian path, mid-stride, arms swinging, determined expression',
+        pose: 'running with full energy - classic running form with one knee high, opposite arm forward, body leaning slightly forward into the run. Hair and clothes show motion blur/wind effect. Athletic powerful stride, NOT floating, feet touching ground naturally. Determined joyful expression',
         crowd: 'NO other characters. The main character runs ALONE on the bridge path. This is a solo running scene on Seogang Bridge.',
         outfit: 'marathon'
     },
@@ -107,11 +107,11 @@ const SCENE_PRESETS = {
         noBlur: true,
     },
     'runners-to-forest': {
-        scene: `Aerial bird's-eye view looking straight down from very high above (drone view). The ENTIRE frame is filled with a DENSE, LUSH GREEN FOREST canopy in 3D CARTOON style (Pixar/Disney quality). Stylized round tree crowns packed tightly together covering the whole image - vibrant shades of green (emerald, lime, dark green, forest green). The trees have the characteristic smooth, rounded, slightly exaggerated shapes of 3D animation. NO roads, NO paths, NO characters. Just an endless sea of beautiful cartoon-style treetops filling every corner of the frame. Bright, warm lighting with soft stylized shadows. Colorful and vibrant like a Pixar movie establishing shot.`,
+        scene: `Top-down aerial view looking straight down. The ENTIRE image is filled edge-to-edge with a beautiful 3D CARTOON FOREST seen from above. The trees are in the SAME rounded, smooth, cute 3D cartoon art style as the characters (Pixar/Disney quality) - each tree has a perfectly ROUND, PUFFY, SOFT-LOOKING canopy like cotton candy or broccoli shapes. The tree crowns are tightly packed together with NO gaps showing ground. Use VIBRANT, SATURATED colors: bright emerald green, lime green, yellow-green, with occasional orange or golden autumn trees mixed in for color variety. Soft warm lighting from above creates gentle shadows between the round treetops. This should look like a scene from a Pixar movie - NOT a photograph, NOT a painting. Pure 3D rendered cartoon forest. The forest fills EVERY corner of the frame.`,
         camera: 'extreme high angle (top-down aerial/drone view), very far away',
         direction: 'N/A (landscape only, no characters)',
         pose: 'N/A (no characters in this scene)',
-        crowd: 'NO characters at all. This is a pure 3D cartoon landscape shot. Only stylized forest canopy filling the entire frame.',
+        crowd: 'ABSOLUTELY NO characters, NO people, NO figures. Pure landscape only. Only round cartoon treetops filling the entire frame from edge to edge.',
         outfit: 'none',
         noBlur: true,
         landscapeOnly: true,
@@ -163,7 +163,7 @@ function extractImageData(imageInput) {
 function buildScenePrompt(preset, outfitDescription) {
     // 순수 풍경 씬 (캐릭터 없음)
     if (preset.landscapeOnly) {
-        return `Generate a 3D cartoon style landscape image.
+        return `Generate a 3D cartoon landscape image in Pixar/Disney animation style.
 
 SCENE:
 ${preset.scene}
@@ -171,13 +171,16 @@ ${preset.scene}
 CAMERA:
 ${preset.camera}
 
-STYLE (CRITICAL):
-- Full 3D cartoon / Pixar / Disney animation style
-- Vibrant, saturated colors with stylized lighting
-- Smooth rounded shapes, NOT photorealistic
-- Beautiful establishing shot quality
-- NO characters, NO people, NO figures - pure landscape only
-- Cinematic composition, professional quality`;
+STYLE (CRITICAL - READ CAREFULLY):
+- This MUST look like a frame from a Pixar or Disney 3D animated movie
+- Smooth, rounded, soft shapes - like clay or plastic models
+- Vibrant, SATURATED colors - NOT muted, NOT realistic
+- Stylized warm lighting with soft shadows
+- The same art style as cute 3D cartoon characters with round heads and big eyes
+- NOT a photograph, NOT photorealistic, NOT a painting, NOT watercolor
+- It must be clearly COMPUTER-GENERATED 3D CARTOON RENDER
+- NO characters, NO people, NO figures anywhere - pure landscape only
+- Beautiful establishing shot, cinematic composition`;
     }
 
     return `Place this 3D cartoon character into a scene.
@@ -227,9 +230,13 @@ ${preset.noBlur ? '- ALL characters are the same size and in focus (aerial/wide 
 STYLE (CRITICAL):
 - ALL characters (main + others): Same 3D cartoon style (Pixar/Disney-like)
 - BACKGROUND/ENVIRONMENT: Photorealistic, cinematic photography quality
-- ALL cartoon characters naturally composited into the photorealistic environment
-- Lighting on characters matches environment lighting
-- Characters cast realistic shadows
+- COMPOSITING QUALITY (VERY IMPORTANT):
+  * Characters must look NATURALLY PLACED in the environment, NOT pasted on top
+  * Lighting direction on characters MUST match the environment light source (sun position, shadows)
+  * Characters cast REALISTIC SHADOWS on the ground that match the lighting angle
+  * Characters' feet are firmly ON the ground surface, NOT floating above it
+  * Color temperature of characters matches the scene (warm outdoor = warm tones on character)
+  * Edge blending between character and background must be seamless (no hard cutout edges)
 - SCALE: When other characters are present, main character is the SAME size, NOT bigger
 - Cinematic composition, shallow depth of field where appropriate, professional quality`;
 }
@@ -325,7 +332,7 @@ module.exports = async function handler(req, res) {
             const bannerText = startBannerText || 'FOREST RUN';
             preset = {
                 ...scenePreset,
-                scene: `A wide city road at the starting line of a marathon race. A large RECTANGULAR start gate frame spans across the road - it is a clean rectangular frame structure (NOT an arch, NOT inflatable). The frame has a WHITE background panel with "${bannerText}!" written in VERY BOLD, large, thick black or dark blue block letters. The text is prominent and clearly readable. The rectangular frame stands upright like a doorway/portal over the road. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street. The main character in the foreground and the rectangular start gate are BOTH in sharp focus. Background people warming up are blurred (bokeh depth of field effect).`,
+                scene: `A wide city road at the starting line of a marathon race. A large, THICK, STURDY rectangular start gate structure spans across the road - it has THICK solid pillars on both sides (the left and right pillars may be partially cropped at the frame edges, that's OK). The gate is a heavy, substantial 3D structure with real depth and thickness, NOT a flat sign. The top beam has a WHITE panel with "${bannerText}!" written in VERY BOLD, extra-large, thick black or dark blue block letters. The text is prominent and clearly readable. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street. The main character in the foreground and the start gate are BOTH in sharp focus.`,
             };
             outfitDescription = OUTFIT_PRESETS[scenePreset.outfit] || OUTFIT_PRESETS['default'];
         }
