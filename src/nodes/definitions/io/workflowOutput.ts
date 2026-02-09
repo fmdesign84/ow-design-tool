@@ -46,13 +46,22 @@ export const workflowOutputNode: NodeDefinition = {
     },
   ],
 
-  execute: async (inputs) => {
+  execute: async (inputs, config) => {
     // 출력 노드는 입력값을 그대로 워크플로우 결과로 반환
-    return {
-      outputs: {
-        _workflowResult: inputs.value,
-      },
+    // outputType에 따라 미리보기용 키도 함께 반환
+    const outputType = config?.outputType || 'image';
+    const outputs: Record<string, unknown> = {
+      _workflowResult: inputs.value,
     };
+
+    if (outputType === 'video') {
+      outputs.video = inputs.value;
+      outputs._outputType = 'video';
+    } else if (outputType === 'image') {
+      outputs.image = inputs.value;
+    }
+
+    return { outputs };
   },
 };
 
