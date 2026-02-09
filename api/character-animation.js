@@ -139,36 +139,62 @@ module.exports = async (req, res) => {
         console.log('[CharacterAnimation] Action:', action);
         console.log('[CharacterAnimation] Duration:', videoDuration, 's');
 
+        // 병렬 호출 시 rate limit 방지: 랜덤 딜레이 (0~8초)
+        const jitter = Math.floor(Math.random() * 8000);
+        console.log(`[CharacterAnimation] Stagger delay: ${jitter}ms`);
+        await new Promise(resolve => setTimeout(resolve, jitter));
+
         // 이미지를 Supabase temp에 업로드 (Replicate는 URL 필요)
         console.log('[CharacterAnimation] Uploading image to temp storage...');
         const imageUpload = await uploadToTemp(characterImage, 'char-anim');
         console.log('[CharacterAnimation] Image uploaded:', imageUpload.url.substring(0, 60) + '...');
 
-        // Replicate API - Kling v2.1 image-to-video
-        const createResponse = await fetch('https://api.replicate.com/v1/models/kwaivgi/kling-v2.1/predictions', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Token ${REPLICATE_API_TOKEN}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                input: {
-                    prompt: actionConfig.prompt,
-                    start_image: imageUpload.url,
-                    duration: videoDuration,
-                    mode: 'standard',
-                    negative_prompt: actionConfig.negativePrompt || '',
-                }
-            })
-        });
+        // Replicate API - Kling v2.1 image-to-video (재시도 포함)
+        const maxRetries = 3;
+        let prediction = null;
 
-        if (!createResponse.ok) {
+        for (let attempt = 0; attempt < maxRetries; attempt++) {
+            if (attempt > 0) {
+                const backoff = (attempt * 5000) + Math.floor(Math.random() * 3000);
+                console.log(`[CharacterAnimation] Retry ${attempt}/${maxRetries} after ${backoff}ms`);
+                await new Promise(resolve => setTimeout(resolve, backoff));
+            }
+
+            const createResponse = await fetch('https://api.replicate.com/v1/models/kwaivgi/kling-v2.1/predictions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Token ${REPLICATE_API_TOKEN}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    input: {
+                        prompt: actionConfig.prompt,
+                        start_image: imageUpload.url,
+                        duration: videoDuration,
+                        mode: 'standard',
+                        negative_prompt: actionConfig.negativePrompt || '',
+                    }
+                })
+            });
+
+            if (createResponse.ok) {
+                prediction = await createResponse.json();
+                console.log('[CharacterAnimation] Prediction created:', prediction.id);
+                break;
+            }
+
             const errData = await createResponse.json().catch(() => ({}));
-            throw new Error(errData.detail || `Replicate API error: ${createResponse.status}`);
+            console.error(`[CharacterAnimation] Attempt ${attempt + 1} failed:`, createResponse.status, errData.detail || '');
+
+            // 429 (rate limit) 또는 5xx는 재시도, 그 외는 즉시 실패
+            if (createResponse.status !== 429 && createResponse.status < 500) {
+                throw new Error(errData.detail || `Replicate API error: ${createResponse.status}`);
+            }
         }
 
-        let prediction = await createResponse.json();
-        console.log('[CharacterAnimation] Prediction created:', prediction.id);
+        if (!prediction) {
+            throw new Error('Replicate API rate limit - 잠시 후 다시 시도해주세요');
+        }
 
         // 결과 폴링 (최대 240초 - 비디오 생성은 시간이 오래 걸림)
         const maxWait = 240000;
