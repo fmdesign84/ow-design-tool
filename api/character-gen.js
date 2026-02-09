@@ -307,12 +307,14 @@ FIXED ELEMENTS (ALWAYS PRESENT - copy EXACTLY from style reference):
 4. WHITE background
 
 FROM STYLE REFERENCE (copy these EXACTLY):
-- 3D cartoon rendering quality (Pixar-like)
+- 3D cartoon rendering quality (Pixar/Disney-like, slightly chibi proportions)
 - Headband: blue/white striped design
 - Leaf pair: shape, position, and style (color = same mint green as hair)
 - T-shirt: blue color matching headband
-- EYES: Must have visible WHITE sclera (eye whites) - this is key character identity
-- Overall cute character aesthetic
+- EYES: Must have visible WHITE sclera (eye whites), slightly LARGER and rounder than realistic - this is key to the cute look
+- Overall CUTE character aesthetic - soft rounded features, gentle smile, adorable charm
+- Head slightly larger in proportion to body (cute chibi-like ratio, not extreme)
+- Smooth, soft skin texture with warm lighting
 
 FROM ORIGINAL PHOTO (preserve these):
 - Face shape and proportions

@@ -74,11 +74,11 @@ const SCENE_PRESETS = {
         outfit: 'marathon'
     },
     'running-bridge': {
-        scene: `A pedestrian/running path ON Seogang Bridge (서강대교) in Seoul. The character is running energetically on the bridge's sidewalk/pedestrian lane. The distinctive RED painted steel arch structure of the bridge is visible overhead/beside. Metal guardrails line the path. The Han River is visible below/beside. Seoul city skyline with apartment buildings in the background. Bright daytime, clear blue sky. The lighting on the character MUST match the outdoor bridge lighting - warm sunlight from above, slight shadow on the ground matching the sun angle. The character's feet are firmly ON the ground surface, casting a natural shadow.`,
-        camera: 'side tracking shot (3/4 angle), slightly low angle, dynamic motion feel',
-        direction: 'running from left to right (side/3/4 view)',
-        pose: 'running with full energy - classic running form with one knee high, opposite arm forward, body leaning slightly forward into the run. Hair and clothes show motion blur/wind effect. Athletic powerful stride, NOT floating, feet touching ground naturally. Determined joyful expression',
-        crowd: 'NO other characters. The main character runs ALONE on the bridge path. This is a solo running scene on Seogang Bridge.',
+        scene: `The camera is ON the pedestrian walkway of Seogang Bridge (서강대교) in Seoul, showing the path stretching ahead. The walkway surface (concrete or asphalt) fills the bottom of the frame. Metal guardrails on both sides of the walkway. The distinctive RED painted steel arch structure of the bridge is visible OVERHEAD and to the sides, framing the scene. Through the guardrails, the Han River water is visible on one side. The character is running ON this walkway surface, directly on the path. The bridge structure surrounds the runner - we are INSIDE the bridge, not looking at it from far away. Bright daytime, clear blue sky. Natural outdoor lighting with shadows matching sun angle.`,
+        camera: 'behind/following shot or slight side angle, eye level on the walkway, dynamic motion feel',
+        direction: 'running forward (away from camera or slight 3/4 view)',
+        pose: 'running with full energy on the bridge walkway - classic running form with one knee high, opposite arm forward, body leaning slightly forward. Hair and clothes show motion/wind effect. Athletic powerful stride, feet firmly ON the walkway surface. Determined joyful expression',
+        crowd: 'NO other characters. The main character runs ALONE on the bridge walkway.',
         outfit: 'marathon'
     },
     'running-forest': {
