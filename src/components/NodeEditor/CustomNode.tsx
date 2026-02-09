@@ -476,6 +476,13 @@ const CustomNodeComponent: React.FC<CustomNodeProps> = ({ id, data, selected }) 
       const nodeDef = nodeRegistry.get(nodeData.nodeId);
       if (!nodeDef) continue;
 
+      // 이미 완료된 선행 노드는 건너뛰기 (결과 캐시만 수집)
+      // 단, 현재 실행 대상 노드(id)는 항상 재실행
+      if (execNodeId !== id && nodeData.status === 'completed' && nodeData.outputs) {
+        executionResults[execNodeId] = nodeData.outputs;
+        continue;
+      }
+
       // 상태를 running으로 변경
       setNodes(nodes => nodes.map(n => {
         if (n.id === execNodeId) {
