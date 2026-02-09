@@ -198,12 +198,27 @@ export async function createDefaultWorkflowImage(
     throw new Error('Canvas context not available');
   }
 
-  // 배경 그라데이션
-  const gradient = ctx.createLinearGradient(0, 0, 400, 300);
-  gradient.addColorStop(0, '#1a1a2e');
-  gradient.addColorStop(1, '#16213e');
-  ctx.fillStyle = gradient;
+  // 배경 (Wave 에디터 스타일)
+  ctx.fillStyle = '#F5F6F8';
   ctx.fillRect(0, 0, 400, 300);
+
+  // 점선 그리드 (Wave 에디터 배경 패턴)
+  ctx.strokeStyle = '#D1D5DB';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([2, 8]);
+  for (let x = 20; x < 400; x += 20) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, 300);
+    ctx.stroke();
+  }
+  for (let y = 20; y < 300; y += 20) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(400, y);
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
 
   // Wave 아이콘 (간단한 파도)
   ctx.strokeStyle = '#FF6B00';
@@ -215,14 +230,14 @@ export async function createDefaultWorkflowImage(
   ctx.stroke();
 
   // 노드 개수 텍스트
-  ctx.fillStyle = '#ffffff';
+  ctx.fillStyle = '#374151';
   ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, sans-serif';
   ctx.textAlign = 'center';
   ctx.fillText(`${nodeCount} nodes`, 200, 220);
 
   // 워크플로우 이름 (축약)
   ctx.font = '14px -apple-system, BlinkMacSystemFont, sans-serif';
-  ctx.fillStyle = '#9CA3AF';
+  ctx.fillStyle = '#6B7280';
   const truncatedName = workflowName.length > 30
     ? workflowName.substring(0, 27) + '...'
     : workflowName;
@@ -256,8 +271,8 @@ export async function captureNodeEditor(
   } = {}
 ): Promise<string> {
   const {
-    backgroundColor = '#1a1a2e',
-    padding = 50,
+    backgroundColor = '#F5F6F8',
+    padding = 20,
     maxWidth = 1920,
     maxHeight = 1080,
   } = options;
