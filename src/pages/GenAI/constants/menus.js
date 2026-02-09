@@ -61,6 +61,7 @@ export const IMAGE_SUB_MENUS = [
     { key: 'character-gen-studio', label: '캐릭터 생성', Icon: PoseChangeIcon },
     { key: 'storyboard-gen', label: '스토리보드', Icon: FilmReelIcon },
     { key: 'storyboard-animation', label: '스토리보드 영상', Icon: FilmReelIcon },
+    { key: 'storyboard-full', label: '스토리보드 통합', Icon: FilmReelIcon },
     { key: 'product-photo', label: '제품 사진', Icon: ImageToIcon, comingSoon: true },
 ];
 

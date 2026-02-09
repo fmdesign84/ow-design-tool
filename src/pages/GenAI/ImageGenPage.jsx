@@ -2320,6 +2320,7 @@ const ImageGenPage = () => {
         'character-gen-studio': '캐릭터 생성',
         'storyboard-gen': '포레스트런 스토리보드',
         'storyboard-animation': '포레스트런 애니메이션',
+        'storyboard-full': '포레스트런 통합',
     };
 
     // Wave 전환 + 프리셋 로드 헬퍼
@@ -2353,7 +2354,7 @@ const ImageGenPage = () => {
     // 서브메뉴 클릭 → 노드 프리셋 로드 (기존 캔버스에 추가)
     const handleSubMenuClick = useCallback((menuKey) => {
         // Wave 전환이 필요한 프리셋들
-        if (menuKey === 'character-gen-studio' || menuKey === 'storyboard-gen' || menuKey === 'storyboard-animation') {
+        if (menuKey === 'character-gen-studio' || menuKey === 'storyboard-gen' || menuKey === 'storyboard-animation' || menuKey === 'storyboard-full') {
             loadPresetAndSwitchToWave(menuKey);
             return;
         }
