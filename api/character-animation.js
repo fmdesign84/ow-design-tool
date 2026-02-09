@@ -17,32 +17,32 @@ const ACTION_PROMPTS = {
         negativePrompt: 'real person, photorealistic, live action, blurry, distorted, camera pan, scene change, body deformation, limb stretching, morphing legs',
     },
     'victory': {
-        prompt: 'A 3D Pixar-style animated cartoon character celebrates victory in place, making a V-sign peace pose with both hands raised high. Happy expression, slight bounce in place. Fixed camera position.',
-        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement',
+        prompt: 'A 3D Pixar-style animated cartoon character making a V-sign peace pose. Both hands raised showing V-sign with fingers, arms held up proudly. Confident happy smile. Upper body gently swaying with pride. Feet planted on the ground, NOT jumping, NOT jogging. Character stays centered. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement, running, jogging',
     },
     'finish': {
         prompt: 'A 3D Pixar-style animated cartoon character runs forward and crosses a finish line tape. The character bursts through the tape with chest forward, arms spread wide in triumph. The broken tape flutters and falls down to the ground. After breaking through, the character slows down and celebrates with both arms raised. Character stays centered. Fixed camera.',
         negativePrompt: 'real person, photorealistic, live action, blurry, camera pan, scene transition, tape disappearing, tape floating',
     },
     'waving': {
-        prompt: 'A 3D Pixar-style animated cartoon character waves hello in place, one hand raised and moving side to side in a friendly greeting. Warm smile, gentle body sway. Character stays centered. Fixed camera.',
-        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement',
+        prompt: 'A 3D Pixar-style animated cartoon character waving hello. One hand raised and moving side to side in a friendly greeting gesture. Warm smile, head slightly tilted. The waving arm moves naturally left-right. Other arm relaxed at side. Feet stay on the ground, NOT jumping, NOT jogging. Character stays centered. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement, running, jogging, jumping',
     },
     'jumping': {
-        prompt: 'A 3D Pixar-style animated cartoon character jumps up with joy in place, arms raised, body lifting off the ground and landing softly. Up and down motion only. Character stays centered. Fixed camera.',
-        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement',
+        prompt: 'A 3D Pixar-style animated cartoon character doing a big celebratory jump. Character crouches slightly, then leaps HIGH into the air with both arms raised above head, then lands softly back down. One single big dramatic jump, NOT repeated small hops. Character stays centered. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement, running, jogging',
     },
     'dancing': {
-        prompt: 'A 3D Pixar-style animated cartoon character dances happily in place with rhythmic body movement, arms moving side to side, slight hip sway. Fun and energetic dance. Character stays centered. Fixed camera.',
-        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement',
+        prompt: 'A 3D Pixar-style animated cartoon character doing a fun dance. Rhythmic side-to-side body movement, arms swinging with the beat, hips swaying, head bobbing. Fun groovy dance moves like a celebration dance. Feet shuffling on the ground with rhythm, NOT running or jogging motions. Character stays centered. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement, running, jogging',
     },
     'walking': {
-        prompt: 'A 3D Pixar-style animated cartoon character walks in place with a natural walking cycle animation, relaxed posture. Arms swinging gently. Character stays centered in frame. Fixed camera.',
-        negativePrompt: 'real person, photorealistic, live action, blurry, camera pan, scene change',
+        prompt: 'A 3D Pixar-style animated cartoon character walking forward slowly and casually. Relaxed posture, arms swinging gently at sides, natural walking stride. Calm and leisurely pace, NOT running, NOT jogging. Character stays centered in frame. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera pan, scene change, running, jogging',
     },
     'cheering': {
-        prompt: 'A 3D Pixar-style animated cartoon character cheers enthusiastically in place, jumping up with fists pumping in the air, expressing excitement and joy. Character stays centered. Fixed camera.',
-        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement',
+        prompt: 'A 3D Pixar-style animated cartoon character cheering with excitement. Both fists pumping up in the air repeatedly, head tilted back with joy. Energetic upper body motion - arms going up and down in triumph. Feet stay planted on ground, body bouncing slightly with each cheer. NOT running or jogging. Character stays centered. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement, running, jogging',
     },
     'stretching': {
         prompt: 'A 3D Pixar-style animated cartoon character does typical RUNNER warm-up stretches STANDING IN PLACE. Quad stretch (pulling foot behind), hamstring stretch (bending to touch toes), calf stretch, ankle rotations. Classic pre-marathon runner stretching routine. NOT running or walking. Stays in one spot. Focused determined expression. Fixed camera.',
