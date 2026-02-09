@@ -106,11 +106,11 @@ const SCENE_PRESETS = {
         outfit: 'marathon'
     },
     'runners-to-forest': {
-        scene: `A magical aerial view showing a visual story: In the BOTTOM portion, a group of tiny 3D cartoon marathon runners are running forward on a road. Behind them (in the UPPER portion of the image), the road they have already passed through has TRANSFORMED into a beautiful lush green forest. The concept: "where they ran, a forest grew behind them". The transition from road to forest is gradual and magical with golden sparkle effects. Bright daytime, warm golden sunlight. Dreamy, hopeful atmosphere.`,
+        scene: `A magical aerial/high-angle view of a single 3D cartoon character running ALONE on a road. The image is split into two contrasting halves: AHEAD of the character (bottom/forward) is a gray urban city road with buildings and asphalt. BEHIND the character (top/back), the road has magically TRANSFORMED into a lush green forest with tall trees. The character is at the exact boundary between city and forest. The concept: "where I ran, a forest grew behind me". Bright daytime, warm golden sunlight. Magical golden sparkle particles at the transition line between road and forest. Dreamy, hopeful atmosphere.`,
         camera: 'high aerial view, looking down at an angle',
-        direction: 'runners moving upward/forward in frame, forest growing behind them',
-        pose: 'small figures running forward together as a group',
-        crowd: `Many tiny 3D cartoon characters (same art style) wearing various colored marathon outfits, ALL at the EXACT SAME tiny scale, running together in a group. The main character (mint green hair) is among them at the SAME size. Behind the group, the road transforms into green trees and forest. The trees are normal natural trees (NOT human-shaped), growing where the runners have already passed.`,
+        direction: 'character running forward (downward in frame) from forest into city road',
+        pose: 'running forward alone, mid-stride, determined expression',
+        crowd: 'NO other characters. The main character runs ALONE. This is a solo scene showing the magical transformation of road into forest behind the character.',
         outfit: 'marathon'
     },
     'finish-line': {
