@@ -202,23 +202,15 @@ export async function createDefaultWorkflowImage(
   ctx.fillStyle = '#F5F6F8';
   ctx.fillRect(0, 0, 400, 300);
 
-  // 점선 그리드 (Wave 에디터 배경 패턴)
-  ctx.strokeStyle = '#D1D5DB';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([2, 8]);
-  for (let x = 20; x < 400; x += 20) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, 300);
-    ctx.stroke();
+  // 점 패턴 (Wave 에디터 BackgroundVariant.Dots: gap=24, size=2, color=#D1D5DB)
+  ctx.fillStyle = '#D1D5DB';
+  for (let x = 12; x < 400; x += 24) {
+    for (let y = 12; y < 300; y += 24) {
+      ctx.beginPath();
+      ctx.arc(x, y, 1, 0, Math.PI * 2);
+      ctx.fill();
+    }
   }
-  for (let y = 20; y < 300; y += 20) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(400, y);
-    ctx.stroke();
-  }
-  ctx.setLineDash([]);
 
   // Wave 아이콘 (간단한 파도)
   ctx.strokeStyle = '#FF6B00';
