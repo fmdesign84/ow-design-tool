@@ -436,7 +436,8 @@ module.exports = async (req, res) => {
             parameters: {
                 aspectRatio: finalAspectRatio,
                 sampleCount: 1,
-                personGeneration: 'allow_adult' // 성인 사람 생성 허용
+                personGeneration: 'allow_all',
+                safetyFilterLevel: 'block_none'
             }
         };
 
