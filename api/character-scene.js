@@ -323,7 +323,7 @@ module.exports = async function handler(req, res) {
             const nameText = billboardName || '지원';
             preset = {
                 ...scenePreset,
-                scene: `A city marathon road in bright daytime with a MASSIVE LED electronic billboard/jumbotron screen on the right side. The billboard screen shows the same mint-green-haired 3D cartoon character running energetically with a fist pump, cheering pose. Large bold text on the billboard reads "${nameText}! YOU MADE FOREST!" in bright glowing letters. Clear blue sky, urban atmosphere, sunlight.`,
+                scene: `A city marathon road in bright daytime with a MASSIVE LED electronic billboard/jumbotron screen on the right side. The billboard screen has TWO distinct text areas: (1) the name "${nameText}!" displayed VERY LARGE in bold, thick, glowing neon-style font at the top center - this is the hero text taking up most of the billboard, (2) below it in a smaller, thinner, clean sans-serif subtitle font: "YOU MADE FOREST!" as a tagline. The billboard also shows the same mint-green-haired 3D cartoon character running energetically with a fist pump. Clear blue sky, urban atmosphere, sunlight.`,
             };
             outfitDescription = OUTFIT_PRESETS[scenePreset.outfit] || OUTFIT_PRESETS['default'];
         } else if (scene === 'custom' && customScene) {
