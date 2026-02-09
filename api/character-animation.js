@@ -13,40 +13,40 @@ module.exports.config = {
 // 동작별 프롬프트 매핑
 const ACTION_PROMPTS = {
     'running': {
-        prompt: 'A 3D Pixar-style animated cartoon character running forward with dynamic motion. Arms swinging naturally, legs in full stride, smooth running animation. Camera follows from a slight side angle. Clean white background.',
-        negativePrompt: 'real person, photorealistic, live action, blurry, distorted',
+        prompt: 'A 3D Pixar-style animated cartoon character running in place with dynamic motion. Arms swinging naturally, legs in full stride, smooth running cycle animation. Character stays in the CENTER of frame. Fixed camera, no camera movement.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, distorted, camera pan, scene change',
     },
     'victory': {
-        prompt: 'A 3D Pixar-style animated cartoon character celebrates victory, making a V-sign peace pose with both hands raised high. Happy expression, slight bounce in place. Camera slowly zooms in. Clean white background.',
-        negativePrompt: 'real person, photorealistic, live action, blurry',
+        prompt: 'A 3D Pixar-style animated cartoon character celebrates victory in place, making a V-sign peace pose with both hands raised high. Happy expression, slight bounce in place. Fixed camera position.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement',
     },
     'finish': {
-        prompt: 'A 3D Pixar-style animated cartoon character crosses the finish line, both arms raised high in triumph, running through with victorious celebration. Dynamic forward motion. Clean white background.',
-        negativePrompt: 'real person, photorealistic, live action, blurry',
+        prompt: 'A 3D Pixar-style animated cartoon character celebrates crossing the finish line, both arms raised high in triumph, jumping and cheering in place. Character stays centered. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera pan, scene transition',
     },
     'waving': {
-        prompt: 'A 3D Pixar-style animated cartoon character waves hello, one hand raised and moving side to side in a friendly greeting. Warm smile, gentle body sway. Clean white background.',
-        negativePrompt: 'real person, photorealistic, live action, blurry',
+        prompt: 'A 3D Pixar-style animated cartoon character waves hello in place, one hand raised and moving side to side in a friendly greeting. Warm smile, gentle body sway. Character stays centered. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement',
     },
     'jumping': {
-        prompt: 'A 3D Pixar-style animated cartoon character jumps up with joy, arms raised, body lifting off the ground and landing softly. Dynamic up and down motion. Clean white background.',
-        negativePrompt: 'real person, photorealistic, live action, blurry',
+        prompt: 'A 3D Pixar-style animated cartoon character jumps up with joy in place, arms raised, body lifting off the ground and landing softly. Up and down motion only. Character stays centered. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement',
     },
     'dancing': {
-        prompt: 'A 3D Pixar-style animated cartoon character dances happily with rhythmic body movement, arms moving side to side, slight hip sway. Fun and energetic dance. Clean white background.',
-        negativePrompt: 'real person, photorealistic, live action, blurry',
+        prompt: 'A 3D Pixar-style animated cartoon character dances happily in place with rhythmic body movement, arms moving side to side, slight hip sway. Fun and energetic dance. Character stays centered. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement',
     },
     'walking': {
-        prompt: 'A 3D Pixar-style animated cartoon character walks forward naturally with relaxed posture. Arms swinging gently, smooth walking cycle. Camera follows from the side. Clean white background.',
-        negativePrompt: 'real person, photorealistic, live action, blurry',
+        prompt: 'A 3D Pixar-style animated cartoon character walks in place with a natural walking cycle animation, relaxed posture. Arms swinging gently. Character stays centered in frame. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera pan, scene change',
     },
     'cheering': {
-        prompt: 'A 3D Pixar-style animated cartoon character cheers enthusiastically, jumping up with fists pumping in the air, expressing excitement and joy. Dynamic celebration movements. Clean white background.',
-        negativePrompt: 'real person, photorealistic, live action, blurry',
+        prompt: 'A 3D Pixar-style animated cartoon character cheers enthusiastically in place, jumping up with fists pumping in the air, expressing excitement and joy. Character stays centered. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera movement',
     },
     'stretching': {
-        prompt: 'A 3D Pixar-style animated cartoon character does typical RUNNER warm-up stretches STANDING IN PLACE. Quad stretch (pulling foot behind), hamstring stretch (bending to touch toes), calf stretch, ankle rotations. Classic pre-marathon runner stretching routine. NOT running or walking. Stays in one spot. Focused determined expression. Clean white background.',
-        negativePrompt: 'real person, photorealistic, live action, blurry, running, walking, moving forward',
+        prompt: 'A 3D Pixar-style animated cartoon character does typical RUNNER warm-up stretches STANDING IN PLACE. Quad stretch (pulling foot behind), hamstring stretch (bending to touch toes), calf stretch, ankle rotations. Classic pre-marathon runner stretching routine. NOT running or walking. Stays in one spot. Focused determined expression. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, running, walking, moving forward, camera movement',
     }
 };
 
@@ -135,7 +135,7 @@ module.exports = async (req, res) => {
 
         // 표정 고정 + 위치 유지 지시
         const FACE_LOCK = ' IMPORTANT: Keep the character facial expression CONSISTENT throughout the entire video. Do NOT change or morph the face. The face must remain stable and identical in every frame.';
-        const STAY_IN_FRAME = ' The character must stay WITHIN the frame at all times. Do NOT let the character move out of the image boundaries. Keep the character centered and visible throughout the entire video. If the character is inside a frame, sign, or display in the image, they must stay INSIDE it.';
+        const STAY_IN_FRAME = ' The character must stay WITHIN the frame at all times. Do NOT let the character move out of the image boundaries. Keep the character centered and visible throughout the entire video. If the character is inside a frame, sign, or display in the image, they must stay INSIDE it. CRITICAL BACKGROUND RULE: The background and environment must remain mostly the SAME throughout the video. The background can shift or pan SLIGHTLY, but must NOT completely change or transition to a different scene. The original background elements must still be visible at the end of the video. No scene transitions, no dramatic camera travel.';
 
         // 루프 프롬프트
         let LOOP_INSTRUCTION = '';
