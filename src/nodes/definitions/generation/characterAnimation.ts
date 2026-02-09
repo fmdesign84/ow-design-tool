@@ -83,8 +83,8 @@ export const characterAnimationNode: NodeDefinition = {
                 };
             }
 
-            // 이미지 압축 (Vercel 4.5MB body 제한 대응)
-            const compressImage = (dataUrl: string, maxSize = 1024): Promise<string> => {
+            // 이미지 압축 (Vercel 4.5MB body 제한 대응 - 768px, JPEG 0.7)
+            const compressImage = (dataUrl: string, maxSize = 768): Promise<string> => {
                 return new Promise((resolve) => {
                     const img = new Image();
                     img.onload = () => {
@@ -99,20 +99,22 @@ export const characterAnimationNode: NodeDefinition = {
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx?.drawImage(img, 0, 0, width, height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.85));
+                        resolve(canvas.toDataURL('image/jpeg', 0.7));
                     };
                     img.onerror = () => resolve(dataUrl);
                     img.src = dataUrl;
                 });
             };
 
-            const compressedImage = await compressImage(characterImage);
+            // HTTP URL이면 압축 불필요, base64면 압축
+            const isUrl = characterImage.startsWith('http');
+            const imageToSend = isUrl ? characterImage : await compressImage(characterImage);
 
             const response = await fetch('/api/character-animation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    characterImage: compressedImage,
+                    characterImage: imageToSend,
                     action: config.action || 'running',
                     duration: config.duration || '5',
                     loop: config.loop || 'none',

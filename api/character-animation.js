@@ -158,10 +158,19 @@ module.exports = async (req, res) => {
         console.log(`[CharacterAnimation] Stagger delay: ${jitter}ms`);
         await new Promise(resolve => setTimeout(resolve, jitter));
 
-        // 이미지를 Supabase temp에 업로드 (Replicate는 URL 필요)
-        console.log('[CharacterAnimation] Uploading image to temp storage...');
-        const imageUpload = await uploadToTemp(characterImage, 'char-anim');
-        console.log('[CharacterAnimation] Image uploaded:', imageUpload.url.substring(0, 60) + '...');
+        // 이미지 URL 확보 (Replicate는 URL 필요)
+        let imageUrl;
+        if (characterImage.startsWith('http')) {
+            // 이미 URL이면 그대로 사용
+            imageUrl = characterImage;
+            console.log('[CharacterAnimation] Using existing URL:', imageUrl.substring(0, 60) + '...');
+        } else {
+            // base64면 Supabase temp에 업로드
+            console.log('[CharacterAnimation] Uploading image to temp storage...');
+            const imageUpload = await uploadToTemp(characterImage, 'char-anim');
+            imageUrl = imageUpload.url;
+            console.log('[CharacterAnimation] Image uploaded:', imageUrl.substring(0, 60) + '...');
+        }
 
         // Replicate API - Kling v2.1 image-to-video (재시도 포함)
         const maxRetries = 5;
@@ -183,7 +192,7 @@ module.exports = async (req, res) => {
                 body: JSON.stringify({
                     input: {
                         prompt: actionConfig.prompt + FACE_LOCK + STAY_IN_FRAME + LOOP_INSTRUCTION,
-                        start_image: imageUpload.url,
+                        start_image: imageUrl,
                         duration: videoDuration,
                         mode: 'standard',
                         negative_prompt: actionConfig.negativePrompt || '',
