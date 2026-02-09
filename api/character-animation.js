@@ -152,9 +152,9 @@ module.exports = async (req, res) => {
         console.log('[CharacterAnimation] Action:', action);
         console.log('[CharacterAnimation] Duration:', videoDuration, 's');
 
-        // 병렬 호출 시 rate limit 방지: 랜덤 딜레이 (0~30초)
+        // 병렬 호출 시 rate limit 방지: 랜덤 딜레이 (0~90초)
         // Replicate 동시 prediction 제한 대응 - 충분히 분산
-        const jitter = Math.floor(Math.random() * 30000);
+        const jitter = Math.floor(Math.random() * 90000);
         console.log(`[CharacterAnimation] Stagger delay: ${jitter}ms`);
         await new Promise(resolve => setTimeout(resolve, jitter));
 
@@ -173,12 +173,13 @@ module.exports = async (req, res) => {
         }
 
         // Replicate API - Kling v2.1 image-to-video (재시도 포함)
-        const maxRetries = 5;
+        const maxRetries = 8;
         let prediction = null;
 
         for (let attempt = 0; attempt < maxRetries; attempt++) {
             if (attempt > 0) {
-                const backoff = (attempt * 10000) + Math.floor(Math.random() * 5000);
+                // 지수 백오프: 15s, 30s, 45s, 60s... + 랜덤
+                const backoff = (attempt * 15000) + Math.floor(Math.random() * 10000);
                 console.log(`[CharacterAnimation] Retry ${attempt}/${maxRetries} after ${backoff}ms`);
                 await new Promise(resolve => setTimeout(resolve, backoff));
             }
