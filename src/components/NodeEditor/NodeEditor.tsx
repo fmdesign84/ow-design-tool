@@ -239,6 +239,21 @@ const CloudSaveIcon = () => (
   </svg>
 );
 
+const PanelHideIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2" />
+    <path d="M9 3v18" />
+  </svg>
+);
+
+const PanelShowIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2" />
+    <path d="M9 3v18" />
+    <path d="M14 9l3 3-3 3" />
+  </svg>
+);
+
 // 노드 시스템 초기화
 initializeNodeSystem();
 
@@ -303,6 +318,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
   const [isNodePickerOpen, setIsNodePickerOpen] = useState(false);
   const [isResultPanelOpen, setIsResultPanelOpen] = useState(true);
   const [isWaveListExpanded, setIsWaveListExpanded] = useState(true);
+  const [isPanelsHidden, setIsPanelsHidden] = useState(false);
   const [isStarted, setIsStarted] = useState(false); // 직접 만들기로 빈 캔버스 시작 여부
   const [currentTool, setCurrentTool] = useState<'select' | 'pan'>('select');
   const { screenToFlowPosition, zoomIn, zoomOut } = useReactFlow();
@@ -1010,6 +1026,16 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
               </button>
             </div>
           )}
+          {/* 패널 숨기기 토글 */}
+          {nodes.length > 0 && (
+            <button
+              className={`${styles.zoomButton} ${isPanelsHidden ? styles.active : ''}`}
+              onClick={() => setIsPanelsHidden(!isPanelsHidden)}
+              title={isPanelsHidden ? '패널 표시' : '패널 숨기기'}
+            >
+              {isPanelsHidden ? <PanelShowIcon /> : <PanelHideIcon />}
+            </button>
+          )}
           {/* 클라우드 저장 버튼 */}
           {nodes.length > 0 && (
             <button
@@ -1074,7 +1100,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
           </ReactFlow>
 
           {/* 플로팅 툴바 (레퍼런스 스타일) */}
-          {(nodes.length > 0 || isStarted) && (
+          {(nodes.length > 0 || isStarted) && !isPanelsHidden && (
             <div className={styles.floatingToolbar}>
               {/* 노드 추가 */}
               <button
@@ -1211,7 +1237,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
           )}
 
           {/* 오른쪽 패널 영역 - 플로팅 (노드가 있을 때만 표시) */}
-          {nodes.length > 0 && (
+          {nodes.length > 0 && !isPanelsHidden && (
             <div className={styles.rightPanels}>
               {/* 웨이브 리스트 패널 */}
               <WaveListPanel
