@@ -327,7 +327,28 @@ async function generateWithGemini(prompt, characterImage, aspectRatio) {
         }
     }
 
+    // 안전 필터 차단 여부 확인
+    const blockReason = data.candidates?.[0]?.finishReason;
+    if (blockReason === 'SAFETY' || blockReason === 'BLOCKED') {
+        throw new Error('SAFETY_BLOCKED');
+    }
     throw new Error('No image in Gemini response');
+}
+
+// Gemini 생성 (재시도 포함 - 안전 필터 차단 시 프롬프트 수정 후 재시도)
+async function generateWithRetry(prompt, characterImage, aspectRatio) {
+    try {
+        return await generateWithGemini(prompt, characterImage, aspectRatio);
+    } catch (error) {
+        if (error.message === 'SAFETY_BLOCKED') {
+            console.log('[CharacterScene] Safety blocked, retrying with softer prompt...');
+            // 프롬프트 완화 후 재시도
+            const saferPrompt = prompt.replace(/sprint|crouch|low stance|intense/gi, 'ready')
+                + '\n\nIMPORTANT: Keep the image safe, family-friendly, and appropriate for all audiences.';
+            return await generateWithGemini(saferPrompt, characterImage, aspectRatio);
+        }
+        throw error;
+    }
 }
 
 // 메인 핸들러
@@ -409,7 +430,7 @@ module.exports = async function handler(req, res) {
         });
 
         const prompt = buildScenePrompt(preset, outfitDescription);
-        const result = await generateWithGemini(prompt, characterImage, aspectRatio);
+        const result = await generateWithRetry(prompt, characterImage, aspectRatio);
 
         const generationTime = Date.now() - startTime;
 
