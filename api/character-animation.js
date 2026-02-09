@@ -1,9 +1,8 @@
 /**
  * Vercel Serverless Function - Character Animation
- * 캐릭터 이미지를 받아서 동작 애니메이션 생성 (Veo 3.1)
+ * 캐릭터 이미지를 받아서 동작 애니메이션 생성 (Replicate Kling v2.1)
  */
 
-const { GoogleAuth } = require('google-auth-library');
 const { createClient } = require('@supabase/supabase-js');
 
 // Vercel Pro: 최대 300초
@@ -14,96 +13,92 @@ module.exports.config = {
 // 동작별 프롬프트 매핑
 const ACTION_PROMPTS = {
     'running': {
-        prompt: 'This 3D cartoon character is running forward with dynamic motion. Arms swinging naturally, legs in full stride, smooth running animation loop. Camera follows the character from a slight side angle. Clean white background.',
-        loop: true
+        prompt: 'A 3D Pixar-style animated cartoon character running forward with dynamic motion. Arms swinging naturally, legs in full stride, smooth running animation. Camera follows from a slight side angle. Clean white background.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, distorted',
     },
     'victory': {
-        prompt: 'This 3D cartoon character celebrates victory, making a V-sign peace pose with both hands raised high. Happy expression, slight bounce in place. Camera slowly zooms in on the joyful character. Clean white background.',
-        loop: false
+        prompt: 'A 3D Pixar-style animated cartoon character celebrates victory, making a V-sign peace pose with both hands raised high. Happy expression, slight bounce in place. Camera slowly zooms in. Clean white background.',
+        negativePrompt: 'real person, photorealistic, live action, blurry',
     },
     'finish': {
-        prompt: 'This 3D cartoon character crosses the finish line, both arms raised high in triumph, running through with victorious celebration. Dynamic forward motion with arms going up in celebration. Clean white background.',
-        loop: false
+        prompt: 'A 3D Pixar-style animated cartoon character crosses the finish line, both arms raised high in triumph, running through with victorious celebration. Dynamic forward motion. Clean white background.',
+        negativePrompt: 'real person, photorealistic, live action, blurry',
     },
     'waving': {
-        prompt: 'This 3D cartoon character waves hello, one hand raised and moving side to side in a friendly greeting. Warm smile, gentle body sway. Smooth looping wave animation. Clean white background.',
-        loop: true
+        prompt: 'A 3D Pixar-style animated cartoon character waves hello, one hand raised and moving side to side in a friendly greeting. Warm smile, gentle body sway. Clean white background.',
+        negativePrompt: 'real person, photorealistic, live action, blurry',
     },
     'jumping': {
-        prompt: 'This 3D cartoon character jumps up with joy, arms raised, body lifting off the ground and landing softly. Dynamic up and down motion with natural bounce. Clean white background.',
-        loop: true
+        prompt: 'A 3D Pixar-style animated cartoon character jumps up with joy, arms raised, body lifting off the ground and landing softly. Dynamic up and down motion. Clean white background.',
+        negativePrompt: 'real person, photorealistic, live action, blurry',
     },
     'dancing': {
-        prompt: 'This 3D cartoon character dances happily with rhythmic body movement, arms moving side to side, slight hip sway. Fun and energetic dance loop. Clean white background.',
-        loop: true
+        prompt: 'A 3D Pixar-style animated cartoon character dances happily with rhythmic body movement, arms moving side to side, slight hip sway. Fun and energetic dance. Clean white background.',
+        negativePrompt: 'real person, photorealistic, live action, blurry',
     },
     'walking': {
-        prompt: 'This 3D cartoon character walks forward naturally with relaxed posture. Arms swinging gently, smooth walking cycle. Camera follows from the side. Clean white background.',
-        loop: true
+        prompt: 'A 3D Pixar-style animated cartoon character walks forward naturally with relaxed posture. Arms swinging gently, smooth walking cycle. Camera follows from the side. Clean white background.',
+        negativePrompt: 'real person, photorealistic, live action, blurry',
     },
     'cheering': {
-        prompt: 'This 3D cartoon character cheers enthusiastically, jumping up with fists pumping in the air, expressing excitement and joy. Dynamic celebration movements. Clean white background.',
-        loop: true
+        prompt: 'A 3D Pixar-style animated cartoon character cheers enthusiastically, jumping up with fists pumping in the air, expressing excitement and joy. Dynamic celebration movements. Clean white background.',
+        negativePrompt: 'real person, photorealistic, live action, blurry',
     },
     'stretching': {
-        prompt: 'This 3D cartoon character does pre-race warm-up stretching exercises. Alternating between leg lunges, arm circles, and torso twists. Athletic preparation movements, focused determined expression. Smooth looping animation. Clean white background.',
-        loop: true
+        prompt: 'A 3D Pixar-style animated cartoon character does pre-race warm-up stretching exercises. Alternating between leg lunges, arm circles, and torso twists. Athletic preparation movements, focused determined expression. Clean white background.',
+        negativePrompt: 'real person, photorealistic, live action, blurry',
     }
 };
 
-// base64 추출 헬퍼
-function extractBase64(dataUrl) {
-    if (!dataUrl) return null;
+// Supabase temp 업로드 (기존 패턴 재사용)
+async function uploadToTemp(base64Image, prefix = 'anim') {
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
-    if (!dataUrl.startsWith('data:')) {
-        // 이미 base64만 있는 경우
-        return { base64: dataUrl, mime: 'image/png' };
+    if (!supabaseUrl || !supabaseKey) {
+        throw new Error('Supabase credentials missing');
     }
 
-    const matches = dataUrl.match(/^data:([^;]+);base64,(.+)$/);
-    if (!matches) return null;
+    const supabase = createClient(supabaseUrl, supabaseKey);
 
-    return { base64: matches[2], mime: matches[1] };
-}
+    let buffer;
+    let mimeType = 'image/png';
+    let extension = 'png';
 
-// 폴링으로 결과 확인 (fetchPredictOperation 사용)
-async function pollForResult(fetchEndpoint, operationName, accessToken, maxWaitMs = 240000, intervalMs = 5000) {
-    let waited = 0;
+    if (base64Image.startsWith('data:')) {
+        const matches = base64Image.match(/^data:([^;]+);base64,(.+)$/);
+        if (matches) {
+            mimeType = matches[1];
+            extension = mimeType.split('/')[1] || 'png';
+            buffer = Buffer.from(matches[2], 'base64');
+        } else {
+            throw new Error('Invalid Base64 image format');
+        }
+    } else {
+        buffer = Buffer.from(base64Image, 'base64');
+    }
 
-    while (waited < maxWaitMs) {
-        await new Promise(resolve => setTimeout(resolve, intervalMs));
-        waited += intervalMs;
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substring(2, 8);
+    const fileName = `${prefix}_${timestamp}_${random}.${extension}`;
+    const filePath = `temp/${fileName}`;
 
-        console.log(`[CharacterAnimation] Polling (${waited / 1000}s)...`);
-
-        const response = await fetch(fetchEndpoint, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ operationName: operationName })
+    const { error } = await supabase.storage
+        .from('generated-images')
+        .upload(filePath, buffer, {
+            contentType: mimeType,
+            upsert: false
         });
 
-        const responseText = await response.text();
-
-        let data;
-        try {
-            data = JSON.parse(responseText);
-        } catch (e) {
-            console.error('[CharacterAnimation] Poll parse error:', responseText.substring(0, 200));
-            continue;
-        }
-
-        if (data.done) {
-            if (data.error) {
-                throw new Error(data.error.message || 'Generation failed');
-            }
-            return data;
-        }
+    if (error) {
+        throw new Error(`Upload failed: ${error.message}`);
     }
 
-    throw new Error('Generation timed out');
+    const { data: urlData } = supabase.storage
+        .from('generated-images')
+        .getPublicUrl(filePath);
+
+    return { url: urlData.publicUrl, path: filePath };
 }
 
 module.exports = async (req, res) => {
@@ -122,215 +117,148 @@ module.exports = async (req, res) => {
         const {
             characterImage,
             action = 'running',
-            duration = '4',
-            loop = true
+            duration = '5',
         } = req.body;
 
         if (!characterImage) {
             return res.status(400).json({ error: 'Character image is required' });
         }
 
-        const PROJECT_ID = process.env.GOOGLE_PROJECT_ID;
-        if (!PROJECT_ID) {
-            return res.status(500).json({ error: 'GOOGLE_PROJECT_ID not configured' });
+        const REPLICATE_API_TOKEN = process.env.REPLICATE_API_TOKEN;
+        if (!REPLICATE_API_TOKEN) {
+            return res.status(500).json({ error: 'REPLICATE_API_TOKEN not configured' });
         }
 
         // 동작 프롬프트 가져오기
         const actionConfig = ACTION_PROMPTS[action] || ACTION_PROMPTS['running'];
 
-        // Safety filter 우회: "3D animated figure" 강조 프리픽스
-        const CARTOON_PREFIX = 'A 3D Pixar-style animated cartoon figure (NOT a real person, fully computer-generated character). ';
+        // duration 정규화 (Kling은 5 또는 10만 지원)
+        const videoDuration = parseInt(duration, 10) >= 8 ? 10 : 5;
 
-        // 반복 동작 설정 반영
-        const loopSuffix = (loop && actionConfig.loop) ? ' Seamless loop animation.' : '';
-
-        console.log('[CharacterAnimation] Starting generation...');
+        console.log('[CharacterAnimation] Starting Replicate Kling generation...');
         console.log('[CharacterAnimation] Action:', action);
-        console.log('[CharacterAnimation] Duration:', duration);
+        console.log('[CharacterAnimation] Duration:', videoDuration, 's');
 
-        // Google Auth
-        const credentialsJson = process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON;
-        if (!credentialsJson) {
-            throw new Error('GOOGLE_APPLICATION_CREDENTIALS_JSON not configured');
-        }
+        // 이미지를 Supabase temp에 업로드 (Replicate는 URL 필요)
+        console.log('[CharacterAnimation] Uploading image to temp storage...');
+        const imageUpload = await uploadToTemp(characterImage, 'char-anim');
+        console.log('[CharacterAnimation] Image uploaded:', imageUpload.url.substring(0, 60) + '...');
 
-        const auth = new GoogleAuth({
-            credentials: JSON.parse(credentialsJson),
-            scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-        });
-        const client = await auth.getClient();
-        const tokenResponse = await client.getAccessToken();
-        const accessToken = tokenResponse.token;
-
-        // 이미지 추출
-        const imgData = extractBase64(characterImage);
-        if (!imgData) {
-            return res.status(400).json({ error: 'Invalid image format' });
-        }
-
-        // 모델별 엔드포인트 생성 헬퍼
-        const makeEndpoints = (modelId) => ({
-            predict: `https://us-central1-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/${modelId}:predictLongRunning`,
-            fetch: `https://us-central1-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/${modelId}:fetchPredictOperation`,
+        // Replicate API - Kling v2.1 image-to-video
+        const createResponse = await fetch('https://api.replicate.com/v1/models/kwaivgi/kling-v2.1/predictions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Token ${REPLICATE_API_TOKEN}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                input: {
+                    prompt: actionConfig.prompt,
+                    start_image: imageUpload.url,
+                    duration: videoDuration,
+                    mode: 'standard',
+                    negative_prompt: actionConfig.negativePrompt || '',
+                }
+            })
         });
 
-        // 재시도 전략: 모델 변경 + safety 완화
-        const VEO_31 = 'veo-3.1-fast-generate-preview';
-        const VEO_20 = 'veo-2.0-generate-001';
+        if (!createResponse.ok) {
+            const errData = await createResponse.json().catch(() => ({}));
+            throw new Error(errData.detail || `Replicate API error: ${createResponse.status}`);
+        }
 
-        const basePrompt = CARTOON_PREFIX + actionConfig.prompt + loopSuffix;
+        let prediction = await createResponse.json();
+        console.log('[CharacterAnimation] Prediction created:', prediction.id);
 
-        const attempts = [
-            {
-                model: VEO_31,
-                prompt: basePrompt,
-                safetyFilterLevel: 'block_none',
-                withImage: true,
-            },
-            {
-                model: VEO_20,
-                prompt: basePrompt,
-                safetyFilterLevel: 'block_none',
-                withImage: true,
-            },
-            {
-                model: VEO_31,
-                prompt: CARTOON_PREFIX + actionConfig.prompt.replace(/character/g, 'animated figure') + loopSuffix + ' Fully computer-generated 3D animation.',
-                safetyFilterLevel: 'block_none',
-                withImage: true,
-            },
-        ];
+        // 결과 폴링 (최대 240초 - 비디오 생성은 시간이 오래 걸림)
+        const maxWait = 240000;
+        const pollInterval = 3000;
+        let waited = 0;
 
-        let result = null;
-        let lastError = null;
-        let usedModel = VEO_31;
-
-        for (let attempt = 0; attempt < attempts.length; attempt++) {
-            const attemptConfig = attempts[attempt];
-            const endpoints = makeEndpoints(attemptConfig.model);
-            console.log(`[CharacterAnimation] Attempt ${attempt + 1}/${attempts.length} (model: ${attemptConfig.model}, safety: ${attemptConfig.safetyFilterLevel})`);
-            console.log('[CharacterAnimation] Prompt:', attemptConfig.prompt.substring(0, 120));
-
-            // 재시도 간 딜레이 (rate limit 방지)
-            if (attempt > 0) {
-                await new Promise(resolve => setTimeout(resolve, 2000));
+        while (prediction.status !== 'succeeded' && prediction.status !== 'failed' && prediction.status !== 'canceled') {
+            if (waited >= maxWait) {
+                throw new Error('Timeout waiting for video generation');
             }
 
-            try {
-                const instances = attemptConfig.withImage ? [{
-                    prompt: attemptConfig.prompt,
-                    image: {
-                        bytesBase64Encoded: imgData.base64,
-                        mimeType: imgData.mime
-                    }
-                }] : [{
-                    prompt: attemptConfig.prompt,
-                }];
+            await new Promise(resolve => setTimeout(resolve, pollInterval));
+            waited += pollInterval;
 
-                const requestBody = {
-                    instances,
-                    parameters: {
-                        aspectRatio: '9:16',
-                        sampleCount: 1,
-                        durationSeconds: parseInt(duration, 10),
-                        personGeneration: 'allow_all',
-                        safetyFilterLevel: attemptConfig.safetyFilterLevel,
-                    }
-                };
-
-                const response = await fetch(endpoints.predict, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestBody)
-                });
-
-                if (!response.ok) {
-                    const errText = await response.text();
-                    console.error(`[CharacterAnimation] Attempt ${attempt + 1} Veo error:`, errText);
-                    if (errText.includes('safety') || errText.includes('blocked') || errText.includes('person')) {
-                        lastError = new Error(`Safety filter blocked (attempt ${attempt + 1})`);
-                        continue;
-                    }
-                    throw new Error(`Veo API failed: ${response.status}`);
+            const pollResponse = await fetch(`https://api.replicate.com/v1/predictions/${prediction.id}`, {
+                headers: {
+                    'Authorization': `Token ${REPLICATE_API_TOKEN}`,
                 }
-
-                const operationData = await response.json();
-                const operationName = operationData.name;
-
-                if (!operationName) {
-                    throw new Error('No operation name returned');
-                }
-
-                console.log('[CharacterAnimation] Operation started:', operationName);
-
-                result = await pollForResult(endpoints.fetch, operationName, accessToken);
-
-                // 폴링 결과에서 safety error 체크
-                if (result.error && (result.error.message || '').includes('safety')) {
-                    console.log(`[CharacterAnimation] Polling returned safety error, retrying...`);
-                    lastError = new Error(result.error.message);
-                    result = null;
-                    continue;
-                }
-
-                usedModel = attemptConfig.model;
-                break; // 성공
-            } catch (err) {
-                lastError = err;
-                if (err.message.includes('safety') || err.message.includes('blocked') || err.message.includes('person')) {
-                    console.log(`[CharacterAnimation] Safety filter on attempt ${attempt + 1}, retrying...`);
-                    continue;
-                }
-                throw err;
-            }
-        }
-
-        if (!result) {
-            throw lastError || new Error('All retry attempts failed due to safety filter');
-        }
-
-        // 비디오 추출 (여러 구조 시도)
-        let videos = result.response?.videos || [];
-        if (videos.length === 0) {
-            videos = result.videos || result.predictions || result.response?.predictions || [];
-        }
-
-        if (videos.length === 0) {
-            throw new Error('No video generated');
-        }
-
-        const video = videos[0];
-        let videoBase64 = video.bytesBase64Encoded;
-
-        // GCS URI인 경우 다운로드
-        if (!videoBase64 && video.gcsUri) {
-            console.log('[CharacterAnimation] Downloading from GCS:', video.gcsUri);
-            const gcsResponse = await fetch(video.gcsUri.replace('gs://', 'https://storage.googleapis.com/'), {
-                headers: { 'Authorization': `Bearer ${accessToken}` }
             });
-            if (gcsResponse.ok) {
-                const buffer = await gcsResponse.arrayBuffer();
-                videoBase64 = Buffer.from(buffer).toString('base64');
-            }
+
+            prediction = await pollResponse.json();
+            console.log(`[CharacterAnimation] Status: ${prediction.status} (${waited / 1000}s)`);
         }
 
-        if (!videoBase64) {
-            throw new Error('No video data in response');
+        if (prediction.status === 'failed') {
+            throw new Error(prediction.error || 'Video generation failed');
         }
+
+        if (prediction.status === 'canceled') {
+            throw new Error('Video generation was canceled');
+        }
+
+        // 결과 비디오 URL
+        const outputUrl = prediction.output;
+        if (!outputUrl) {
+            throw new Error('No video URL in response');
+        }
+
+        console.log('[CharacterAnimation] Video URL:', outputUrl);
+
+        // 비디오 다운로드해서 base64 변환 (클라이언트 호환성 유지)
+        const videoResponse = await fetch(outputUrl);
+        if (!videoResponse.ok) {
+            throw new Error('Failed to download generated video');
+        }
+
+        const videoBuffer = await videoResponse.arrayBuffer();
+        const videoBase64 = Buffer.from(videoBuffer).toString('base64');
 
         const generationTime = Date.now() - startTime;
         console.log('[CharacterAnimation] Success! Time:', generationTime, 'ms');
 
+        // Supabase에 비디오 저장 (아카이브)
+        let savedVideoUrl = null;
+        try {
+            const supabaseUrl = process.env.SUPABASE_URL;
+            const supabaseKey = process.env.SUPABASE_ANON_KEY;
+            if (supabaseUrl && supabaseKey) {
+                const supabase = createClient(supabaseUrl, supabaseKey);
+                const fileName = `char-anim-${Date.now()}-${Math.random().toString(36).substring(2, 7)}.mp4`;
+                const buffer = Buffer.from(videoBase64, 'base64');
+
+                const { error: uploadError } = await supabase.storage
+                    .from('generated-videos')
+                    .upload(fileName, buffer, {
+                        contentType: 'video/mp4',
+                        cacheControl: '3600'
+                    });
+
+                if (!uploadError) {
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('generated-videos')
+                        .getPublicUrl(fileName);
+                    savedVideoUrl = publicUrl;
+                    console.log('[CharacterAnimation] Saved to Supabase:', publicUrl);
+                }
+            }
+        } catch (saveErr) {
+            console.error('[CharacterAnimation] Supabase save error:', saveErr.message);
+        }
+
         return res.status(200).json({
             success: true,
             video: `data:video/mp4;base64,${videoBase64}`,
+            savedVideoUrl,
             action,
-            duration,
+            duration: videoDuration,
             generationTime,
-            model: usedModel
+            model: 'kling-v2.1',
+            predictionId: prediction.id,
         });
 
     } catch (error) {

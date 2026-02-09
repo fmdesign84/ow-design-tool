@@ -47,8 +47,10 @@ export const videoOutputNode: NodeDefinition = {
 
   execute: async (inputs) => {
     // 비디오 출력 노드는 입력 비디오를 그대로 워크플로우 결과로 반환
+    // video 키도 추가해서 프리뷰/다운로드 버튼이 표시되도록 함
     return {
       outputs: {
+        video: inputs.video,
         _workflowResult: inputs.video,
         _outputType: 'video',
       },

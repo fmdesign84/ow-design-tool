@@ -53,19 +53,11 @@ export const characterAnimationNode: NodeDefinition = {
             id: 'duration',
             name: '길이',
             type: 'select',
-            default: '4',
+            default: '5',
             options: [
-                { value: '4', label: '4초' },
-                { value: '6', label: '6초' },
-                { value: '8', label: '8초' },
+                { value: '5', label: '5초' },
+                { value: '10', label: '10초' },
             ],
-        },
-        {
-            id: 'loop',
-            name: '반복 동작',
-            type: 'boolean',
-            default: true,
-            description: '동작을 반복하도록 생성',
         },
     ],
 
@@ -111,8 +103,7 @@ export const characterAnimationNode: NodeDefinition = {
                 body: JSON.stringify({
                     characterImage: compressedImage,
                     action: config.action || 'running',
-                    duration: config.duration || '4',
-                    loop: config.loop !== false,
+                    duration: config.duration || '5',
                 }),
             });
 
