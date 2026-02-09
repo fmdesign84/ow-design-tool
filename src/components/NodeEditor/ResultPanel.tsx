@@ -254,6 +254,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({
   });
 
   // finalOutputs에서도 추출 (중복 아니면)
+  // 키가 label 값("비디오 결과" 등)일 수 있으므로 모든 값 순회
   if (finalOutputs.image && typeof finalOutputs.image === 'string') {
     if (!allMedia.some(m => m.url === finalOutputs.image)) {
       allMedia.push({ url: finalOutputs.image as string, type: 'image', nodeId: 'final' });
@@ -262,6 +263,17 @@ const ResultPanel: React.FC<ResultPanelProps> = ({
   if (finalOutputs.video && typeof finalOutputs.video === 'string') {
     if (!allMedia.some(m => m.url === finalOutputs.video)) {
       allMedia.push({ url: finalOutputs.video as string, type: 'video', nodeId: 'final' });
+    }
+  }
+  // label 키로 저장된 finalOutputs 값도 검사 (예: "비디오 결과" → URL)
+  for (const [key, value] of Object.entries(finalOutputs)) {
+    if (key === 'image' || key === 'video') continue; // 이미 처리됨
+    if (typeof value === 'string' && value.startsWith('http')) {
+      const isVideo = value.includes('.mp4') || value.includes('.webm') || value.includes('.mov') || value.includes('video');
+      const mediaType = isVideo ? 'video' as const : 'image' as const;
+      if (!allMedia.some(m => m.url === value)) {
+        allMedia.push({ url: value, type: mediaType, nodeId: 'final' });
+      }
     }
   }
 

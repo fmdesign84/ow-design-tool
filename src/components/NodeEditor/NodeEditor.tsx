@@ -387,13 +387,16 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
   // 저장 다이얼로그 - 저장 처리
   const handleSaveDialogSave = useCallback(async (name: string) => {
     try {
-      // 노드 에디터 캡쳐
+      // 노드 에디터 캡쳐 (5초 타임아웃)
       let capturedImage: string | undefined;
       try {
-        capturedImage = await captureNodeEditor(nodes);
+        const capturePromise = captureNodeEditor(nodes);
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('캡쳐 타임아웃')), 5000)
+        );
+        capturedImage = await Promise.race([capturePromise, timeoutPromise]);
       } catch (captureError) {
-        console.warn('노드 캡쳐 실패, 기본 이미지 사용:', captureError);
-        // 캡쳐 실패해도 저장 진행 (기본 이미지 사용)
+        rlog('SaveDialog', '캡쳐 실패, 기본 이미지 사용', { error: String(captureError) });
       }
 
       await saveWorkflow(name, capturedImage);
@@ -418,12 +421,16 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
   // 저장 다이얼로그 - 다른 이름으로 저장 (항상 새 워크플로우 생성)
   const handleSaveAsDialogSave = useCallback(async (name: string) => {
     try {
-      // 노드 에디터 캡쳐
+      // 노드 에디터 캡쳐 (5초 타임아웃)
       let capturedImage: string | undefined;
       try {
-        capturedImage = await captureNodeEditor(nodes);
+        const capturePromise = captureNodeEditor(nodes);
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('캡쳐 타임아웃')), 5000)
+        );
+        capturedImage = await Promise.race([capturePromise, timeoutPromise]);
       } catch (captureError) {
-        console.warn('노드 캡쳐 실패, 기본 이미지 사용:', captureError);
+        rlog('SaveAsDialog', '캡쳐 실패, 기본 이미지 사용', { error: String(captureError) });
       }
 
       await saveAsNewWorkflow(name, capturedImage);
