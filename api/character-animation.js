@@ -13,16 +13,16 @@ module.exports.config = {
 // 동작별 프롬프트 매핑
 const ACTION_PROMPTS = {
     'running': {
-        prompt: 'A 3D Pixar-style animated cartoon character running in place with dynamic motion. Arms swinging naturally, legs in full stride, smooth running cycle animation. Character stays in the CENTER of frame. Fixed camera, no camera movement.',
-        negativePrompt: 'real person, photorealistic, live action, blurry, distorted, camera pan, scene change',
+        prompt: 'A 3D Pixar-style animated cartoon character running in place with dynamic motion. Arms swinging naturally, legs in full stride, smooth running cycle animation. Character stays in the CENTER of frame. Fixed camera, no camera movement. IMPORTANT: Maintain consistent body proportions throughout - legs, arms, and torso must keep their original shape and length. No stretching, warping, or morphing of limbs.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, distorted, camera pan, scene change, body deformation, limb stretching, morphing legs',
     },
     'victory': {
         prompt: 'A 3D Pixar-style animated cartoon character celebrates victory in place, making a V-sign peace pose with both hands raised high. Happy expression, slight bounce in place. Fixed camera position.',
         negativePrompt: 'real person, photorealistic, live action, blurry, camera movement',
     },
     'finish': {
-        prompt: 'A 3D Pixar-style animated cartoon character celebrates crossing the finish line, both arms raised high in triumph, jumping and cheering in place. Character stays centered. Fixed camera.',
-        negativePrompt: 'real person, photorealistic, live action, blurry, camera pan, scene transition',
+        prompt: 'A 3D Pixar-style animated cartoon character runs forward and crosses a finish line tape. The character bursts through the tape with chest forward, arms spread wide in triumph. The broken tape flutters and falls down to the ground. After breaking through, the character slows down and celebrates with both arms raised. Character stays centered. Fixed camera.',
+        negativePrompt: 'real person, photorealistic, live action, blurry, camera pan, scene transition, tape disappearing, tape floating',
     },
     'waving': {
         prompt: 'A 3D Pixar-style animated cartoon character waves hello in place, one hand raised and moving side to side in a friendly greeting. Warm smile, gentle body sway. Character stays centered. Fixed camera.',
@@ -49,8 +49,8 @@ const ACTION_PROMPTS = {
         negativePrompt: 'real person, photorealistic, live action, blurry, running, walking, moving forward, camera movement',
     },
     'billboard': {
-        prompt: 'A subtle LED display animation effect. The image stays almost completely STILL. Only very subtle changes: slight LED screen flicker/glow pulsing effect on any display/billboard/screen areas, very gentle ambient light shifts. The character on the screen does NOT move or run - it is a STILL IMAGE displayed on an electronic screen. Only the screen itself has a subtle electronic glow/flicker. Everything else remains completely static. Absolutely fixed camera.',
-        negativePrompt: 'running, walking, movement, motion, camera pan, camera movement, scene change, character moving, dynamic motion',
+        prompt: 'A subtle LED display animation effect. The image stays almost completely STILL. Only very subtle changes: slight LED screen flicker/glow pulsing effect on any display/billboard/screen areas, very gentle ambient light shifts. The character on the screen is a STILL IMAGE - absolutely NO body movement, NO jumping, NO running, NO arm waving. The character must remain FROZEN like a photograph. Only the LED screen surface has subtle electronic glow/flicker/scan-line effects. Everything else remains completely static. Absolutely fixed camera.',
+        negativePrompt: 'running, walking, jumping, jogging, bouncing, movement, motion, camera pan, camera movement, scene change, character moving, dynamic motion, exercise, dancing',
     }
 };
 
