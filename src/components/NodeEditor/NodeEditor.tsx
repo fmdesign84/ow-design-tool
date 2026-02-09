@@ -568,6 +568,34 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
     [setNodes]
   );
 
+  // Cmd+Shift+S: 노드 에디터 캡쳐 → 다운로드 폴더 저장
+  useEffect(() => {
+    const handleKeyDown = async (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 's') {
+        e.preventDefault();
+        if (nodes.length === 0) return;
+        try {
+          const capturePromise = captureNodeEditor(nodes);
+          const timeoutPromise = new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error('캡쳐 타임아웃')), 5000)
+          );
+          const dataUrl = await Promise.race([capturePromise, timeoutPromise]);
+          const link = document.createElement('a');
+          link.href = typeof dataUrl === 'string' ? dataUrl : URL.createObjectURL(dataUrl);
+          link.download = `${(workflowName || 'wave').replace(/\s+/g, '_')}_${Date.now()}.png`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          if (typeof dataUrl !== 'string') URL.revokeObjectURL(link.href);
+        } catch {
+          // 캡쳐 실패 시 무시
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [nodes, workflowName]);
+
   // 워크플로우 실행 완료 시 노드에 outputs 전달
   useEffect(() => {
     if (!workflow.isRunning && workflow.results.length > 0) {
