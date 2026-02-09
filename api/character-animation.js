@@ -47,6 +47,10 @@ const ACTION_PROMPTS = {
     'stretching': {
         prompt: 'A 3D Pixar-style animated cartoon character does typical RUNNER warm-up stretches STANDING IN PLACE. Quad stretch (pulling foot behind), hamstring stretch (bending to touch toes), calf stretch, ankle rotations. Classic pre-marathon runner stretching routine. NOT running or walking. Stays in one spot. Focused determined expression. Fixed camera.',
         negativePrompt: 'real person, photorealistic, live action, blurry, running, walking, moving forward, camera movement',
+    },
+    'billboard': {
+        prompt: 'A subtle LED display animation effect. The image stays almost completely STILL. Only very subtle changes: slight LED screen flicker/glow pulsing effect on any display/billboard/screen areas, very gentle ambient light shifts. The character on the screen does NOT move or run - it is a STILL IMAGE displayed on an electronic screen. Only the screen itself has a subtle electronic glow/flicker. Everything else remains completely static. Absolutely fixed camera.',
+        negativePrompt: 'running, walking, movement, motion, camera pan, camera movement, scene change, character moving, dynamic motion',
     }
 };
 
@@ -136,7 +140,7 @@ module.exports = async (req, res) => {
 
         // 표정 고정 + 위치 유지 지시
         const FACE_LOCK = ' IMPORTANT: Keep the character facial expression CONSISTENT throughout the entire video. Do NOT change or morph the face. The face must remain stable and identical in every frame.';
-        const STAY_IN_FRAME = ' The character must stay WITHIN the frame at all times. Do NOT let the character move out of the image boundaries. Keep the character centered and visible throughout the entire video. If the character is inside a frame, sign, or display in the image, they must stay INSIDE it. CRITICAL BACKGROUND RULE: The background and environment must remain mostly the SAME throughout the video. The background can shift or pan SLIGHTLY, but must NOT completely change or transition to a different scene. The original background elements must still be visible at the end of the video. No scene transitions, no dramatic camera travel.';
+        const STAY_IN_FRAME = ' The character must stay WITHIN the frame at all times. Do NOT let the character move out of the image boundaries. Keep the character centered and visible throughout the entire video. If the character is inside a frame, sign, or display in the image, they must stay INSIDE it. CRITICAL BACKGROUND RULE: The background must move VERY SLOWLY or not at all. Maximum background drift is only a few pixels. The background must NOT scroll, pan, or transition quickly. All original background elements must remain visible throughout the entire video. No scene transitions. The environment stays essentially frozen - only the character body animates.';
 
         // 루프 프롬프트
         let LOOP_INSTRUCTION = '';
