@@ -59,6 +59,17 @@ export const characterAnimationNode: NodeDefinition = {
                 { value: '10', label: '10초' },
             ],
         },
+        {
+            id: 'loop',
+            name: '루프',
+            type: 'select',
+            default: 'none',
+            options: [
+                { value: 'none', label: '없음' },
+                { value: 'loop', label: '반복 (루프)' },
+                { value: 'pingpong', label: '왕복 (핑퐁)' },
+            ],
+        },
     ],
 
     execute: async (inputs, config) => {
@@ -104,6 +115,7 @@ export const characterAnimationNode: NodeDefinition = {
                     characterImage: compressedImage,
                     action: config.action || 'running',
                     duration: config.duration || '5',
+                    loop: config.loop || 'none',
                 }),
             });
 

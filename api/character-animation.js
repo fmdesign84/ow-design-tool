@@ -118,6 +118,7 @@ module.exports = async (req, res) => {
             characterImage,
             action = 'running',
             duration = '5',
+            loop = 'none',
         } = req.body;
 
         if (!characterImage) {
@@ -135,6 +136,14 @@ module.exports = async (req, res) => {
         // 표정 고정 + 위치 유지 지시
         const FACE_LOCK = ' IMPORTANT: Keep the character facial expression CONSISTENT throughout the entire video. Do NOT change or morph the face. The face must remain stable and identical in every frame.';
         const STAY_IN_FRAME = ' The character must stay WITHIN the frame at all times. Do NOT let the character move out of the image boundaries. Keep the character centered and visible throughout the entire video. If the character is inside a frame, sign, or display in the image, they must stay INSIDE it.';
+
+        // 루프 프롬프트
+        let LOOP_INSTRUCTION = '';
+        if (loop === 'loop') {
+            LOOP_INSTRUCTION = ' CRITICAL LOOP REQUIREMENT: The animation must be a PERFECT LOOP. The last frame must seamlessly connect back to the first frame. The character pose, position, and movement at the end must exactly match the beginning so the video can repeat infinitely without any visible jump or cut.';
+        } else if (loop === 'pingpong') {
+            LOOP_INSTRUCTION = ' CRITICAL SMOOTH MOTION: The animation should have smooth, reversible motion. The character movement should be symmetrical so that when played forward and then backward, it creates a natural continuous ping-pong loop. Avoid any sudden starts or stops.';
+        }
 
         // duration 정규화 (Kling은 5 또는 10만 지원)
         const videoDuration = parseInt(duration, 10) >= 8 ? 10 : 5;
@@ -173,7 +182,7 @@ module.exports = async (req, res) => {
                 },
                 body: JSON.stringify({
                     input: {
-                        prompt: actionConfig.prompt + FACE_LOCK + STAY_IN_FRAME,
+                        prompt: actionConfig.prompt + FACE_LOCK + STAY_IN_FRAME + LOOP_INSTRUCTION,
                         start_image: imageUpload.url,
                         duration: videoDuration,
                         mode: 'standard',
@@ -286,6 +295,7 @@ module.exports = async (req, res) => {
             video: `data:video/mp4;base64,${videoBase64}`,
             savedVideoUrl,
             action,
+            loop,
             duration: videoDuration,
             generationTime,
             model: 'kling-v2.1',
