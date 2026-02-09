@@ -100,8 +100,8 @@ const SCENE_PRESETS = {
     'aerial-runners': {
         scene: `Aerial bird's-eye view looking straight down from very high above (drone at 200m altitude). A narrow pedestrian running path winds through the scene. On the LEFT side of the path is a lush dense green forest seen from above (tree canopy). On the RIGHT side of the path is a wide blue river reflecting sunlight - NO trees on the river side, only water. Between the path and the river there is a low concrete guardrail/barrier wall running along the edge. The path runs between the forest (left) and the river guardrail (right). Bright daytime, clear weather.`,
         camera: 'extreme high angle (top-down aerial/drone view), very far away',
-        direction: 'all runners seen from directly above as tiny dots, ALL RUNNING (not walking) along the path',
-        pose: 'one of many tiny identical-sized dots on the pedestrian path, absolutely NO close-up, NO enlarged character. ALL figures are in RUNNING poses (arms and legs in stride)',
+        direction: 'all runners seen from directly above as tiny dots, ALL RUNNING DOWNWARD in the image (toward the bottom of the frame = forward direction). Runners must move from top to bottom of the image, NOT upward. In aerial view, downward = forward.',
+        pose: 'one of many tiny identical-sized dots on the pedestrian path, absolutely NO close-up, NO enlarged character. ALL figures are in RUNNING poses (arms and legs in stride), body orientation facing DOWNWARD in the image (toward bottom of frame)',
         crowd: `Dozens of VERY tiny 3D cartoon characters seen from extremely far above, ALL RUNNING (not walking, not standing). Every character is in a running stride pose. They appear as small colorful dots on the narrow pedestrian path between the forest and the river. ALL characters are the EXACT SAME tiny size - there is NO main character that stands out or is larger. Do NOT feature, enlarge, or highlight any single character. The runners form a flowing stream of tiny running dots along the path.`,
         outfit: 'marathon',
         noBlur: true,
