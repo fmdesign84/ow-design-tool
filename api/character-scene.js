@@ -60,22 +60,25 @@ async function fetchWithTimeout(url, options, timeout = 50000) {
 }
 
 // 씬 프리셋 (카메라 앵글/방향/동행 캐릭터 포함)
-// 공통: 낮 시간대, 다른 캐릭터도 동일 마라톤 복장, 주인공과 동일 스케일
+// 공통: 낮 시간대, 주인공과 동일 스케일
+// 다른 캐릭터: 같은 3D 카툰 스타일이지만 각자 다른 외모/복장 (주인공만 민트그린 머리+머리띠+나뭇잎+2026번호)
+const OTHER_CHARS = 'OTHER 3D cartoon characters (same Pixar/Disney art style) with DIFFERENT appearances: various hair colors (brown, black, blonde, red - NOT mint green), different hairstyles, different body types, wearing various marathon running outfits (different colored singlets, shorts, shoes - NOT all blue vests). Each has their own unique race bib number (NOT 2026). They do NOT have headbands or leaf accessories.';
+
 const SCENE_PRESETS = {
     'marathon-start': {
         scene: `A wide city road at the starting line of a marathon race. A large inflatable start arch gate spans across the road. Bright daytime, clear blue sky with warm sunlight. Urban cityscape with buildings and trees lining the street.`,
         camera: 'front wide shot, eye level',
         direction: 'facing camera (front view)',
         pose: 'standing with arms stretched up in pre-race warm-up, excited expression',
-        crowd: 'Many OTHER 3D cartoon characters (same Pixar art style but different: various hair colors, heights, body types) ALL wearing the SAME marathon outfit (blue vest over white t-shirt, race bib, blue shorts, running shoes) gathered behind the starting line, all warming up. The main character (mint green hair) is among them at EXACTLY the same human scale, NOT larger than others.',
+        crowd: `Many ${OTHER_CHARS} gathered behind the starting line, all warming up. The main character (mint green hair, race bib #2026) is among them at EXACTLY the same human scale, NOT larger than others.`,
         outfit: 'marathon'
     },
     'running-bridge': {
-        scene: `Running on a large modern cable-stayed bridge over a wide river (like Seogang Bridge in Seoul). Wide lanes with Seoul city skyline visible in the background. Bright daytime, clear blue sky, sunlight reflecting on the river water.`,
+        scene: `Running on Seogang Bridge (서강대교) in Seoul - a distinctive bridge with a large RED painted steel arch structure spanning over the Han River. The bridge has wide road lanes with metal guardrails on the sides. Seoul city skyline with apartment buildings visible in the background. Bright daytime, clear blue sky, sunlight reflecting on the Han River water below.`,
         camera: 'side tracking shot (3/4 angle), slightly low angle',
         direction: 'running from left to right (side/3/4 view)',
         pose: 'running dynamically, mid-stride, arms swinging, determined expression',
-        crowd: 'Several OTHER 3D cartoon characters (same Pixar art style but different appearances) ALL wearing the SAME marathon outfit (blue vest, white shirt, race bib, blue shorts) running alongside in a group on the bridge. CRITICAL: ALL characters including the main character MUST be the EXACT SAME height and scale. Do NOT make the main character larger or taller than others.',
+        crowd: `Several ${OTHER_CHARS} running alongside in a group on the bridge. CRITICAL: ALL characters including the main character MUST be the EXACT SAME height and scale. The main character must NOT be larger or taller than any other runner.`,
         outfit: 'marathon'
     },
     'running-forest': {
@@ -83,7 +86,7 @@ const SCENE_PRESETS = {
         camera: 'front tracking shot, eye level',
         direction: 'running toward camera (front view)',
         pose: 'running joyfully along the road beside the forest, smile on face',
-        crowd: 'A few OTHER 3D cartoon characters (same art style, different looks) ALL wearing the SAME marathon outfit (blue vest, white shirt, race bib, blue shorts) running behind on the road beside the forest, slightly out of focus. Natural spacing between runners. All at the SAME scale as main character.',
+        crowd: `A few ${OTHER_CHARS} running behind on the road beside the forest, slightly out of focus. Natural spacing between runners. All at the SAME scale as main character.`,
         outfit: 'marathon'
     },
     'billboard-cheer': {
@@ -91,15 +94,15 @@ const SCENE_PRESETS = {
         camera: 'side shot from the left, capturing both the running character AND the billboard in frame',
         direction: 'running from left to right (side view), head turned slightly to look up at the billboard',
         pose: 'running past the billboard, looking up at it with a happy surprised expression, fist pumping with one hand while running',
-        crowd: 'Other 3D cartoon runners (same art style) ALL wearing the SAME marathon outfit ahead and behind on the road, some also looking up at the billboard. Spectators (also cartoon style) cheering from the sidewalk behind barriers. All runners at the SAME scale.',
+        crowd: `${OTHER_CHARS} running ahead and behind on the road, some also looking up at the billboard. Spectators (also cartoon style) cheering from the sidewalk behind barriers. All runners at the SAME scale.`,
         outfit: 'marathon'
     },
     'aerial-runners': {
         scene: `Aerial bird's-eye view looking straight down at a wide marathon road. Bright daytime, clear weather. Road markings and distance markers visible on the asphalt. Trees lining both sides of the road from above. The road curves gently.`,
         camera: 'extreme high angle (top-down aerial/drone view)',
         direction: 'seen from directly above, running upward in frame',
-        pose: 'tiny figure running, visible from above',
-        crowd: 'Dozens of tiny 3D cartoon characters (same art style) ALL wearing the SAME marathon outfit (blue vests visible from above), running on the road, seen from above like colorful dots. The main character (identifiable by mint green hair) is among them, SAME tiny scale. The runners form a flowing river-like stream on the road.',
+        pose: 'tiny figure running, visible from above, the SAME tiny size as all other runners',
+        crowd: `Dozens of tiny 3D cartoon characters (same art style) wearing various colored marathon outfits, running on the road, seen from above like colorful dots. The main character (identifiable by mint green hair dot) is among them at the EXACT SAME tiny scale as everyone else - do NOT make the main character bigger. The runners form a flowing river-like stream on the road.`,
         outfit: 'marathon'
     },
     'runners-to-forest': {
@@ -107,15 +110,15 @@ const SCENE_PRESETS = {
         camera: 'high aerial view, looking down at an angle',
         direction: 'runners moving upward/forward in frame, forest growing behind them',
         pose: 'small figures running forward together as a group',
-        crowd: 'Many tiny 3D cartoon characters (same art style) ALL wearing the SAME marathon outfit, ALL at the SAME tiny scale, running together in a group. The main character (mint green hair) is among them. Behind the group, the road transforms into green trees and forest. The trees are normal trees (NOT human-shaped), growing naturally where the runners have already passed.',
+        crowd: `Many tiny 3D cartoon characters (same art style) wearing various colored marathon outfits, ALL at the EXACT SAME tiny scale, running together in a group. The main character (mint green hair) is among them at the SAME size. Behind the group, the road transforms into green trees and forest. The trees are normal natural trees (NOT human-shaped), growing where the runners have already passed.`,
         outfit: 'marathon'
     },
     'finish-line': {
-        scene: `A marathon finish line with a large overhead banner reading "FINISH". Confetti and streamers in the air. Bright daytime, urban road setting with buildings and blue sky in the background. Celebration atmosphere. Timing clock display visible.`,
+        scene: `A marathon finish line with a large overhead banner reading "FINISH". Confetti and streamers in the air. Bright daytime, urban road setting with buildings and blue sky in the background. Grand celebration atmosphere. Timing clock display visible showing a time.`,
         camera: 'front wide shot, slightly low angle (heroic)',
         direction: 'running toward camera through the finish line (front view)',
-        pose: 'breaking through the finish line with both arms raised HIGH in triumph, huge celebratory smile, eyes closed with joy',
-        crowd: 'Other 3D cartoon characters (same art style) ALL wearing the SAME marathon outfit, cheering from both sides behind barriers. Some finishing runners behind. Confetti falling around everyone. All at the SAME scale.',
+        pose: 'breaking through the finish line ALONE with both arms raised HIGH in triumph, huge celebratory smile, eyes closed with joy',
+        crowd: 'NO other runners in this scene. The main character crosses the finish line ALONE as the hero moment. Confetti and streamers falling. Empty road behind the character.',
         outfit: 'marathon'
     },
     'forest-made': {
@@ -123,14 +126,14 @@ const SCENE_PRESETS = {
         camera: 'wide establishing shot, eye level',
         direction: 'facing camera (front view)',
         pose: 'standing proudly with hands on hips, looking out at the vast forest, content smile, wind slightly moving hair',
-        crowd: 'A few OTHER 3D cartoon characters (same art style) ALL wearing the SAME marathon outfit, standing nearby, also admiring the forest they helped create. Some have arms around each other, celebrating. All at the SAME scale.',
-        outfit: 'marathon'
+        crowd: `A few ${OTHER_CHARS} standing nearby (no longer in marathon outfits - wearing casual clothes), also admiring the forest they helped create. Some have arms around each other, celebrating. All at the SAME scale.`,
+        outfit: 'casual'
     }
 };
 
 // 의상 프리셋
 const OUTFIT_PRESETS = {
-    'marathon': 'Blue athletic vest/singlet over white short-sleeve t-shirt, with rectangular race number bib (4-digit number) pinned on chest, blue running shorts, running shoes',
+    'marathon': 'Blue athletic vest/singlet over white short-sleeve t-shirt, with rectangular race number bib showing "2026" pinned on chest, blue running shorts, running shoes',
     'casual': 'Blue hoodie, blue jeans, white sneakers',
     'default': 'Blue t-shirt (same blue as headband), blue pants, white sneakers'
 };
@@ -155,12 +158,13 @@ function extractImageData(imageInput) {
 
 // 씬 프롬프트 생성
 function buildScenePrompt(preset, outfitDescription) {
-    return `Place this 3D cartoon character into a scene with other cartoon characters.
+    return `Place this 3D cartoon character into a scene.
 
 MAIN CHARACTER (from provided image):
-- This is the MAIN character - keep EXACTLY: face, mint green hair, hair style, headband, leaf accessories
+- This is the MAIN character - keep EXACTLY: face, mint green hair, hair style, headband, leaf pair accessories
 - Keep the same 3D cartoon art style (Pixar/Disney quality)
 - The character is already in full body form in the provided image - match this appearance
+- Race bib number: 2026 (this number is UNIQUE to the main character only)
 
 SCENE:
 ${preset.scene}
@@ -176,12 +180,20 @@ MAIN CHARACTER POSE & DIRECTION:
 OTHER CHARACTERS IN SCENE:
 ${preset.crowd}
 
-MUST KEEP FOR MAIN CHARACTER:
-- Mint green hair color and EXACT hair style
+MAIN CHARACTER IDENTITY (only the main character has ALL of these):
+- Mint green hair color and EXACT hair style from reference
 - Blue/white striped headband
-- Leaf pair accessories
-- Face features from reference
+- Leaf pair accessories (small leaves near the headband)
+- Race bib number "2026"
+- Face features from reference image
 - Do NOT enlarge the main character - SAME scale as others
+
+OTHER CHARACTERS MUST BE DIFFERENT FROM MAIN:
+- Different hair colors (brown, black, blonde, red, etc. - NOT mint green)
+- NO headbands, NO leaf accessories
+- Different race bib numbers (NOT 2026)
+- Different outfits/colors (various running gear, not all identical blue vests)
+- Same 3D cartoon art style quality
 
 HAIR WARNING:
 - Do NOT add bumpy/puffy volume on top of head
