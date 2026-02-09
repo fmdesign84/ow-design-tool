@@ -816,31 +816,44 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
       edges: edges,
     };
 
-    // 디버그: 저장되는 노드 데이터 확인
     rlog('LocalSave', '저장 시작', { name: workflowData.name, nodeCount: nodes.length });
 
     try {
-      // 노드 에디터 캡쳐
-      let capturedImage: string;
+      // 노드 에디터 캡쳐 (5초 타임아웃)
+      let imageForEmbed: string | Blob;
       try {
-        capturedImage = await captureNodeEditor(nodes);
+        const capturePromise = captureNodeEditor(nodes);
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('캡쳐 타임아웃')), 5000)
+        );
+        imageForEmbed = await Promise.race([capturePromise, timeoutPromise]);
       } catch (captureError) {
-        console.warn('노드 캡쳐 실패, 기본 이미지 사용:', captureError);
-        // 캡쳐 실패 시 기본 이미지 사용
-        const defaultImage = await createDefaultWorkflowImage(nodes.length, workflowName);
-        const pngBlob = await embedWorkflowToPng(defaultImage, workflowData);
-        downloadBlob(pngBlob, workflowName);
-        return;
+        rlog('LocalSave', '캡쳐 실패, 기본 이미지 사용', { error: String(captureError) });
+        imageForEmbed = await createDefaultWorkflowImage(nodes.length, workflowName);
       }
 
-      // 캡쳐 이미지에 워크플로우 임베딩
-      const pngBlob = await embedWorkflowToPng(capturedImage, workflowData);
+      // 워크플로우 임베딩
+      const pngBlob = await embedWorkflowToPng(imageForEmbed, workflowData);
       downloadBlob(pngBlob, workflowName);
-
       rlog('LocalSave', '저장 완료');
     } catch (error) {
-      console.error('워크플로우 저장 실패:', error);
-      alert('워크플로우 저장에 실패했습니다.');
+      rlog('LocalSave', '임베딩 실패, JSON fallback', { error: String(error) });
+      // PNG 임베딩 실패 시 JSON으로 fallback
+      try {
+        const jsonStr = JSON.stringify(workflowData, null, 2);
+        const jsonBlob = new Blob([jsonStr], { type: 'application/json' });
+        const url = URL.createObjectURL(jsonBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `${workflowName.replace(/\s+/g, '_')}_${Date.now()}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        alert('PNG 저장 실패로 JSON으로 대체 저장했습니다.');
+      } catch (fallbackError) {
+        alert('워크플로우 저장에 실패했습니다: ' + String(error));
+      }
     }
   }, [nodes, edges, workflowName]);
 
