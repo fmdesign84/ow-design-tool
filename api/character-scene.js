@@ -31,7 +31,28 @@ async function saveToSupabase(imageBase64, metadata) {
             .from('generated-images')
             .getPublicUrl(fileName);
 
-        return { image_url: publicUrl };
+        // DB에 레코드 삽입 (라이브러리에 표시되도록)
+        const sceneName = metadata?.customScene || metadata?.scene || 'default';
+        const { data: dbData, error: dbError } = await supabase
+            .from('images')
+            .insert({
+                image_url: publicUrl,
+                prompt: `캐릭터 씬 (${sceneName})`,
+                model: 'gemini-3-pro-image-preview',
+                style: 'character-scene',
+                aspect_ratio: metadata?.aspectRatio || '16:9',
+                quality: 'standard'
+            })
+            .select()
+            .single();
+
+        if (dbError) {
+            console.error('[Supabase] DB insert error:', dbError.message);
+            return { image_url: publicUrl };
+        }
+
+        console.log('[Supabase] Character scene saved:', dbData.id);
+        return dbData;
     } catch (error) {
         console.error('[Supabase] Save error:', error.message);
         return null;

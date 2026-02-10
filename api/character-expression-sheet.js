@@ -31,7 +31,27 @@ async function saveToSupabase(imageBase64, metadata) {
             .from('generated-images')
             .getPublicUrl(fileName);
 
-        return { image_url: publicUrl };
+        // DB에 레코드 삽입 (라이브러리에 표시되도록)
+        const { data: dbData, error: dbError } = await supabase
+            .from('images')
+            .insert({
+                image_url: publicUrl,
+                prompt: `캐릭터 표정 시트 (${metadata?.expressionSet || 'default'})`,
+                model: 'gemini-3-pro-image-preview',
+                style: 'expression-sheet',
+                aspect_ratio: '1:1',
+                quality: 'standard'
+            })
+            .select()
+            .single();
+
+        if (dbError) {
+            console.error('[Supabase] DB insert error:', dbError.message);
+            return { image_url: publicUrl };
+        }
+
+        console.log('[Supabase] Expression sheet saved:', dbData.id);
+        return dbData;
     } catch (error) {
         console.error('[Supabase] Save error:', error.message);
         return null;

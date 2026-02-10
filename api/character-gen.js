@@ -154,9 +154,9 @@ async function generateWithGemini3Pro(prompt, referenceImages = [], aspectRatio 
     throw new Error('No image in Gemini response');
 }
 
-// 스타일별 참조 이미지 URL (GitHub raw URL - public 접근 가능)
+// 스타일별 참조 이미지 URL (Vercel CDN에서 직접 서빙)
 const STYLE_REFERENCE_IMAGES = {
-    namoo: 'https://raw.githubusercontent.com/fmdesign84/ow-design-tool/main/public/images/styles/namoo-sample.png'
+    namoo: 'https://wavenode.vercel.app/images/styles/namoo-sample.png'
 };
 
 // 스타일 참조 이미지를 base64로 로드

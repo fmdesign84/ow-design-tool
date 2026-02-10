@@ -31,7 +31,27 @@ async function saveToSupabase(imageBase64, metadata) {
             .from('generated-images')
             .getPublicUrl(fileName);
 
-        return { image_url: publicUrl };
+        // DB에 레코드 삽입 (라이브러리에 표시되도록)
+        const { data: dbData, error: dbError } = await supabase
+            .from('images')
+            .insert({
+                image_url: publicUrl,
+                prompt: `캐릭터 턴어라운드 (${metadata?.viewSet || 'default'}, ${metadata?.bodyRange || 'full'})`,
+                model: 'gemini-3-pro-image-preview',
+                style: 'character-turnaround',
+                aspect_ratio: '1:1',
+                quality: 'standard'
+            })
+            .select()
+            .single();
+
+        if (dbError) {
+            console.error('[Supabase] DB insert error:', dbError.message);
+            return { image_url: publicUrl };
+        }
+
+        console.log('[Supabase] Turnaround saved:', dbData.id);
+        return dbData;
     } catch (error) {
         console.error('[Supabase] Save error:', error.message);
         return null;
