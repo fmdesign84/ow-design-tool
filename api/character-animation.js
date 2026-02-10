@@ -306,6 +306,26 @@ module.exports = async (req, res) => {
                         .getPublicUrl(fileName);
                     savedVideoUrl = publicUrl;
                     console.log('[CharacterAnimation] Saved to Supabase:', publicUrl);
+
+                    // videos 테이블에 메타데이터 저장
+                    try {
+                        const { error: dbError } = await supabase
+                            .from('videos')
+                            .insert({
+                                video_url: publicUrl,
+                                prompt: `캐릭터 애니메이션 (${action})`,
+                                model: 'kling-v2.1',
+                                duration: videoDuration,
+                                resolution: '720p',
+                                aspect_ratio: '9:16',
+                                has_audio: false,
+                                mode: 'character-animation'
+                            });
+
+                        if (dbError) console.error('[CharacterAnimation] DB insert error:', dbError.message);
+                    } catch (dbErr) {
+                        console.log('[CharacterAnimation] DB save skipped:', dbErr.message);
+                    }
                 }
             }
         } catch (saveErr) {

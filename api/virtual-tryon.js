@@ -11,6 +11,7 @@
  */
 
 import sharp from 'sharp';
+import { createClient } from '@supabase/supabase-js';
 import { logError } from './lib/errorLogger.js';
 import { uploadToTemp } from './lib/tempUploader.js';
 
@@ -212,9 +213,50 @@ export default async function handler(req, res) {
         const totalTime = Date.now() - startTime;
         console.log(`[VirtualTryOn] Completed in ${totalTime}ms`);
 
+        // Supabase Storage + DB 저장
+        let savedImage = null;
+        try {
+            const supabaseUrl = process.env.SUPABASE_URL;
+            const supabaseKey = process.env.SUPABASE_ANON_KEY;
+            if (supabaseUrl && supabaseKey) {
+                const supabase = createClient(supabaseUrl, supabaseKey);
+                const buffer = Buffer.from(base64, 'base64');
+                const fileName = `tryon-${Date.now()}-${Math.random().toString(36).substring(7)}.png`;
+
+                const { error: uploadError } = await supabase.storage
+                    .from('generated-images')
+                    .upload(fileName, buffer, { contentType: 'image/png', cacheControl: '3600' });
+
+                if (!uploadError) {
+                    const { data: { publicUrl } } = supabase.storage
+                        .from('generated-images')
+                        .getPublicUrl(fileName);
+
+                    const { data: dbData, error: dbError } = await supabase
+                        .from('images')
+                        .insert({
+                            image_url: publicUrl,
+                            prompt: `가상 피팅 (${category})`,
+                            model: 'cuuupid/idm-vton',
+                            style: 'virtual-tryon',
+                            aspect_ratio: '3:4',
+                            quality: 'standard'
+                        })
+                        .select()
+                        .single();
+
+                    if (dbError) console.error('[VirtualTryOn] DB insert error:', dbError.message);
+                    savedImage = { image_url: publicUrl, id: dbData?.id };
+                }
+            }
+        } catch (saveErr) {
+            console.error('[VirtualTryOn] Save error:', saveErr.message);
+        }
+
         return res.status(200).json({
             success: true,
             image: `data:${contentType};base64,${base64}`,
+            savedImage,
             debug: {
                 processingTime: totalTime,
                 predictionId: prediction.id,
