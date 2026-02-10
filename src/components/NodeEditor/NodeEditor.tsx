@@ -161,6 +161,17 @@ const HandIcon = () => (
   </svg>
 );
 
+// 가위 도구 (엣지 끊기)
+const ScissorsIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="6" cy="6" r="3" />
+    <circle cx="6" cy="18" r="3" />
+    <line x1="20" y1="4" x2="8.12" y2="15.88" />
+    <line x1="14.47" y1="14.48" x2="20" y2="20" />
+    <line x1="8.12" y1="8.12" x2="12" y2="12" />
+  </svg>
+);
+
 // Undo (되돌리기)
 const UndoIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -320,7 +331,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
   const [isWaveListExpanded, setIsWaveListExpanded] = useState(true);
   const [isPanelsHidden, setIsPanelsHidden] = useState(false);
   const [isStarted, setIsStarted] = useState(false); // 직접 만들기로 빈 캔버스 시작 여부
-  const [currentTool, setCurrentTool] = useState<'select' | 'pan'>('select');
+  const [currentTool, setCurrentTool] = useState<'select' | 'pan' | 'scissors'>('select');
   const { screenToFlowPosition, zoomIn, zoomOut } = useReactFlow();
   const viewport = useViewport();
 
@@ -358,6 +369,16 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
       setEdges((eds) => applyEdgeChanges(changes, eds));
     },
     [setEdges]
+  );
+
+  // 가위 도구: 엣지 클릭 시 삭제
+  const onEdgeClick = useCallback(
+    (_event: React.MouseEvent, edge: Edge) => {
+      if (currentTool === 'scissors') {
+        setEdges((eds) => eds.filter((e) => e.id !== edge.id));
+      }
+    },
+    [currentTool, setEdges]
   );
 
   // 저장 다이얼로그 상태
@@ -595,6 +616,19 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [nodes, workflowName]);
+
+  // 도구 전환 단축키 (V: 선택, H: 손, S: 가위)
+  useEffect(() => {
+    const handleToolShortcut = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+      if (e.key === 'v' || e.key === 'V') setCurrentTool('select');
+      else if (e.key === 'h' || e.key === 'H') setCurrentTool('pan');
+      else if (e.key === 's' || e.key === 'S') setCurrentTool('scissors');
+    };
+    window.addEventListener('keydown', handleToolShortcut);
+    return () => window.removeEventListener('keydown', handleToolShortcut);
+  }, []);
 
   // 워크플로우 실행 완료 시 노드에 outputs 전달
   useEffect(() => {
@@ -1111,12 +1145,13 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
 
       <div className={styles.content}>
         {/* 중앙: React Flow 캔버스 */}
-        <div className={`${styles.canvas} ${currentTool === 'select' ? styles.selectMode : styles.panMode}`} ref={reactFlowWrapper}>
+        <div className={`${styles.canvas} ${currentTool === 'select' ? styles.selectMode : currentTool === 'pan' ? styles.panMode : styles.scissorsMode}`} ref={reactFlowWrapper}>
           <ReactFlow
             nodes={nodes}
             edges={edges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            onEdgeClick={onEdgeClick}
             onConnect={onConnect}
             onDrop={onDrop}
             onDragOver={onDragOver}
@@ -1171,6 +1206,15 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
                 title="손 도구 (H)"
               >
                 <HandIcon />
+              </button>
+
+              {/* 가위 도구 (엣지 끊기) */}
+              <button
+                className={`${styles.toolbarButton} ${currentTool === 'scissors' ? styles.active : ''}`}
+                onClick={() => setCurrentTool('scissors')}
+                title="가위 도구 (S)"
+              >
+                <ScissorsIcon />
               </button>
 
               <div className={styles.toolbarDivider} />

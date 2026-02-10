@@ -66,6 +66,22 @@
   cursor: grabbing;
 }
 
+/* 가위 모드 커서 */
+.canvas.scissorsMode :global(.react-flow__pane) {
+  cursor: crosshair;
+}
+
+/* 가위 모드 엣지 호버 효과 */
+.canvas.scissorsMode :global(.react-flow__edge) {
+  cursor: pointer;
+}
+
+.canvas.scissorsMode :global(.react-flow__edge:hover .react-flow__edge-path) {
+  stroke-width: 4;
+  stroke: #EF4444;
+  filter: drop-shadow(0 0 3px rgba(239, 68, 68, 0.4));
+}
+
 /* 미니맵 숨김 (임베드 모드에서 불필요) */
 .canvas :global(.react-flow__minimap) {
   display: none;
