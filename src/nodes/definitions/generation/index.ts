@@ -33,6 +33,9 @@ import { characterGenNode } from './characterGen';
 import { characterPoseNode } from './characterPose';
 import { characterAnimationNode } from './characterAnimation';
 import { characterSceneNode } from './characterScene';
+import { sceneContinuationNode } from './sceneContinuation';
+import { characterExpressionSheetNode } from './characterExpressionSheet';
+import { characterTurnaroundNode } from './characterTurnaround';
 
 // 영상 생성 노드
 import { textToVideoNode } from './textToVideo';
@@ -55,6 +58,9 @@ export { characterGenNode } from './characterGen';
 export { characterPoseNode } from './characterPose';
 export { characterAnimationNode } from './characterAnimation';
 export { characterSceneNode } from './characterScene';
+export { sceneContinuationNode } from './sceneContinuation';
+export { characterExpressionSheetNode } from './characterExpressionSheet';
+export { characterTurnaroundNode } from './characterTurnaround';
 
 // 영상 생성 노드 export
 export { textToVideoNode } from './textToVideo';
@@ -80,6 +86,9 @@ export const generationNodes = [
   characterPoseNode,
   characterAnimationNode,
   characterSceneNode,
+  sceneContinuationNode,
+  characterExpressionSheetNode,
+  characterTurnaroundNode,
   // 영상 생성
   textToVideoNode,
   imageToVideoNode,

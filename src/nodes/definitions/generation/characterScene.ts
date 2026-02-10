@@ -33,19 +33,29 @@ export const characterSceneNode: NodeDefinition = {
 
     config: [
         {
+            id: 'concept',
+            name: '컨셉',
+            type: 'select',
+            default: 'general',
+            options: [
+                { value: 'general', label: '범용' },
+                { value: 'forest-run', label: '포레스트런' },
+            ],
+        },
+        {
             id: 'scene',
             name: '씬',
             type: 'select',
             default: 'marathon-start',
             options: [
-                { value: 'marathon-start', label: '마라톤 출발선' },
-                { value: 'running-bridge', label: '다리 위 달리기' },
-                { value: 'running-forest', label: '숲옆길 달리기' },
-                { value: 'billboard-cheer', label: '전광판 응원' },
-                { value: 'aerial-runners', label: '항공뷰 (위에서)' },
-                { value: 'runners-to-forest', label: '러너→숲 트랜지션' },
-                { value: 'finish-line', label: '완주 결승선' },
-                { value: 'forest-made', label: '숲을 만들었다' },
+                { value: 'marathon-start', label: '마라톤 출발선', showWhen: { field: 'concept', value: 'forest-run' } },
+                { value: 'running-bridge', label: '다리 위 달리기', showWhen: { field: 'concept', value: 'forest-run' } },
+                { value: 'running-forest', label: '숲옆길 달리기', showWhen: { field: 'concept', value: 'forest-run' } },
+                { value: 'billboard-cheer', label: '전광판 응원', showWhen: { field: 'concept', value: 'forest-run' } },
+                { value: 'aerial-runners', label: '항공뷰 (위에서)', showWhen: { field: 'concept', value: 'forest-run' } },
+                { value: 'runners-to-forest', label: '러너→숲 트랜지션', showWhen: { field: 'concept', value: 'forest-run' } },
+                { value: 'finish-line', label: '완주 결승선', showWhen: { field: 'concept', value: 'forest-run' } },
+                { value: 'forest-made', label: '숲을 만들었다', showWhen: { field: 'concept', value: 'forest-run' } },
                 { value: 'custom', label: '직접 입력' },
             ],
             description: '실사 배경 + 추천 포즈/의상 자동 적용',

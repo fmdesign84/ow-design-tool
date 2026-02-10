@@ -24,7 +24,9 @@ const ConfigField: React.FC<{
   config: ConfigDefinition;
   value: unknown;
   onChange: (value: unknown) => void;
-}> = ({ config, value, onChange }) => {
+  allConfig?: Record<string, unknown>;
+  onAutoReset?: (configId: string, value: unknown) => void;
+}> = ({ config, value, onChange, allConfig, onAutoReset }) => {
   const currentValue = value ?? config.default ?? '';
 
   switch (config.type) {
@@ -65,20 +67,39 @@ const ConfigField: React.FC<{
         </label>
       );
 
-    case 'select':
+    case 'select': {
+      // 옵션 레벨 showWhen 필터링
+      const filteredOptions = config.options?.filter(opt => {
+        if (!opt.showWhen) return true;
+        const depValue = allConfig?.[opt.showWhen.field];
+        const allowed = opt.showWhen.value;
+        return Array.isArray(allowed)
+          ? allowed.includes(depValue as string)
+          : depValue === allowed;
+      }) ?? [];
+
+      // 현재 값이 필터링된 옵션에 없으면 첫 번째 옵션으로 자동 리셋
+      const currentStr = String(currentValue);
+      const isValidValue = filteredOptions.some(opt => opt.value === currentStr);
+      if (!isValidValue && filteredOptions.length > 0 && onAutoReset) {
+        // 비동기로 리셋 (렌더 중 setState 방지)
+        setTimeout(() => onAutoReset(config.id, filteredOptions[0].value), 0);
+      }
+
       return (
         <select
           className={styles.select}
-          value={String(currentValue)}
+          value={isValidValue ? currentStr : (filteredOptions[0]?.value ?? '')}
           onChange={e => onChange(e.target.value)}
         >
-          {config.options?.map(opt => (
+          {filteredOptions.map(opt => (
             <option key={opt.value} value={opt.value}>
               {opt.label}
             </option>
           ))}
         </select>
       );
+    }
 
     case 'slider':
       return (
@@ -196,6 +217,8 @@ const NodeConfigPanel: React.FC<NodeConfigPanelProps> = ({
                 config={config}
                 value={nodeData.config[config.id]}
                 onChange={val => handleChange(config.id, val)}
+                allConfig={nodeData.config}
+                onAutoReset={handleChange}
               />
             </div>
           ))

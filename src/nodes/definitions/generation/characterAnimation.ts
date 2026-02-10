@@ -33,6 +33,16 @@ export const characterAnimationNode: NodeDefinition = {
 
     config: [
         {
+            id: 'concept',
+            name: '컨셉',
+            type: 'select',
+            default: 'general',
+            options: [
+                { value: 'general', label: '범용' },
+                { value: 'forest-run', label: '포레스트런' },
+            ],
+        },
+        {
             id: 'action',
             name: '동작',
             type: 'select',
@@ -40,15 +50,15 @@ export const characterAnimationNode: NodeDefinition = {
             options: [
                 { value: 'running', label: '달리기' },
                 { value: 'victory', label: '승리 브이포즈' },
-                { value: 'finish', label: '골인 (양팔 들기)' },
+                { value: 'finish', label: '골인 (양팔 들기)', showWhen: { field: 'concept', value: 'forest-run' } },
                 { value: 'waving', label: '손 흔들기' },
                 { value: 'jumping', label: '점프' },
                 { value: 'dancing', label: '춤추기' },
                 { value: 'walking', label: '걷기' },
                 { value: 'cheering', label: '환호하기' },
-                { value: 'stretching', label: '몸풀기' },
-                { value: 'aerial-running', label: '항공뷰 달리기' },
-                { value: 'billboard', label: '전광판 (깜빡임)' },
+                { value: 'stretching', label: '몸풀기', showWhen: { field: 'concept', value: 'forest-run' } },
+                { value: 'aerial-running', label: '항공뷰 달리기', showWhen: { field: 'concept', value: 'forest-run' } },
+                { value: 'billboard', label: '전광판 (깜빡임)', showWhen: { field: 'concept', value: 'forest-run' } },
             ],
         },
         {

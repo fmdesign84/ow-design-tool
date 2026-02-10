@@ -40,6 +40,16 @@ export const characterPoseNode: NodeDefinition = {
 
     config: [
         {
+            id: 'concept',
+            name: '컨셉',
+            type: 'select',
+            default: 'general',
+            options: [
+                { value: 'general', label: '범용' },
+                { value: 'forest-run', label: '포레스트런' },
+            ],
+        },
+        {
             id: 'direction',
             name: '방향',
             type: 'select',
@@ -81,7 +91,7 @@ export const characterPoseNode: NodeDefinition = {
             default: 'default',
             options: [
                 { value: 'default', label: '기본 복장' },
-                { value: 'marathon', label: '마라톤 (번호판+운동복)' },
+                { value: 'marathon', label: '마라톤 (번호판+운동복)', showWhen: { field: 'concept', value: 'forest-run' } },
                 { value: 'suit', label: '정장' },
                 { value: 'casual', label: '캐주얼' },
                 { value: 'office', label: '사무복' },
@@ -102,6 +112,7 @@ export const characterPoseNode: NodeDefinition = {
             type: 'text',
             default: '',
             description: '예: 빨간 후드티',
+            showWhen: { field: 'outfit', value: 'custom' },
         },
         {
             id: 'customBottom',
@@ -109,6 +120,7 @@ export const characterPoseNode: NodeDefinition = {
             type: 'text',
             default: '',
             description: '예: 검은 청바지',
+            showWhen: { field: 'outfit', value: 'custom' },
         },
         {
             id: 'customShoes',
@@ -116,6 +128,7 @@ export const characterPoseNode: NodeDefinition = {
             type: 'text',
             default: '',
             description: '예: 흰 운동화',
+            showWhen: { field: 'outfit', value: 'custom' },
         },
         {
             id: 'customAccessory',
@@ -123,6 +136,7 @@ export const characterPoseNode: NodeDefinition = {
             type: 'text',
             default: '',
             description: '예: 번호판, 모자',
+            showWhen: { field: 'outfit', value: 'custom' },
         },
         {
             id: 'background',
@@ -141,6 +155,7 @@ export const characterPoseNode: NodeDefinition = {
             type: 'text',
             default: '',
             description: '예: 마라톤 경기장, 도심 거리',
+            showWhen: { field: 'background', value: 'custom' },
         },
     ],
 

@@ -78,7 +78,12 @@ export interface ConfigDefinition {
   default?: unknown;       // 기본값
   description?: string;    // 설명
   // select 타입용
-  options?: Array<{ value: string; label: string }>;
+  options?: Array<{
+    value: string;
+    label: string;
+    // 조건부 옵션: 다른 config 값에 따라 표시/숨김
+    showWhen?: { field: string; value: string | string[] };
+  }>;
   // slider 타입용
   min?: number;
   max?: number;
