@@ -307,9 +307,9 @@ export async function captureNodeEditor(
       nodesBounds,
       imageWidth,
       imageHeight,
-      0.2,  // minZoom
+      0.5,  // minZoom (0.2→0.5: 과도한 축소로 여백 커지는 문제 방지)
       2,    // maxZoom
-      padding
+      padding * 0.5
     );
 
     // 캡처: viewport만 캡처하고 transform으로 노드 영역 맞춤

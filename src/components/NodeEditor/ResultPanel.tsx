@@ -40,7 +40,7 @@ const DownloadAllIcon = () => (
 );
 
 const GridIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect width="7" height="7" x="3" y="3" rx="1" />
     <rect width="7" height="7" x="14" y="3" rx="1" />
     <rect width="7" height="7" x="14" y="14" rx="1" />
@@ -70,11 +70,9 @@ const TrashIcon = () => (
 );
 
 const RefreshIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 2v6h-6" />
-    <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
-    <path d="M3 22v-6h6" />
-    <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
+    <path d="M21 13a9 9 0 1 1-3-7.7L21 8" />
   </svg>
 );
 
@@ -85,7 +83,7 @@ const ChevronDownIcon = ({ expanded }: { expanded: boolean }) => (
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.5"
+    strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
     style={{ transform: expanded ? 'rotate(0deg)' : 'rotate(-90deg)', transition: 'transform 0.2s ease' }}
@@ -337,7 +335,7 @@ const ResultPanel: React.FC<ResultPanelProps> = ({
         {/* 패널 헤더 (클릭으로 접기/펼치기) */}
         <div className={styles.archiveHeader} onClick={() => setIsExpanded(!isExpanded)}>
           <div className={styles.archiveTitle}>
-            <GridIcon />
+            <span className={styles.archiveIcon}><GridIcon /></span>
             <span>아카이브</span>
             <span className={styles.archiveCount}>{imageHistory.length}</span>
           </div>
@@ -575,8 +573,8 @@ const ResultPanel: React.FC<ResultPanelProps> = ({
           {/* 결과 없음 */}
           {!isRunning && !error && !hasResults && imageHistory.length === 0 && !isLoadingHistory && (
             <div className={styles.emptyState}>
-              <span className={styles.emptyIcon}>🎨</span>
-              <p>워크플로우를 실행하면<br />결과가 여기에 표시됩니다</p>
+              <p>실행 결과가 없습니다</p>
+              <span>워크플로우를 실행하면 여기에 표시됩니다</span>
             </div>
           )}
         </div>
