@@ -31,7 +31,26 @@ async function saveToSupabase(imageBase64, metadata) {
             .from('generated-images')
             .getPublicUrl(fileName);
 
-        return { image_url: publicUrl };
+        const poseName = metadata?.pose || metadata?.action || 'default';
+        const { data: dbData, error: dbError } = await supabase
+            .from('images')
+            .insert({
+                image_url: publicUrl,
+                prompt: `캐릭터 포즈 (${poseName})`,
+                model: 'gemini-3-pro-image-preview',
+                style: 'character-pose',
+                aspect_ratio: '1:1',
+                quality: 'standard'
+            })
+            .select()
+            .single();
+
+        if (dbError) console.error('[Supabase] DB insert error:', dbError.message);
+
+        return {
+            image_url: publicUrl,
+            id: dbData?.id
+        };
     } catch (error) {
         console.error('[Supabase] Save error:', error.message);
         return null;
