@@ -237,11 +237,14 @@ STYLE:
 
     return `Place this 3D cartoon character into a scene.
 
-MAIN CHARACTER (from provided image):
-- This is the MAIN character - keep EXACTLY: face, mint green hair, hair style, headband, leaf pair accessories
-- Keep the same 3D cartoon art style (Pixar/Disney quality)
-- The character is already in full body form in the provided image - match this appearance
-- Race bib number: 2026 (this number is UNIQUE to the main character only)
+MAIN CHARACTER (from provided image - PRESERVE EXACTLY):
+- CRITICAL: The provided image IS the character. Do NOT re-interpret or re-generate the character.
+- Copy the character's EXACT appearance pixel-perfectly: face, hair color, hair style, hair volume, all accessories
+- Keep the EXACT same clothing/outfit shown in the provided image - do NOT change clothes
+- Keep the EXACT same body proportions and art style from the provided image
+- The character has already been styled - your job is ONLY to place them into the scene background
+- If the character has mint green hair, headband, leaf accessories - keep ALL of them exactly
+- Race bib number if visible: keep the exact same number
 
 SCENE:
 ${preset.scene}
@@ -252,17 +255,16 @@ ${preset.camera}
 MAIN CHARACTER POSE & DIRECTION:
 - Direction: ${preset.direction}
 - Pose: ${preset.pose}
-- Outfit: ${outfitDescription}
+- Outfit: If the character in the provided image already wears specific clothing, KEEP that exact outfit. Otherwise use: ${outfitDescription}
 
 OTHER CHARACTERS IN SCENE:
 ${preset.crowd}
 
-MAIN CHARACTER IDENTITY (only the main character has ALL of these):
-- Mint green hair color and EXACT hair style from reference
-- Blue/white striped headband
-- Leaf pair accessories (small leaves near the headband)
-- Race bib number "2026"
-- Face features from reference image
+MAIN CHARACTER IDENTITY (PRESERVE FROM PROVIDED IMAGE - DO NOT ALTER):
+- Keep the EXACT face, hair color, hair style, hair volume from the provided image
+- Keep ALL accessories exactly as shown (headband, leaves, etc.)
+- Keep the EXACT outfit/clothing from the provided image - do NOT replace with different clothes
+- The provided image is the DEFINITIVE reference - copy the character as-is
 - Do NOT enlarge the main character - SAME scale as others
 
 OTHER CHARACTERS MUST BE DIFFERENT FROM MAIN:
