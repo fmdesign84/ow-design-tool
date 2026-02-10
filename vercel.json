@@ -41,6 +41,18 @@
     },
     "api/character-animation.js": {
       "maxDuration": 300
+    },
+    "api/scene-continuation.js": {
+      "maxDuration": 60
+    },
+    "api/character-expression-sheet.js": {
+      "maxDuration": 60
+    },
+    "api/character-turnaround.js": {
+      "maxDuration": 60
+    },
+    "api/character-scene.js": {
+      "maxDuration": 60
     }
   }
 }
