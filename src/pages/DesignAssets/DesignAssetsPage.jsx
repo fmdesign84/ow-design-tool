@@ -73,6 +73,15 @@ const DesignAssetsPage = () => {
       .filter((token) => tokenTab === 'all' || classifyToken(token.name) === tokenTab);
   }, [allTokens, normalizedTokenFilter, tokenTab]);
 
+  const filteredTokensByLayer = useMemo(() => {
+    return TOKEN_LAYERS.map((layer) => ({
+      key: layer.key,
+      label: layer.label,
+      source: layer.file,
+      items: filteredTokens.filter((token) => token.layerKey === layer.key),
+    })).filter((layer) => layer.items.length > 0);
+  }, [filteredTokens]);
+
   const filteredAssetGroups = useMemo(() => {
     return ASSET_GROUPS.map((group) => ({
       ...group,
@@ -147,55 +156,59 @@ const DesignAssetsPage = () => {
             ))}
           </div>
 
-          <section className={styles.section}>
-            <div className={styles.sectionHeader}>
-              <h2 className={styles.sectionTitle}>토큰 목록 ({filteredTokens.length})</h2>
-            </div>
+          {filteredTokensByLayer.map((layer) => (
+            <section key={layer.key} className={styles.section}>
+              <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>{layer.label} ({layer.items.length})</h2>
+                <button className={styles.sourcePath} onClick={() => copyText(layer.source)}>
+                  {layer.source}
+                </button>
+              </div>
 
-            <div className={styles.grid}>
-              {filteredTokens.map((token) => {
-                const tokenVar = `var(${token.name})`;
-                const category = classifyToken(token.name);
-                const spacingPx = parsePixel(token.value);
-                const spacingWidth = spacingPx ? Math.min(Math.max(spacingPx, 6), 180) : 36;
+              <div className={styles.grid}>
+                {layer.items.map((token) => {
+                  const tokenVar = `var(${token.name})`;
+                  const category = classifyToken(token.name);
+                  const spacingPx = parsePixel(token.value);
+                  const spacingWidth = spacingPx ? Math.min(Math.max(spacingPx, 6), 180) : 36;
 
-                return (
-                  <button
-                    key={`${token.layerKey}-${token.name}`}
-                    className={styles.itemCard}
-                    onClick={() => copyText(tokenVar)}
-                    title={tokenVar}
-                  >
-                    {category === 'colors' && (
-                      <span className={styles.swatch} style={{ background: tokenVar }} />
-                    )}
+                  return (
+                    <button
+                      key={`${token.layerKey}-${token.name}`}
+                      className={styles.itemCard}
+                      onClick={() => copyText(tokenVar)}
+                      title={tokenVar}
+                    >
+                      {category === 'colors' && (
+                        <span className={styles.swatch} style={{ background: tokenVar }} />
+                      )}
 
-                    {category === 'spacing' && (
-                      <span className={styles.spacingBar} style={{ width: `${spacingWidth}px` }} />
-                    )}
+                      {category === 'spacing' && (
+                        <span className={styles.spacingBar} style={{ width: `${spacingWidth}px` }} />
+                      )}
 
-                    {category === 'radius' && (
-                      <span className={styles.radiusBox} style={{ borderRadius: tokenVar }} />
-                    )}
+                      {category === 'radius' && (
+                        <span className={styles.radiusBox} style={{ borderRadius: tokenVar }} />
+                      )}
 
-                    {category === 'effects' && (
-                      <span className={styles.shadowBox} style={{ boxShadow: tokenVar }} />
-                    )}
+                      {category === 'effects' && (
+                        <span className={styles.shadowBox} style={{ boxShadow: tokenVar }} />
+                      )}
 
-                    <span className={styles.itemName}>{token.name}</span>
-                    <span className={styles.itemValue}>{token.value}</span>
-                    <span className={styles.itemMeta}>{token.layerLabel} · line {token.line}</span>
-                    <span className={styles.itemMeta}>{token.source}</span>
-                    {copiedValue === tokenVar && <span className={styles.copied}>Copied</span>}
-                  </button>
-                );
-              })}
-            </div>
+                      <span className={styles.itemName}>{token.name}</span>
+                      <span className={styles.itemValue}>{token.value}</span>
+                      <span className={styles.itemMeta}>line {token.line}</span>
+                      {copiedValue === tokenVar && <span className={styles.copied}>Copied</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
 
-            {filteredTokens.length === 0 && (
-              <div className={styles.emptyState}>검색/카테고리 조건에 맞는 토큰이 없습니다.</div>
-            )}
-          </section>
+          {filteredTokensByLayer.length === 0 && (
+            <div className={styles.emptyState}>검색/카테고리 조건에 맞는 토큰이 없습니다.</div>
+          )}
         </div>
       )}
 
