@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const textCorrectNode: NodeDefinition = {
   id: 'text-correct',
@@ -77,7 +78,7 @@ export const textCorrectNode: NodeDefinition = {
         }
       }
 
-      const response = await fetch('/api/correct-text', {
+      const response = await fetch(getApiUrl('/api/correct-text', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -2,6 +2,7 @@
  * Node Definitions - 모든 노드 정의 통합
  */
 
+import { defaultNodeCatalog, flattenNodeCatalog } from './catalog';
 // IO 노드
 // 모든 노드 통합
 import { ioNodes } from './io';
@@ -28,6 +29,8 @@ export { analysisNodes } from './analysis';
 // 유틸리티 노드
 export * from './utility';
 export { utilityNodes } from './utility';
+export { defaultNodeCatalog, flattenNodeCatalog } from './catalog';
+export type { NodeCatalogEntry } from './catalog';
 
 /**
  * 모든 기본 노드 목록
@@ -40,5 +43,7 @@ export const allNodes = [
   ...utilityNodes,
   ...ioNodes,
 ];
+
+export const allNodesFromCatalog = flattenNodeCatalog(defaultNodeCatalog);
 
 export default allNodes;

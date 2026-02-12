@@ -4,7 +4,6 @@
 
 // === Layout ===
 export { default as Header } from './layout/Header';
-export { default as MobileGNB } from './layout/MobileGNB';
 
 // === Icons ===
 export * from './common/Icons';

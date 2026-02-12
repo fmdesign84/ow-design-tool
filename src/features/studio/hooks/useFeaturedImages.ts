@@ -8,6 +8,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useFeaturedStore } from '../../../stores/useFeaturedStore';
 import type { GalleryItem, AspectRatio } from '../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 interface UseFeaturedImagesReturn {
   featuredImages: GalleryItem[];
@@ -72,7 +73,7 @@ export function useFeaturedImages(): UseFeaturedImagesReturn {
   // 추천 토글
   const toggleFeatured = useCallback(async (item: GalleryItem) => {
     try {
-      const response = await fetch('/api/supabase-images', {
+      const response = await fetch(getApiUrl('/api/supabase-images', { method: 'PATCH' }), {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -104,7 +105,7 @@ export function useFeaturedImages(): UseFeaturedImagesReturn {
   // 삭제
   const deleteItem = useCallback(async (item: GalleryItem) => {
     try {
-      const response = await fetch('/api/supabase-images', {
+      const response = await fetch(getApiUrl('/api/supabase-images', { method: 'DELETE' }), {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: item.id }),

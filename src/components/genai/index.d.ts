@@ -7,7 +7,6 @@ export interface ModelSelectorProps {
   recommendReason?: string | null;
   disabled?: boolean;
   compact?: boolean;
-  showCost?: boolean;
   quality?: string;
   className?: string;
   excludeModels?: string[];
@@ -33,16 +32,6 @@ export interface MaskEditorProps {
 }
 
 export declare function MaskEditor(props: MaskEditorProps): JSX.Element;
-
-export interface CostEstimateProps {
-  model: string;
-  quality?: string;
-  count?: number;
-}
-
-export declare function CostEstimate(props: CostEstimateProps): JSX.Element;
-export declare function calculateCost(model: string, quality: string, count: number): number;
-export declare function formatCost(cost: number): string;
 
 export interface ReferenceImage {
   id: string;

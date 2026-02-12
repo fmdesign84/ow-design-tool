@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const characterGenNode: NodeDefinition = {
     id: 'character-gen',
@@ -89,7 +90,7 @@ export const characterGenNode: NodeDefinition = {
                 };
             }
 
-            const response = await fetch('/api/character-gen', {
+            const response = await fetch(getApiUrl('/api/character-gen', { method: 'POST' }), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

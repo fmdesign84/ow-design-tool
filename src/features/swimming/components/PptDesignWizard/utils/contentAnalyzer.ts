@@ -21,10 +21,6 @@ export function analyzeContent(
   images: ImageAsset[]
 ): ContentAnalysis {
   const headings = sections.filter((s) => s.type === 'heading');
-  const paragraphs = sections.filter((s) => s.type === 'paragraph');
-  const tables = sections.filter((s) => s.type === 'table');
-  const chartDataSections = sections.filter((s) => s.type === 'chart-data');
-  const lists = sections.filter((s) => s.type === 'list');
 
   // 주요 토픽 추출 (H1, H2 기반)
   const mainTopics = headings

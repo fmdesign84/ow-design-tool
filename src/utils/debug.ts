@@ -25,10 +25,12 @@ const sendToServer = async (tag: string, message: string, data?: unknown): Promi
  */
 export const rlog = (tag: string, message: string, data?: unknown): void => {
   const fullMessage = `[${tag}] ${message}`;
-  if (data !== undefined) {
-    console.log(fullMessage, data);
-  } else {
-    console.log(fullMessage);
+  if (process.env.NODE_ENV === 'development') {
+    if (data !== undefined) {
+      console.debug(fullMessage, data);
+    } else {
+      console.debug(fullMessage);
+    }
   }
   sendToServer(tag, message, data);
 };

@@ -36,8 +36,8 @@
 
 /* 투명 모드 - 페이지 타이틀 */
 .pageTitleTransparent {
-  color: #fff !important;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  color: var(--header-transparent-text, #fff) !important;
+  text-shadow: var(--header-transparent-shadow, 0 1px 3px rgba(0, 0, 0, 0.3));
 }
 
 .pageTitle {
@@ -78,8 +78,8 @@
 
 /* 투명 모드 - 알림벨 흰색 (직접 클래스 적용) */
 .notificationBellTransparent svg {
-  stroke: #fff !important;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+  stroke: var(--header-transparent-text, #fff) !important;
+  filter: drop-shadow(var(--header-transparent-shadow, 0 1px 2px rgba(0, 0, 0, 0.3)));
 }
 
 .notificationBadge {
@@ -122,8 +122,8 @@
 
 /* 투명 모드 - 사용자 이름 흰색 (직접 클래스 적용) */
 .userNameTransparent {
-  color: #fff !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  color: var(--header-transparent-text, #fff) !important;
+  text-shadow: var(--header-transparent-shadow, 0 1px 2px rgba(0, 0, 0, 0.3));
 }
 
 .userRole {
@@ -135,8 +135,8 @@
 
 /* 투명 모드 - 역할 흰색 (직접 클래스 적용) */
 .userRoleTransparent {
-  color: rgba(255,255,255,0.8) !important;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  color: var(--header-transparent-text-muted, rgba(255, 255, 255, 0.8)) !important;
+  text-shadow: var(--header-transparent-shadow, 0 1px 2px rgba(0, 0, 0, 0.3));
 }
 
 .userAvatar {
@@ -153,12 +153,12 @@
 
 /* 투명 모드 - 아바타 (직접 클래스 적용) */
 .userAvatarTransparent {
-  background: rgba(255,255,255,0.2) !important;
-  border: 1px solid rgba(255,255,255,0.4) !important;
+  background: var(--header-transparent-avatar-bg, rgba(255, 255, 255, 0.2)) !important;
+  border: 1px solid var(--header-transparent-avatar-border, rgba(255, 255, 255, 0.4)) !important;
 }
 
 .userAvatarTransparent svg {
-  fill: #fff !important;
+  fill: var(--header-transparent-text, #fff) !important;
 }
 
 .userAvatar svg {

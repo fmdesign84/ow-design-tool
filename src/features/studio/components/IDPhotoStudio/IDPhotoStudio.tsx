@@ -11,6 +11,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { useImageUpload } from '../../../../hooks/useImageUpload';
 import { useToast } from '../../../../components/common';
 import { UploadIcon, DownloadIcon } from '../../../../components/common/Icons';
+import { getApiUrl } from '../../../../utils/apiRoute';
 import styles from './ProfileStudio.module.css'; // ProfileStudio 스타일 공유
 
 type Step = 'purpose' | 'upload' | 'style' | 'generating' | 'result';
@@ -294,7 +295,7 @@ export const IDPhotoStudio: React.FC<IDPhotoStudioProps> = ({
       });
       const referenceImages = sortedImages.map(img => img.base64);
 
-      const response = await fetch('/api/generate-idphoto', {
+      const response = await fetch(getApiUrl('/api/generate-idphoto', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -924,7 +925,7 @@ export const IDPhotoStudio: React.FC<IDPhotoStudioProps> = ({
                 생성 중...
               </>
             ) : (
-              <>증명사진 생성하기 <span className={styles.pointCost}>5P</span></>
+              <>증명사진 생성하기</>
             )}
           </button>
         </div>

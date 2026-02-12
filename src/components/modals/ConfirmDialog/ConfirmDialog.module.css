@@ -9,7 +9,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--confirm-overlay-bg, rgba(0, 0, 0, 0.5));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,12 +23,12 @@
 }
 
 .dialog {
-  background: #fff;
+  background: var(--confirm-bg, #fff);
   border-radius: 16px;
   padding: 28px 24px 24px;
   min-width: 280px;
   max-width: 320px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--confirm-shadow, 0 8px 32px rgba(0, 0, 0, 0.18));
   text-align: center;
   animation: slideUp 0.2s ease-out;
 }
@@ -49,7 +49,7 @@
   width: 52px;
   height: 52px;
   margin: 0 auto 16px;
-  background: linear-gradient(135deg, #FFF3EE 0%, #FFE8E0 100%);
+  background: var(--confirm-icon-bg, linear-gradient(135deg, #FFF3EE 0%, #FFE8E0 100%));
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -78,7 +78,7 @@
 
 /* 확인 완료 애니메이션 - 오렌지 계열 */
 .confirmed {
-  background: linear-gradient(135deg, #FFF3EE 0%, #FFE0D0 100%) !important;
+  background: var(--confirm-icon-success-bg, linear-gradient(135deg, #FFF3EE 0%, #FFE0D0 100%)) !important;
   transform: scale(1.1);
 }
 
@@ -88,11 +88,11 @@
 
 /* Danger 아이콘 */
 .dangerIcon {
-  background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+  background: var(--confirm-icon-danger-bg, linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%));
 }
 
 .dangerIcon svg {
-  color: #F44336;
+  color: var(--confirm-danger, #F44336);
 }
 
 .dangerIcon svg path,
@@ -104,7 +104,7 @@
 
 /* Delete 아이콘 (휴지통) - 기본 오렌지 스타일과 동일 */
 .deleteIcon {
-  background: linear-gradient(135deg, #FFF3EE 0%, #FFE8E0 100%);
+  background: var(--confirm-icon-bg, linear-gradient(135deg, #FFF3EE 0%, #FFE8E0 100%));
 }
 
 .deleteIcon svg {
@@ -121,7 +121,7 @@
 
 /* Delete 확인 완료 애니메이션 - 기본 오렌지 스타일과 동일 */
 .confirmedDelete {
-  background: linear-gradient(135deg, #FFF3EE 0%, #FFE0D0 100%) !important;
+  background: var(--confirm-icon-success-bg, linear-gradient(135deg, #FFF3EE 0%, #FFE0D0 100%)) !important;
   transform: scale(1.1);
 }
 
@@ -137,7 +137,7 @@
 
 /* Warning 아이콘 (오렌지/빨간 계열) */
 .warningIcon {
-  background: linear-gradient(135deg, #FFF3EE 0%, #FFE8E0 100%);
+  background: var(--confirm-icon-bg, linear-gradient(135deg, #FFF3EE 0%, #FFE8E0 100%));
 }
 
 .warningIcon svg {
@@ -146,18 +146,18 @@
 
 /* Warning 확인 완료 애니메이션 (오렌지/빨간) */
 .confirmedWarning {
-  background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%) !important;
+  background: var(--confirm-icon-danger-bg, linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%)) !important;
   transform: scale(1.1);
 }
 
 .confirmedWarning svg {
-  color: #E53935 !important;
+  color: var(--confirm-danger-strong, #E53935) !important;
 }
 
 .message {
   font-size: 16px;
   font-weight: 600;
-  color: #1F1F1F;
+  color: var(--confirm-message, #1F1F1F);
   margin: 0 0 28px 0;
   line-height: 1.6;
   white-space: pre-line;
@@ -172,7 +172,7 @@
 
 /* Warning 확인 완료 메시지 (오렌지/빨간) */
 .confirmedMessageWarning {
-  color: #E53935;
+  color: var(--confirm-danger-strong, #E53935);
   animation: textPop 0.3s ease-out;
 }
 
@@ -208,14 +208,14 @@
 }
 
 .cancelBtn {
-  background: #F5F6F8;
+  background: var(--confirm-cancel-bg, #F5F6F8);
   border: none;
-  color: #5F5F5F;
+  color: var(--confirm-cancel-text, #5F5F5F);
 }
 
 .cancelBtn:hover {
-  background: #EBEDF0;
-  color: #3F3F3F;
+  background: var(--confirm-cancel-bg-hover, #EBEDF0);
+  color: var(--confirm-cancel-text-hover, #3F3F3F);
 }
 
 .cancelBtn:active {
@@ -223,15 +223,15 @@
 }
 
 .confirmBtn {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #FF5722 100%);
+  background: var(--confirm-primary-bg, linear-gradient(135deg, var(--color-primary) 0%, #FF5722 100%));
   border: none;
-  color: #fff;
-  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+  color: var(--color-white, #fff);
+  box-shadow: var(--confirm-primary-shadow, 0 2px 8px rgba(255, 107, 53, 0.3));
 }
 
 .confirmBtn:hover {
-  background: linear-gradient(135deg, #FF5722 0%, #E64A19 100%);
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+  background: var(--confirm-primary-bg-hover, linear-gradient(135deg, #FF5722 0%, #E64A19 100%));
+  box-shadow: var(--confirm-primary-shadow-hover, 0 4px 12px rgba(255, 107, 53, 0.4));
   transform: translateY(-1px);
 }
 
@@ -241,13 +241,13 @@
 
 /* Danger variant */
 .confirmBtn.danger {
-  background: linear-gradient(135deg, #F44336 0%, #D32F2F 100%);
-  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+  background: var(--confirm-danger-bg, linear-gradient(135deg, #F44336 0%, #D32F2F 100%));
+  box-shadow: var(--confirm-danger-shadow, 0 2px 8px rgba(244, 67, 54, 0.3));
 }
 
 .confirmBtn.danger:hover {
-  background: linear-gradient(135deg, #E53935 0%, #C62828 100%);
-  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+  background: var(--confirm-danger-bg-hover, linear-gradient(135deg, #E53935 0%, #C62828 100%));
+  box-shadow: var(--confirm-danger-shadow-hover, 0 4px 12px rgba(244, 67, 54, 0.4));
 }
 
 /* 비활성화 상태 */

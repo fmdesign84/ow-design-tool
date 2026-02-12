@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import type { AdminDashboardSummary, UserWithQuota } from '../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 interface UseAdminStatsOptions {
   period?: number; // 조회 기간 (일)
@@ -33,7 +34,7 @@ export function useAdminStats(options: UseAdminStatsOptions = {}): UseAdminStats
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/admin/stats?period=${period}`);
+      const response = await fetch(getApiUrl(`/api/admin/stats?period=${period}`));
 
       if (!response.ok) {
         throw new Error('통계 정보를 불러오지 못했습니다.');
@@ -109,7 +110,7 @@ export function useAdminUsers(options: UseAdminUsersOptions = {}): UseAdminUsers
       if (search) params.set('search', search);
       if (role) params.set('role', role);
 
-      const response = await fetch(`/api/admin/users?${params}`);
+      const response = await fetch(getApiUrl(`/api/admin/users?${params}`));
 
       if (!response.ok) {
         throw new Error('사용자 목록을 불러오지 못했습니다.');
@@ -128,7 +129,7 @@ export function useAdminUsers(options: UseAdminUsersOptions = {}): UseAdminUsers
 
   // 사용자 정보 수정
   const updateUser = useCallback(async (id: string, updates: Partial<UserWithQuota>) => {
-    const response = await fetch('/api/admin/users', {
+    const response = await fetch(getApiUrl('/api/admin/users', { method: 'PATCH' }), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, ...updates }),
@@ -145,7 +146,7 @@ export function useAdminUsers(options: UseAdminUsersOptions = {}): UseAdminUsers
 
   // 할당량 조정
   const adjustQuota = useCallback(async (userId: string, maxCount?: number, bonusCount?: number) => {
-    const response = await fetch('/api/user-quota', {
+    const response = await fetch(getApiUrl('/api/user-quota', { method: 'PATCH' }), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -176,7 +177,7 @@ export function useAdminUsers(options: UseAdminUsersOptions = {}): UseAdminUsers
 
   // 사용자 추가
   const addUser = useCallback(async (email: string, name: string, userRole: 'user' | 'admin' = 'user') => {
-    const response = await fetch('/api/admin/users', {
+    const response = await fetch(getApiUrl('/api/admin/users', { method: 'POST' }), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, name, role: userRole }),
@@ -194,7 +195,7 @@ export function useAdminUsers(options: UseAdminUsersOptions = {}): UseAdminUsers
 
   // 사용자 비활성화
   const deactivateUser = useCallback(async (id: string) => {
-    const response = await fetch('/api/admin/users', {
+    const response = await fetch(getApiUrl('/api/admin/users', { method: 'DELETE' }), {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id }),

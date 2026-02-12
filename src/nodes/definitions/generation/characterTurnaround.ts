@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const characterTurnaroundNode: NodeDefinition = {
     id: 'character-turnaround',
@@ -66,7 +67,7 @@ export const characterTurnaroundNode: NodeDefinition = {
                 };
             }
 
-            const response = await fetch('/api/character-turnaround', {
+            const response = await fetch(getApiUrl('/api/character-turnaround', { method: 'POST' }), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

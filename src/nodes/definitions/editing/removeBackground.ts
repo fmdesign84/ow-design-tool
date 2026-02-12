@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const removeBackgroundNode: NodeDefinition = {
   id: 'remove-background',
@@ -62,7 +63,7 @@ export const removeBackgroundNode: NodeDefinition = {
         };
       }
 
-      const response = await fetch('/api/remove-background', {
+      const response = await fetch(getApiUrl('/api/remove-background', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

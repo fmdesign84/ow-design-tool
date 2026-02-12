@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const enhancePromptNode: NodeDefinition = {
   id: 'enhance-prompt',
@@ -74,7 +75,7 @@ export const enhancePromptNode: NodeDefinition = {
         };
       }
 
-      const response = await fetch('/api/enhance-prompt', {
+      const response = await fetch(getApiUrl('/api/enhance-prompt', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

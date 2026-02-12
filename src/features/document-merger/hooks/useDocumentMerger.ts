@@ -14,7 +14,6 @@ import {
   ElementStyle,
 } from '../types';
 import { parseDocx, parseTxt } from '../utils/docxParser';
-import { processDocuments } from '../utils/docxGenerator';
 import { processDocumentsV2 } from '../utils/docxCloner';
 
 const initialState: MergerState = {

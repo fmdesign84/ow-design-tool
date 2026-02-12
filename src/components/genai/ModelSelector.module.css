@@ -138,13 +138,6 @@
   color: #9E9E9E;
 }
 
-.cost {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--color-primary);
-  white-space: nowrap;
-}
-
 /* 추천 이유 */
 .recommendReason {
   font-size: 11px;

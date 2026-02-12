@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const imageToImageNode: NodeDefinition = {
   id: 'image-to-image',
@@ -78,7 +79,7 @@ export const imageToImageNode: NodeDefinition = {
         };
       }
 
-      const response = await fetch('/api/generate-image', {
+      const response = await fetch(getApiUrl('/api/generate-image', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

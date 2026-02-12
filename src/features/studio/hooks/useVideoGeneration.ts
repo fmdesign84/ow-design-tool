@@ -4,6 +4,7 @@
 
 import { useState, useCallback } from 'react';
 import type { VideoGenerationParams, GalleryItem } from '../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 interface UseVideoGenerationReturn {
   isGenerating: boolean;
@@ -34,7 +35,7 @@ export function useVideoGeneration(): UseVideoGenerationReturn {
       setProgress(20);
 
       // API 호출
-      const response = await fetch('/api/generate-video', {
+      const response = await fetch(getApiUrl('/api/generate-video', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -60,7 +61,7 @@ export function useVideoGeneration(): UseVideoGenerationReturn {
       }
 
       // Supabase에 저장
-      const saveResponse = await fetch('/api/supabase-images', {
+      const saveResponse = await fetch(getApiUrl('/api/supabase-images', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

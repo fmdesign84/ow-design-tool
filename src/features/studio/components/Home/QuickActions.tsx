@@ -3,8 +3,8 @@
  */
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { SectionCard } from '../../../../components/common';
+import { useAppNavigate } from '../../../../hooks/useAppRouter';
 import {
   ImageGenIcon,
   VideoGenIcon,
@@ -72,7 +72,7 @@ interface QuickActionsProps {
 }
 
 export const QuickActions: React.FC<QuickActionsProps> = ({ onNavigate }) => {
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
 
   const handleClick = (action: QuickAction) => {
     if (onNavigate) {

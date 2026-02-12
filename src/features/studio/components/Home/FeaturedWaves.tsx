@@ -7,6 +7,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { SectionCard, Badge } from '../../../../components/common';
 import { WaveShowcaseModal } from './WaveShowcaseModal';
+import { getApiUrl } from '../../../../utils/apiRoute';
 import styles from './FeaturedWaves.module.css';
 
 // 노드 아이콘
@@ -60,7 +61,7 @@ export const FeaturedWaves: React.FC<FeaturedWavesProps> = ({ onNavigateToWave }
   const loadShowcases = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('/api/wave-showcase?active=true');
+      const res = await fetch(getApiUrl('/api/wave-showcase?active=true'));
       const data = await res.json();
       if (data.success) {
         setShowcases(data.showcases || []);

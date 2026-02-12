@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const textToVideoNode: NodeDefinition = {
   id: 'text-to-video',
@@ -88,7 +89,7 @@ export const textToVideoNode: NodeDefinition = {
         };
       }
 
-      const response = await fetch('/api/generate-video', {
+      const response = await fetch(getApiUrl('/api/generate-video', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

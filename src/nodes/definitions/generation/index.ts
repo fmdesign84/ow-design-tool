@@ -70,11 +70,12 @@ export { multiImageVideoNode } from './multiImageVideo';
 // 디자인 노드 export
 export { mockupNode } from './mockup';
 
-export const generationNodes = [
-  // 디자인 (맨 위)
+export const designGenerationNodes = [
   mockupNode,
   portraitStagingNode,
-  // 이미지 생성
+];
+
+export const imageGenerationNodes = [
   textToImageNode,
   imageToImageNode,
   inpaintingNode,
@@ -89,10 +90,18 @@ export const generationNodes = [
   sceneContinuationNode,
   characterExpressionSheetNode,
   characterTurnaroundNode,
-  // 영상 생성
+];
+
+export const videoGenerationNodes = [
   textToVideoNode,
   imageToVideoNode,
   multiImageVideoNode,
+];
+
+export const generationNodes = [
+  ...designGenerationNodes,
+  ...imageGenerationNodes,
+  ...videoGenerationNodes,
 ];
 
 export default generationNodes;

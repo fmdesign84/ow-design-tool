@@ -635,12 +635,6 @@
   transform: none;
 }
 
-.pointCost {
-  font-size: 12px;
-  opacity: 0.9;
-  margin-left: 4px;
-}
-
 /* 스피너 - MockupGenerator와 동일 */
 .spinner {
   width: 16px;

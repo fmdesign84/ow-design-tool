@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const mockupNode: NodeDefinition = {
   id: 'mockup',
@@ -56,7 +57,7 @@ export const mockupNode: NodeDefinition = {
         };
       }
 
-      const response = await fetch('/api/generate-mockup', {
+      const response = await fetch(getApiUrl('/api/generate-mockup', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

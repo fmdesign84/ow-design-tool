@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const backgroundGenNode: NodeDefinition = {
   id: 'background-gen',
@@ -75,7 +76,7 @@ export const backgroundGenNode: NodeDefinition = {
         };
       }
 
-      const response = await fetch('/api/generate-background', {
+      const response = await fetch(getApiUrl('/api/generate-background', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

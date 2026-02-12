@@ -11,14 +11,7 @@ import {
   ParsedDocument,
   TextRun,
   DEFAULT_STYLE_MAP,
-  DEFAULT_ELEMENT_STYLE,
 } from '../types';
-
-// ===== XML 네임스페이스 =====
-const NS = {
-  w: 'http://schemas.openxmlformats.org/wordprocessingml/2006/main',
-  r: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
-};
 
 // ===== 헬퍼: 속성값 가져오기 =====
 function getAttr(el: Element | null, attr: string): string | null {

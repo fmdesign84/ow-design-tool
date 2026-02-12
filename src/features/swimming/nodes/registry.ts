@@ -4,6 +4,7 @@
  */
 
 import type { SwimmingNodeDefinition, SwimmingNodeType, DocumentPageConfig } from '../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 // ===== 콘텐츠 노드 정의 =====
 
@@ -62,7 +63,7 @@ const contentNodes: SwimmingNodeDefinition[] = [
           };
         }
 
-        const response = await fetch('/api/enhance-prompt', {
+        const response = await fetch(getApiUrl('/api/enhance-prompt', { method: 'POST' }), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -555,7 +556,7 @@ const outputNodes: SwimmingNodeDefinition[] = [
         });
 
         // API 호출
-        const response = await fetch('/api/generate-pptx', {
+        const response = await fetch(getApiUrl('/api/generate-pptx', { method: 'POST' }), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

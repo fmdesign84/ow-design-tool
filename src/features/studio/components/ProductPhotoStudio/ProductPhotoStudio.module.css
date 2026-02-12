@@ -492,13 +492,6 @@
   cursor: not-allowed;
 }
 
-.pointCost {
-  padding: 2px 8px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  font-size: 12px;
-}
-
 /* ========== 결과 단계 ========== */
 .resultStep {
   display: flex;

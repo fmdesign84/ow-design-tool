@@ -5,6 +5,7 @@
  */
 
 import { create } from 'zustand';
+import { getApiUrl } from '../utils/apiRoute';
 
 // 캐시 유효 시간 (5분)
 const CACHE_DURATION = 5 * 60 * 1000;
@@ -71,8 +72,8 @@ export const useFeaturedStore = create<FeaturedState>((set, get) => ({
     try {
       // 일반 이미지와 목업 병렬 로드
       const [generalRes, mockupRes] = await Promise.all([
-        fetch('/api/supabase-images?featured=true&contentType=general'),
-        fetch('/api/supabase-images?featured=true&contentType=mockup'),
+        fetch(getApiUrl('/api/supabase-images?featured=true&contentType=general')),
+        fetch(getApiUrl('/api/supabase-images?featured=true&contentType=mockup')),
       ]);
 
       const [generalData, mockupData] = await Promise.all([

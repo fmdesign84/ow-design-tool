@@ -1,0 +1,224 @@
+:root {
+  /* Component - Size */
+  --input-height: 34px;
+  --input-height-sm: 30px;
+  --input-height-lg: 40px;
+  --avatar-size: 40px;
+  --avatar-size-sm: 32px;
+  --avatar-size-xs: 24px;
+  --avatar-size-lg: 48px;
+  --avatar-size-xl: 64px;
+  --icon-size: 20px;
+  --icon-size-sm: 16px;
+  --icon-size-lg: 24px;
+
+  /* Component - Card */
+  --card-bg: var(--color-white);
+  --card-border: var(--border-default);
+  --card-radius: var(--radius-xl);
+  --card-shadow: var(--shadow-sm);
+  --card-hover-shadow: var(--shadow-md);
+  --card-hover-border: var(--color-primary);
+
+  /* Component - Button */
+  --btn-primary-bg: var(--color-primary);
+  --btn-primary-hover: var(--color-primary-hover);
+  --btn-primary-text: var(--color-white);
+  --btn-secondary-bg: var(--bg-gray);
+  --btn-secondary-hover: var(--bg-gray-medium);
+  --btn-secondary-text: var(--text-primary);
+  --btn-ghost-hover: var(--bg-gray);
+  --btn-disabled-bg: var(--color-neutral-200);
+  --btn-disabled-border: var(--color-neutral-300);
+  --btn-disabled-text: var(--color-neutral-400);
+
+  /* Component - Input */
+  --input-bg: var(--color-neutral-100);
+  --input-border: var(--border-default);
+  --input-text: var(--text-primary);
+  --input-placeholder: var(--text-muted);
+  --input-focus-bg: var(--color-white);
+  --input-focus-border: var(--color-primary);
+  --input-error-border: var(--color-error);
+
+  /* Component - Badge */
+  --badge-bg: var(--color-neutral-100);
+  --badge-border: var(--border-default);
+  --badge-text: var(--text-secondary);
+  --badge-hover-bg: var(--color-neutral-200);
+  --badge-hover-text: var(--text-primary);
+  --badge-active-bg: var(--color-primary-light);
+  --badge-active-border: var(--color-primary);
+  --badge-active-text: var(--color-primary);
+
+  /* Component - Modal/Tooltip/Toast */
+  --modal-bg: var(--color-white);
+  --modal-border: var(--border-default);
+  --modal-shadow: var(--shadow-xl);
+  --modal-backdrop: var(--bg-overlay);
+
+  --tooltip-bg: var(--color-neutral-900);
+  --tooltip-text: var(--color-white);
+
+  --toast-bg: var(--color-white);
+  --toast-shadow: var(--shadow-lg);
+
+  /* Component - Home */
+  --home-section-title: var(--text-primary);
+  --home-card-bg: var(--card-bg);
+  --home-card-border: var(--card-border);
+  --home-card-shadow: var(--card-shadow);
+  --home-card-hover-bg: var(--bg-white);
+  --home-card-hover-border: var(--color-primary);
+  --home-card-hover-shadow: 0 2px 8px rgba(255, 107, 0, 0.08);
+  --home-card-inner-bg: var(--bg-gray);
+  --home-card-inner-border: var(--border-default);
+  --home-card-text: var(--text-primary);
+  --home-card-text-secondary: var(--text-muted);
+  --home-card-icon: var(--text-primary);
+
+  /* Component - Avatar */
+  --avatar-bg-accent: #FFE5D0;
+
+  /* Component - Notification */
+  --notification-bg: var(--color-white);
+  --notification-hover-bg: var(--color-neutral-50);
+  --notification-read-bg: #ECEDF0;
+  --notification-read-hover-bg: #E3E4E8;
+  --notification-border: var(--border-light);
+  --notification-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+
+  --tag-comment-bg: #E8F5E9;
+  --tag-comment-color: #4CAF50;
+  --tag-cancel-bg: #E0E0E0;
+  --tag-cancel-color: var(--color-neutral-700);
+  --tag-reject-bg: var(--color-neutral-800);
+  --tag-reject-color: var(--color-white);
+
+  /* Component - Studio Page */
+  --studio-shell-bg: var(--surface-muted);
+  --studio-panel-bg: var(--surface-base);
+  --studio-panel-border: var(--border-default);
+  --studio-panel-shadow: var(--card-shadow);
+  --studio-panel-radius: 24px;
+
+  --studio-nav-pill-radius: 9999px;
+  --studio-nav-item-bg-hover: var(--hover-bg);
+  --studio-nav-item-bg-active: var(--bg-primary-light);
+  --studio-nav-item-text: var(--text-tertiary);
+  --studio-nav-item-text-active: var(--text-accent);
+
+  --studio-glass-bg: rgba(255, 255, 255, 0.15);
+  --studio-glass-border: rgba(255, 255, 255, 0.25);
+  --studio-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --studio-glass-backdrop: blur(20px);
+
+  --studio-float-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --studio-icon-chip-bg: var(--surface-base);
+  --studio-icon-chip-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --studio-icon-chip-shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.12);
+
+  --studio-home-overlay-strong: rgba(0, 0, 0, 0.75);
+  --studio-home-overlay-mid: rgba(0, 0, 0, 0.3);
+  --studio-home-video-overlay-top: rgba(0, 0, 0, 0.7);
+  --studio-home-video-overlay-mid: rgba(0, 0, 0, 0.55);
+  --studio-home-video-overlay-bottom: rgba(0, 0, 0, 0.5);
+
+  --studio-home-glass-soft: rgba(255, 255, 255, 0.1);
+  --studio-home-glass-line-top: rgba(255, 255, 255, 0.25);
+  --studio-home-glass-line-left: rgba(255, 255, 255, 0.15);
+  --studio-home-glass-line-right: rgba(255, 255, 255, 0.08);
+  --studio-home-glass-line-bottom: rgba(255, 255, 255, 0.05);
+
+  --studio-home-badge-glass-bg: rgba(255, 255, 255, 0.2);
+  --studio-home-badge-accent-bg: rgba(255, 107, 0, 0.7);
+  --studio-home-source-bg: rgba(59, 130, 246, 0.7);
+  --studio-home-favorite-bg: rgba(255, 215, 0, 0.9);
+
+  --studio-home-text-main: rgba(255, 255, 255, 0.9);
+  --studio-home-text-muted: rgba(255, 255, 255, 0.7);
+
+  --studio-home-option-bg: rgba(255, 255, 255, 0.15);
+  --studio-home-option-bg-hover: rgba(255, 255, 255, 0.25);
+  --studio-home-option-border: rgba(255, 255, 255, 0.25);
+  --studio-home-option-active-bg: rgba(255, 107, 53, 0.8);
+  --studio-home-option-active-border: rgba(255, 107, 53, 0.6);
+
+  --studio-home-input-glass-bg: rgba(255, 255, 255, 0.3);
+  --studio-home-input-glass-border: rgba(255, 255, 255, 0.4);
+  --studio-home-input-glass-bg-focus: rgba(255, 255, 255, 0.5);
+  --studio-home-input-glass-border-focus: rgba(255, 255, 255, 0.6);
+
+  --studio-home-generate-bg: rgba(255, 107, 53, 0.85);
+  --studio-home-generate-bg-hover: rgba(255, 107, 53, 0.95);
+  --studio-home-generate-border: rgba(255, 107, 53, 0.6);
+  --studio-home-generate-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+  --studio-home-generate-shadow-hover: 0 0 24px rgba(255, 107, 53, 0.6), 0 0 48px rgba(255, 107, 53, 0.3);
+  --studio-home-generate-disabled-bg: rgba(120, 120, 120, 0.4);
+  --studio-home-generate-disabled-border: rgba(150, 150, 150, 0.3);
+  --studio-home-generate-disabled-text: rgba(255, 255, 255, 0.6);
+
+  --studio-home-dark-card-bg: rgba(30, 30, 30, 0.45);
+  --studio-home-dark-card-bg-hover: rgba(30, 30, 30, 0.55);
+  --studio-home-dark-card-border: rgba(255, 255, 255, 0.08);
+  --studio-home-dark-card-border-hover: rgba(255, 255, 255, 0.15);
+  --studio-home-dark-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --studio-home-dark-card-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.3);
+
+  --studio-home-idea-type-bg: rgba(255, 107, 53, 0.3);
+  --studio-home-idea-type-text: #FFB088;
+
+  /* Component - Node Editor */
+  --node-editor-bg: var(--surface-muted);
+  --node-editor-border: var(--border-default);
+  --node-editor-panel-bg: var(--surface-base);
+  --node-editor-panel-border: var(--border-light);
+  --node-editor-panel-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+
+  --node-editor-handle-border: var(--color-white);
+  --node-editor-handle-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  --node-editor-handle-input: #FBBF24;
+  --node-editor-handle-output: #3B82F6;
+
+  --node-editor-danger: #EF4444;
+  --node-editor-danger-glow: drop-shadow(0 0 3px rgba(239, 68, 68, 0.4));
+  --node-editor-primary-glow: 0 4px 12px rgba(255, 107, 0, 0.1);
+
+  --node-editor-template-image-bg: #F3E8FF;
+  --node-editor-template-video-bg: #DBEAFE;
+  --node-editor-template-upscale-bg: #D1FAE5;
+
+  /* Component - Header */
+  --header-transparent-text: #fff;
+  --header-transparent-text-muted: rgba(255, 255, 255, 0.8);
+  --header-transparent-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --header-transparent-avatar-bg: rgba(255, 255, 255, 0.2);
+  --header-transparent-avatar-border: rgba(255, 255, 255, 0.4);
+
+  /* Component - Confirm Dialog */
+  --confirm-overlay-bg: rgba(0, 0, 0, 0.5);
+  --confirm-bg: var(--surface-base);
+  --confirm-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  --confirm-message: #1F1F1F;
+
+  --confirm-icon-bg: linear-gradient(135deg, #FFF3EE 0%, #FFE8E0 100%);
+  --confirm-icon-success-bg: linear-gradient(135deg, #FFF3EE 0%, #FFE0D0 100%);
+  --confirm-icon-danger-bg: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+  --confirm-danger: #F44336;
+  --confirm-danger-strong: #E53935;
+
+  --confirm-cancel-bg: var(--surface-muted);
+  --confirm-cancel-text: var(--text-secondary);
+  --confirm-cancel-bg-hover: #EBEDF0;
+  --confirm-cancel-text-hover: #3F3F3F;
+
+  --confirm-primary-bg: linear-gradient(135deg, var(--color-primary) 0%, #FF5722 100%);
+  --confirm-primary-bg-hover: linear-gradient(135deg, #FF5722 0%, #E64A19 100%);
+  --confirm-primary-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+  --confirm-primary-shadow-hover: 0 4px 12px rgba(255, 107, 53, 0.4);
+
+  --confirm-danger-bg: linear-gradient(135deg, #F44336 0%, #D32F2F 100%);
+  --confirm-danger-bg-hover: linear-gradient(135deg, #E53935 0%, #C62828 100%);
+  --confirm-danger-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+  --confirm-danger-shadow-hover: 0 4px 12px rgba(244, 67, 54, 0.4);
+}

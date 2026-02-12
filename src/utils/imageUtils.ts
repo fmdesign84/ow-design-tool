@@ -3,6 +3,9 @@
  * Vercel 4.5MB 제한 대응 + Gemini 최적화 (2048px)
  */
 
+import { rlog } from './debug';
+import { getApiUrl } from './apiRoute';
+
 export interface ImageProcessOptions {
   maxWidth?: number;
   maxHeight?: number;
@@ -161,10 +164,13 @@ export const compressAndUploadImage = async (
     // 압축 후 크기 확인 로그
     const originalSize = estimateImageSize(base64);
     const compressedSize = estimateImageSize(compressedBase64);
-    console.log(`[ImageUtils] Compressed: ${formatFileSize(originalSize)} → ${formatFileSize(compressedSize)}`);
+    rlog('ImageUtils', 'Compressed image', {
+      originalSize: formatFileSize(originalSize),
+      compressedSize: formatFileSize(compressedSize),
+    });
 
     // 2. Supabase에 업로드 (기존 API 활용)
-    const response = await fetch('/api/upload-chat-image', {
+    const response = await fetch(getApiUrl('/api/upload-chat-image', { method: 'POST' }), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ image: compressedBase64 }),
@@ -178,7 +184,7 @@ export const compressAndUploadImage = async (
     const data = await response.json();
 
     if (data.success && data.imageUrl) {
-      console.log('[ImageUtils] Upload success:', data.imageUrl);
+      rlog('ImageUtils', 'Upload success', { imageUrl: data.imageUrl });
       return { success: true, imageUrl: data.imageUrl };
     } else {
       throw new Error(data.error || 'Upload failed');

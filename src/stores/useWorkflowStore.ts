@@ -14,6 +14,7 @@ import {
   blobToBase64,
   extractWorkflowFromPng,
 } from '../utils/pngWorkflow';
+import { getApiUrl } from '../utils/apiRoute';
 
 // 워크플로우 목록 아이템
 export interface WorkflowListItem {
@@ -260,7 +261,7 @@ export const useWorkflowStore = create<WorkflowStore>()(
           };
 
           // API 호출
-          const response = await fetch('/api/workflows', {
+          const response = await fetch(getApiUrl('/api/workflows', { method: 'POST' }), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody),
@@ -353,7 +354,7 @@ export const useWorkflowStore = create<WorkflowStore>()(
             templateId: session.templateId,
           };
 
-          const response = await fetch('/api/workflows', {
+          const response = await fetch(getApiUrl('/api/workflows', { method: 'POST' }), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(requestBody),
@@ -389,7 +390,7 @@ export const useWorkflowStore = create<WorkflowStore>()(
         set({ isLoading: true });
 
         try {
-          const response = await fetch(`/api/workflows?id=${id}`);
+          const response = await fetch(getApiUrl(`/api/workflows?id=${id}`));
           const data = await response.json();
 
           if (!data.success || !data.workflow) {
@@ -457,7 +458,7 @@ export const useWorkflowStore = create<WorkflowStore>()(
       },
 
       deleteWorkflow: async (id) => {
-        const response = await fetch('/api/workflows', {
+        const response = await fetch(getApiUrl('/api/workflows', { method: 'DELETE' }), {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id }),
@@ -479,7 +480,7 @@ export const useWorkflowStore = create<WorkflowStore>()(
       },
 
       renameWorkflow: async (id, name) => {
-        const response = await fetch('/api/workflows', {
+        const response = await fetch(getApiUrl('/api/workflows', { method: 'PATCH' }), {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id, name }),
@@ -508,7 +509,7 @@ export const useWorkflowStore = create<WorkflowStore>()(
       // ===== 추천 액션 =====
 
       toggleFeatured: async (id, featured) => {
-        const response = await fetch('/api/workflows', {
+        const response = await fetch(getApiUrl('/api/workflows', { method: 'PATCH' }), {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id, is_featured: featured }),
@@ -529,7 +530,7 @@ export const useWorkflowStore = create<WorkflowStore>()(
 
       fetchWorkflows: async () => {
         try {
-          const response = await fetch('/api/workflows?limit=50');
+          const response = await fetch(getApiUrl('/api/workflows?limit=50'));
           const data = await response.json();
 
           if (data.success) {
@@ -542,7 +543,7 @@ export const useWorkflowStore = create<WorkflowStore>()(
 
       fetchFeaturedWorkflows: async () => {
         try {
-          const response = await fetch('/api/workflows?featured=true&limit=10');
+          const response = await fetch(getApiUrl('/api/workflows?featured=true&limit=10'));
           const data = await response.json();
 
           if (data.success) {

@@ -8,6 +8,7 @@ import React, { useState, useCallback } from 'react';
 import { StyleSelector, ProductStyle, SeasonOption, BackgroundColorOption } from './StyleSelector';
 import { useImageUpload } from '../../../../hooks/useImageUpload';
 import { useToast } from '../../../../components/common';
+import { getApiUrl } from '../../../../utils/apiRoute';
 import styles from './ProductPhotoStudio.module.css';
 
 // 아이콘 (중앙 시스템에서 import)
@@ -163,7 +164,7 @@ export const ProductPhotoStudio: React.FC<ProductPhotoStudioProps> = ({
     setErrorMessage(null);
 
     try {
-      const response = await fetch('/api/remove-background', {
+      const response = await fetch(getApiUrl('/api/remove-background', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: uploadedImage, threshold: 0 }),
@@ -218,7 +219,7 @@ export const ProductPhotoStudio: React.FC<ProductPhotoStudioProps> = ({
       }
 
       // generate-image API 호출
-      const response = await fetch('/api/generate-image', {
+      const response = await fetch(getApiUrl('/api/generate-image', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -459,7 +460,6 @@ export const ProductPhotoStudio: React.FC<ProductPhotoStudioProps> = ({
                 <>
                   <ImageIcon size={18} />
                   <span>제품 사진 생성하기</span>
-                  <span className={styles.pointCost}>5P</span>
                 </>
               )}
             </button>

@@ -19,23 +19,23 @@ const MODEL_ENDPOINTS = {
   'imagen-4': '/api/generate-image'
 };
 
-// 모델별 포인트 (기본 포인트, pointPolicy.js 참조)
+// 내부용 무과금 모드
 const POINTS_PER_IMAGE = {
   'gemini-3-pro': {
-    fast: 2,
-    standard: 3,
-    hd: 4,
-    '4k': 5
+    fast: 0,
+    standard: 0,
+    hd: 0,
+    '4k': 0
   },
   'gpt-image-1.5': {
-    fast: 3,
-    standard: 4,
-    hd: 5
+    fast: 0,
+    standard: 0,
+    hd: 0
   },
   'imagen-4': {
-    fast: 2,
-    standard: 3,
-    hd: 4
+    fast: 0,
+    standard: 0,
+    hd: 0
   }
 };
 
@@ -342,22 +342,22 @@ export function checkModelSwitchCompatibility(fromModel, toModel, currentSetting
 }
 
 /**
- * 포인트 추정
+ * 내부용 비용 추정 (항상 0)
  */
 export function estimateCost(model, quality) {
   const points = POINTS_PER_IMAGE[model];
-  if (!points) return 3; // 기본값
+  if (!points) return 0;
 
-  return points[quality] || points.standard || 3;
+  return points[quality] || points.standard || 0;
 }
 
 /**
- * 포인트 포맷팅
+ * 내부용 비용 포맷팅
  */
 export function formatCost(points) {
   return {
-    points: `${points}P`,
-    display: `${points}P`
+    points: `${points}`,
+    display: `${points}`
   };
 }
 

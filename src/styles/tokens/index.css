@@ -1,0 +1,4 @@
+/* Next.js migration-ready token layering */
+@import './primitive.css';
+@import './semantic.css';
+@import './component.css';

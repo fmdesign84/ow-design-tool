@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const virtualTryonNode: NodeDefinition = {
   id: 'virtual-tryon',
@@ -75,7 +76,7 @@ export const virtualTryonNode: NodeDefinition = {
         };
       }
 
-      const response = await fetch('/api/virtual-tryon', {
+      const response = await fetch(getApiUrl('/api/virtual-tryon', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

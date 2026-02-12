@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import type { Folder, FolderTreeNode, CreateFolderParams, UpdateFolderParams } from '../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 interface UseFoldersOptions {
   userId?: string;
@@ -66,7 +67,7 @@ export function useFolders(options: UseFoldersOptions = {}): UseFoldersReturn {
         params.set('parent_id', parentId === null ? 'null' : parentId);
       }
 
-      const response = await fetch(`/api/folders?${params}`);
+      const response = await fetch(getApiUrl(`/api/folders?${params}`));
 
       if (!response.ok) {
         throw new Error('폴더 목록을 불러오지 못했습니다.');
@@ -88,7 +89,7 @@ export function useFolders(options: UseFoldersOptions = {}): UseFoldersReturn {
       throw new Error('사용자 정보가 없습니다.');
     }
 
-    const response = await fetch('/api/folders', {
+    const response = await fetch(getApiUrl('/api/folders', { method: 'POST' }), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -113,7 +114,7 @@ export function useFolders(options: UseFoldersOptions = {}): UseFoldersReturn {
 
   // 폴더 수정
   const updateFolder = useCallback(async (id: string, params: UpdateFolderParams): Promise<Folder> => {
-    const response = await fetch('/api/folders', {
+    const response = await fetch(getApiUrl('/api/folders', { method: 'PATCH' }), {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, ...params }),
@@ -135,7 +136,7 @@ export function useFolders(options: UseFoldersOptions = {}): UseFoldersReturn {
 
   // 폴더 삭제
   const deleteFolder = useCallback(async (id: string, moveImagesTo?: string): Promise<void> => {
-    const response = await fetch('/api/folders', {
+    const response = await fetch(getApiUrl('/api/folders', { method: 'DELETE' }), {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

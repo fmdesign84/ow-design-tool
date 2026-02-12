@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { AppRoutes, AppRoute, AppNavigate } from './app/routerAdapter';
 import { ImageGenPage, DocumentMergerPage } from './pages';
 import ErrorOverlay from './components/ErrorOverlay';
 import { ToastProvider } from './components/common';
@@ -13,22 +13,22 @@ function App() {
         {/* 개발용 에러 오버레이 - 화면 우측 하단에 에러 표시 */}
         <ErrorOverlay />
         <main className="content-area">
-          <Routes>
+          <AppRoutes>
           {/* AI Studio Routes - 모두 ImageGenPage로 통일 */}
-          <Route path="/" element={<ImageGenPage />} />
-          <Route path="/image" element={<ImageGenPage />} />
-          <Route path="/tools" element={<ImageGenPage />} />
-          <Route path="/video" element={<ImageGenPage />} />
-          <Route path="/design" element={<ImageGenPage />} />
-          <Route path="/wave" element={<ImageGenPage />} />
+          <AppRoute path="/" element={<ImageGenPage />} />
+          <AppRoute path="/image" element={<ImageGenPage />} />
+          <AppRoute path="/tools" element={<ImageGenPage />} />
+          <AppRoute path="/video" element={<ImageGenPage />} />
+          <AppRoute path="/design" element={<ImageGenPage />} />
+          <AppRoute path="/wave" element={<ImageGenPage />} />
 
           {/* 문서 스타일 통합기 */}
-          <Route path="/document-merger" element={<DocumentMergerPage />} />
+          <AppRoute path="/document-merger" element={<DocumentMergerPage />} />
 
           {/* Redirect old paths */}
-          <Route path="/gen-ai" element={<Navigate to="/" replace />} />
-          <Route path="/gen-ai/*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <AppRoute path="/gen-ai" element={<AppNavigate to="/" replace />} />
+          <AppRoute path="/gen-ai/*" element={<AppNavigate to="/" replace />} />
+          </AppRoutes>
         </main>
       </div>
     </ToastProvider>

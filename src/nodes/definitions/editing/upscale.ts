@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const upscaleNode: NodeDefinition = {
   id: 'upscale-image',
@@ -69,7 +70,7 @@ export const upscaleNode: NodeDefinition = {
         };
       }
 
-      const response = await fetch('/api/upscale-image', {
+      const response = await fetch(getApiUrl('/api/upscale-image', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

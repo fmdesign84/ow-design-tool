@@ -39,6 +39,7 @@ import {
   captureNodeEditor,
   WorkflowData,
 } from '../../utils/pngWorkflow';
+import { getApiUrl } from '../../utils/apiRoute';
 import styles from './NodeEditor.module.css';
 
 // ===== 템플릿 아이콘 (Lucide 기반, strokeWidth 1.5) =====
@@ -515,7 +516,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
   const loadImageHistory = useCallback(async () => {
     try {
       setIsLoadingHistory(true);
-      const response = await fetch('/api/supabase-images?offset=0&limit=50');
+      const response = await fetch(getApiUrl('/api/supabase-images?offset=0&limit=50'));
       const data = await response.json();
 
       if (data.images) {

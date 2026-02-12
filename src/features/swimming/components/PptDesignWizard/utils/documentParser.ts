@@ -82,9 +82,12 @@ export async function parseMarkdown(file: File): Promise<ParsedDocument> {
     const listMatch = trimmed.match(/^[-*+]\s+(.+)$/);
     if (listMatch) {
       flushParagraph();
-
-      // 연속된 리스트 아이템들 수집
-      const listItems: string[] = [listMatch[1]];
+      sections.push({
+        id: `section-${sectionId++}`,
+        type: 'list',
+        items: [listMatch[1]],
+        content: listMatch[1],
+      });
       continue;
     }
 

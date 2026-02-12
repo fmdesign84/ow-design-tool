@@ -9,6 +9,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { ExpertSelector, ExpertPersona } from './ExpertSelector';
 import { processImage } from '../../../../utils/imageUtils';
+import { getApiUrl } from '../../../../utils/apiRoute';
 import styles from './ExpertChat.module.css';
 
 // 아이콘 (중앙 시스템에서 import)
@@ -152,7 +153,7 @@ export const ExpertChat: React.FC<ExpertChatProps> = ({
       });
 
       // 2. /api/upload-chat-image 호출
-      const response = await fetch('/api/upload-chat-image', {
+      const response = await fetch(getApiUrl('/api/upload-chat-image', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: base64Data }),
@@ -242,7 +243,7 @@ export const ExpertChat: React.FC<ExpertChatProps> = ({
       // /api/generate-conversational 호출
       setTaskStatus({ step: 'AI가 생각하는 중...', progress: 30, isComplete: false });
 
-      const response = await fetch('/api/generate-conversational', {
+      const response = await fetch(getApiUrl('/api/generate-conversational', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

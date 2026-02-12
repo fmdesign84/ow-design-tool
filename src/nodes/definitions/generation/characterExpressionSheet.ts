@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const characterExpressionSheetNode: NodeDefinition = {
     id: 'character-expression-sheet',
@@ -64,7 +65,7 @@ export const characterExpressionSheetNode: NodeDefinition = {
                 };
             }
 
-            const response = await fetch('/api/character-expression-sheet', {
+            const response = await fetch(getApiUrl('/api/character-expression-sheet', { method: 'POST' }), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

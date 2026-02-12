@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 interface QuotaInfo {
   used: number;
@@ -52,7 +53,7 @@ export function useQuota(options: UseQuotaOptions = {}): UseQuotaReturn {
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/user-quota?user_id=${userId}`);
+      const response = await fetch(getApiUrl(`/api/user-quota?user_id=${userId}`));
 
       if (!response.ok) {
         throw new Error('할당량 정보를 불러오지 못했습니다.');
@@ -76,7 +77,7 @@ export function useQuota(options: UseQuotaOptions = {}): UseQuotaReturn {
     }
 
     try {
-      const response = await fetch('/api/user-quota', {
+      const response = await fetch(getApiUrl('/api/user-quota', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

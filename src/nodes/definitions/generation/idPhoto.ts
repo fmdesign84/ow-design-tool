@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const idPhotoNode: NodeDefinition = {
   id: 'id-photo',
@@ -115,7 +116,7 @@ export const idPhotoNode: NodeDefinition = {
         };
       }
 
-      const response = await fetch('/api/generate-idphoto', {
+      const response = await fetch(getApiUrl('/api/generate-idphoto', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

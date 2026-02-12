@@ -3,11 +3,9 @@
  * - 3개 모델 (Gemini 3 Pro, GPT Image 1.5, Imagen 4)
  * - 모델별 특성 뱃지 표시
  * - 자동 추천 표시
- * - 포인트 표시
  */
 
-import React, { useMemo } from 'react';
-import { calculatePoints } from '../../constants/pointPolicy';
+import React from 'react';
 import styles from './ModelSelector.module.css';
 
 // 모델 정보
@@ -57,18 +55,11 @@ export function ModelSelector({
   recommendReason = null,
   disabled = false,
   compact = false,
-  showCost = true,
-  quality = 'standard',
   className = '',
   excludeModels = []  // 제외할 모델 ID 배열
 }) {
   // 현재 선택된 모델 정보
   const currentModel = MODELS[selectedModel] || MODELS['gemini-3-pro'];
-
-  // 포인트 계산
-  const estimatedPoints = useMemo(() => {
-    return calculatePoints('image-gen-standard', { model: selectedModel, quality });
-  }, [selectedModel, quality]);
 
   const handleModelClick = (modelId) => {
     if (disabled) return;
@@ -123,11 +114,6 @@ export function ModelSelector({
       {!compact && (
         <div className={styles.description}>
           <p>{currentModel.description}</p>
-          {showCost && (
-            <span className={styles.cost}>
-              {estimatedPoints}P/장
-            </span>
-          )}
         </div>
       )}
 

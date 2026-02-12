@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const characterAnimationNode: NodeDefinition = {
     id: 'character-animation',
@@ -122,7 +123,7 @@ export const characterAnimationNode: NodeDefinition = {
             const isUrl = characterImage.startsWith('http');
             const imageToSend = isUrl ? characterImage : await compressImage(characterImage);
 
-            const response = await fetch('/api/character-animation', {
+            const response = await fetch(getApiUrl('/api/character-animation', { method: 'POST' }), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

@@ -5,12 +5,14 @@
 import React, { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { useToast } from '../../../../components/common';
 import { UploadIcon, ChevronDownIcon, DownloadIcon } from '../../../../components/common/Icons';
+import { rlog } from '../../../../utils/debug';
 import {
   STAGING_CATEGORIES,
   getPresetsByCategory,
   getPresetByKey,
 } from '../../../../pages/GenAI/constants/stagingPresets';
 import type { StagingCategoryKey } from '../../../../pages/GenAI/constants/stagingPresets';
+import { getApiUrl } from '../../../../utils/apiRoute';
 import styles from './PortraitStagingStudio.module.css';
 
 interface PortraitStagingStudioProps {
@@ -175,13 +177,13 @@ export const PortraitStagingStudio: React.FC<PortraitStagingStudioProps> = ({
     setGeneratedImages([]);
 
     try {
-      console.log('[Staging] 생성 요청 시작:', {
+      rlog('Staging', '생성 요청 시작', {
         presetKey: selectedPreset,
         hasPortrait: !!portraitBase64,
         hasKeyVisual: !!keyVisualBase64
       });
 
-      const response = await fetch('/api/generate-staging', {
+      const response = await fetch(getApiUrl('/api/generate-staging', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -192,7 +194,7 @@ export const PortraitStagingStudio: React.FC<PortraitStagingStudioProps> = ({
         }),
       });
 
-      console.log('[Staging] 응답 상태:', response.status);
+      rlog('Staging', '응답 상태', { status: response.status });
 
       if (!response.ok) {
         const errText = await response.text();
@@ -201,7 +203,7 @@ export const PortraitStagingStudio: React.FC<PortraitStagingStudioProps> = ({
       }
 
       const data = await response.json();
-      console.log('[Staging] 응답 데이터:', { success: data.success, imageCount: data.images?.length });
+      rlog('Staging', '응답 데이터', { success: data.success, imageCount: data.images?.length });
 
       if (!data.success) {
         throw new Error(data.friendlyMessage?.message || data.error || '생성 실패');
@@ -457,7 +459,7 @@ export const PortraitStagingStudio: React.FC<PortraitStagingStudioProps> = ({
             생성 중... (약 20-40초)
           </>
         ) : (
-          <>연출 이미지 생성하기 <span className={styles.pointCost}>5P</span></>
+          <>연출 이미지 생성하기</>
         )}
       </button>
 

@@ -7,6 +7,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Badge } from '../../../../components/common';
+import { getApiUrl } from '../../../../utils/apiRoute';
 import styles from './WaveShowcaseModal.module.css';
 
 // 커스텀 아이콘
@@ -112,7 +113,7 @@ export const WaveShowcaseModal: React.FC<WaveShowcaseModalProps> = ({
       setSelectedIndex(0);
 
       try {
-        const res = await fetch(`/api/wave-showcase?workflowId=${workflowId}`);
+        const res = await fetch(getApiUrl(`/api/wave-showcase?workflowId=${workflowId}`));
         const data = await res.json();
 
         if (!data.success) {

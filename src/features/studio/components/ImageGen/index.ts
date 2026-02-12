@@ -12,4 +12,3 @@ export { InpaintingEditor } from './InpaintingEditor';
 export type { InpaintingData } from './InpaintingEditor';
 export { ConversationalEditor } from './ConversationalEditor';
 export { CompositePhoto } from './CompositePhoto';
-export { VideoToWebP } from './VideoToWebP';

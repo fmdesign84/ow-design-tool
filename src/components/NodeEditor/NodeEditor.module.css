@@ -8,10 +8,10 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  background: var(--color-neutral-100, #F5F6F8);
+  background: var(--node-editor-bg, #F5F6F8);
   overflow: hidden;
   border-radius: 20px;
-  border: 1px solid var(--color-neutral-300, #E8E8E8);
+  border: 1px solid var(--node-editor-border, #E8E8E8);
   position: relative;
 }
 
@@ -49,7 +49,7 @@
 
 /* React Flow 기본 배경색 (점 패턴은 Background 컴포넌트에서 처리) */
 .canvas :global(.react-flow) {
-  background-color: var(--color-neutral-100, #F5F6F8);
+  background-color: var(--node-editor-bg, #F5F6F8);
 }
 
 /* 선택 모드 커서 (기본 화살표) */
@@ -78,8 +78,8 @@
 
 .canvas.scissorsMode :global(.react-flow__edge:hover .react-flow__edge-path) {
   stroke-width: 4;
-  stroke: #EF4444;
-  filter: drop-shadow(0 0 3px rgba(239, 68, 68, 0.4));
+  stroke: var(--node-editor-danger, #EF4444);
+  filter: var(--node-editor-danger-glow, drop-shadow(0 0 3px rgba(239, 68, 68, 0.4)));
 }
 
 /* 미니맵 숨김 (임베드 모드에서 불필요) */
@@ -126,16 +126,16 @@
 .canvas :global(.react-flow__handle) {
   width: 12px;
   height: 12px;
-  border: 2px solid var(--color-white);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  border: 2px solid var(--node-editor-handle-border, var(--color-white));
+  box-shadow: var(--node-editor-handle-shadow, 0 2px 4px rgba(0, 0, 0, 0.15));
 }
 
 .canvas :global(.react-flow__handle-left) {
-  background: #FBBF24; /* 노란색 - Input */
+  background: var(--node-editor-handle-input, #FBBF24); /* 노란색 - Input */
 }
 
 .canvas :global(.react-flow__handle-right) {
-  background: #3B82F6; /* 파란색 - Output */
+  background: var(--node-editor-handle-output, #3B82F6); /* 파란색 - Output */
 }
 
 /* ===== 플로팅 툴바 (좌측) ===== */
@@ -149,10 +149,10 @@
   flex-direction: column;
   gap: 4px;
   padding: 8px;
-  background: var(--color-white, #FFFFFF);
+  background: var(--node-editor-panel-bg, #FFFFFF);
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
-  border: 1px solid var(--color-neutral-200, #E8E8E8);
+  box-shadow: var(--node-editor-panel-shadow, 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04));
+  border: 1px solid var(--node-editor-panel-border, #E8E8E8);
 }
 
 .toolbarButton {
@@ -464,7 +464,7 @@
 
 .templateCard:hover {
   border-color: var(--color-primary, #FF6B00);
-  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.1);
+  box-shadow: var(--node-editor-primary-glow, 0 4px 12px rgba(255, 107, 0, 0.1));
   transform: translateY(-2px);
 }
 
@@ -479,9 +479,9 @@
   border-radius: 12px;
 }
 
-.templateCard.image .templateIcon { background: #F3E8FF; }
-.templateCard.video .templateIcon { background: #DBEAFE; }
-.templateCard.upscale .templateIcon { background: #D1FAE5; }
+.templateCard.image .templateIcon { background: var(--node-editor-template-image-bg, #F3E8FF); }
+.templateCard.video .templateIcon { background: var(--node-editor-template-video-bg, #DBEAFE); }
+.templateCard.upscale .templateIcon { background: var(--node-editor-template-upscale-bg, #D1FAE5); }
 .templateCard.empty .templateIcon { background: var(--color-neutral-100, #F5F6F8); }
 
 .templateName {

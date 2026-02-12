@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from 'react';
 import { SectionCard, LazyImage } from '../../../../components/common';
 import type { GalleryItem } from '../../types';
+import { getApiUrl } from '../../../../utils/apiRoute';
 import styles from './RecentWorks.module.css';
 
 interface RecentWorksProps {
@@ -22,7 +23,9 @@ export const RecentWorks: React.FC<RecentWorksProps> = ({
   useEffect(() => {
     const loadRecentWorks = async () => {
       try {
-        const response = await fetch(`/api/supabase-images?limit=${maxItems}&sort=created_at&order=desc`);
+        const response = await fetch(
+          getApiUrl(`/api/supabase-images?limit=${maxItems}&sort=created_at&order=desc`)
+        );
         const data = await response.json();
         if (data.images) {
           const mapped = data.images.map((item: Record<string, unknown>): GalleryItem => ({

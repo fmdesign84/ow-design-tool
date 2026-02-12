@@ -3,7 +3,7 @@
    @import만 포함 (스타일 로직 없음)
    ======================================== */
 
-@import './design-tokens.css';
+@import './tokens/index.css';
 @import './globals.css';
 @import './layout-base.css';
 @import './responsive.css';

@@ -20,7 +20,7 @@ export * from './hooks';
 
 // Components
 export { QuickActions, FeaturedGallery, HomeSection } from './components/Home';
-export { ImageToImage, RemoveBackground, Upscale, FreeGeneration, InpaintingEditor, ConversationalEditor, CompositePhoto, VideoToWebP } from './components/ImageGen';
+export { ImageToImage, RemoveBackground, Upscale, FreeGeneration, InpaintingEditor, ConversationalEditor, CompositePhoto } from './components/ImageGen';
 export type { EdgeMode, UpscaleScale, InpaintingData } from './components/ImageGen';
 export { TextToVideo, ImageToVideo, MultiImageToVideo } from './components/VideoGen';
 export type { VideoAspectRatio, VideoDuration, VideoResolution } from './components/VideoGen';

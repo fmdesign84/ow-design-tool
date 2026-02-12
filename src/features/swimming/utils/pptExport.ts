@@ -5,6 +5,7 @@
 
 import type { Node, Edge } from '@xyflow/react';
 import type { SwimmingNodeData } from '../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 // 테마 설정
 interface ThemeConfig {
@@ -183,7 +184,7 @@ async function generateSlide(
   mood: string,
   slideType: 'title' | 'content' | 'section' | 'ending'
 ): Promise<{ data: string; filename: string }> {
-  const response = await fetch('/api/generate-pptx', {
+  const response = await fetch(getApiUrl('/api/generate-pptx', { method: 'POST' }), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

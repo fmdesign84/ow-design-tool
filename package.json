@@ -35,11 +35,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject",
-    "lint": "eslint src/",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "lint": "eslint src/ --max-warnings=0"
   },
   "browserslist": {
     "production": [
@@ -59,16 +57,10 @@
     ]
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "^10.1.4",
-    "@storybook/addon-docs": "^10.1.4",
-    "@storybook/addon-onboarding": "^10.1.4",
-    "@storybook/preset-create-react-app": "^10.1.4",
-    "@storybook/react-webpack5": "^10.1.4",
     "@vitest/mocker": "^4.0.15",
     "docx": "^9.5.1",
     "pg": "^8.16.3",
     "prop-types": "^15.8.1",
-    "storybook": "^10.1.4",
     "webpack": "^5.103.0"
   }
 }

@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useMemo } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useAppLocation, useAppParams } from './useAppRouter';
 import { formatAmount } from '../utils';
 
 /**
@@ -23,8 +23,8 @@ import { formatAmount } from '../utils';
  */
 export const useApprovalForm = (initialTags = [], initialFiles = []) => {
   // ========== 페이지 모드 (URL 기반) ==========
-  const { id } = useParams();
-  const location = useLocation();
+  const { id } = useAppParams();
+  const location = useAppLocation();
 
   const pageMode = useMemo(() => {
     if (!id) return 'new';

@@ -1,4 +1,5 @@
 import { SlideConfig, DesignTokens } from '../types';
+import { getApiUrl } from '../../../../../utils/apiRoute';
 
 /**
  * PPTX 생성 유틸리티
@@ -14,7 +15,7 @@ export async function generatePPTX(
     subject?: string;
   }
 ): Promise<Blob> {
-  const response = await fetch('/api/generate-pptx-v2', {
+  const response = await fetch(getApiUrl('/api/generate-pptx-v2', { method: 'POST' }), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

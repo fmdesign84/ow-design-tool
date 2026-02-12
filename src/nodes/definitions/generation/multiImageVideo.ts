@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const multiImageVideoNode: NodeDefinition = {
   id: 'multi-image-video',
@@ -102,7 +103,7 @@ export const multiImageVideoNode: NodeDefinition = {
         };
       }
 
-      const response = await fetch('/api/generate-video', {
+      const response = await fetch(getApiUrl('/api/generate-video', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

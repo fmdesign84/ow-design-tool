@@ -6,8 +6,9 @@
  */
 import React, { useState, useRef, useCallback } from 'react';
 import styles from './ProfileStudio.module.css';
-import { processImage, formatFileSize, estimateImageSize } from '../../../../utils/imageUtils';
+import { processImage } from '../../../../utils/imageUtils';
 import { UploadIcon, DownloadIcon } from '../../../../components/common/Icons';
+import { getApiUrl } from '../../../../utils/apiRoute';
 
 // ===== 옵션 데이터 정의 =====
 
@@ -278,10 +279,6 @@ export const ProfileStudio: React.FC<ProfileStudioProps> = ({
             format: 'jpeg',
           });
 
-          const originalSize = estimateImageSize(originalBase64);
-          const processedSize = estimateImageSize(processedBase64);
-          console.log(`Image processed: ${formatFileSize(originalSize)} → ${formatFileSize(processedSize)}`);
-
           const newImage: UploadedImage = {
             id: `img-${Date.now()}`,
             role: currentUploadRole,
@@ -372,7 +369,7 @@ export const ProfileStudio: React.FC<ProfileStudioProps> = ({
     setIsAnalyzing(true);
 
     try {
-      const response = await fetch('/api/analyze-face', {
+      const response = await fetch(getApiUrl('/api/analyze-face', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: mainImage.base64 }),
@@ -473,7 +470,7 @@ High quality, professional studio lighting, sharp focus.`;
       const frameOption = FRAME_OPTIONS.find(f => f.id === options.frame);
       const prompt = buildPrompt();
 
-      const response = await fetch('/api/generate-image', {
+      const response = await fetch(getApiUrl('/api/generate-image', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -902,7 +899,7 @@ High quality, professional studio lighting, sharp focus.`;
                 생성 중...
               </>
             ) : (
-              <>사진 생성하기 <span className={styles.pointCost}>10P</span></>
+              <>사진 생성하기</>
             )}
           </button>
         </div>

@@ -10,14 +10,6 @@
 
 import { MergeMode, MergeSettings } from '../types';
 
-// ===== 스타일 매핑 정보 =====
-interface StyleMapping {
-  sourceId: string;      // B문서의 스타일 ID
-  targetId: string;      // A문서의 스타일 ID
-  sourceName: string;
-  targetName: string;
-}
-
 // ===== A문서에서 스타일 ID 목록 추출 =====
 async function extractStyleIds(zip: any): Promise<Map<string, { name: string; type: string }>> {
   const styleMap = new Map<string, { name: string; type: string }>();
@@ -321,8 +313,6 @@ export async function cloneWithStyle(
 
   // document.xml만 B의 내용으로 교체 (A의 스타일은 유지)
   const mainDocXml = await mainZip.file('word/document.xml')?.async('string') || '';
-  const newBody = extractDocumentBody(contentDocXml);
-  const wrappedBody = `<w:body xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">${newBody}</w:body>`;
   const newDocXml = replaceDocumentBody(mainDocXml, contentDocXml);
 
   resultZip.file('word/document.xml', newDocXml);

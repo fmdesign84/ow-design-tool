@@ -25,7 +25,7 @@ export interface SwimmingTemplate {
 }
 
 // 1. 회사 소개서 템플릿 (단일 페이지)
-const companyIntroTemplate: SwimmingTemplate = {
+export const companyIntroTemplate: SwimmingTemplate = {
   id: 'company-intro',
   name: '회사 소개서',
   description: '텍스트 → 히어로 레이아웃 → PPT 출력',
@@ -236,7 +236,7 @@ const aiPresentationTemplate: SwimmingTemplate = {
 };
 
 // 3. 제품 카탈로그 템플릿
-const productCatalogTemplate: SwimmingTemplate = {
+export const productCatalogTemplate: SwimmingTemplate = {
   id: 'product-catalog',
   name: '제품 카탈로그',
   description: '이미지 + 텍스트 → 그리드 → PDF',

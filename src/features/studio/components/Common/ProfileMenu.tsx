@@ -7,7 +7,7 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useAppNavigate } from '../../../../hooks/useAppRouter';
 import {
   Shield,
   Settings,
@@ -29,7 +29,7 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({
   transparent = false,
   className = '',
 }) => {
-  const navigate = useNavigate();
+  const navigate = useAppNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 

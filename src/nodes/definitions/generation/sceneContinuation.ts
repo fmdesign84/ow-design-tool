@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const sceneContinuationNode: NodeDefinition = {
     id: 'scene-continuation',
@@ -97,7 +98,7 @@ export const sceneContinuationNode: NodeDefinition = {
 
             const characterImage = inputs.characterImage as string | undefined;
 
-            const response = await fetch('/api/scene-continuation', {
+            const response = await fetch(getApiUrl('/api/scene-continuation', { method: 'POST' }), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

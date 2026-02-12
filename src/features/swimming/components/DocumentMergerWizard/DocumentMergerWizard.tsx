@@ -6,7 +6,7 @@
 
 import React, { useCallback, useRef, useState } from 'react';
 import { useDocumentMerger } from '../../../document-merger/hooks/useDocumentMerger';
-import { ElementStyle, DocumentStyleMap } from '../../../document-merger/types';
+import { ElementStyle } from '../../../document-merger/types';
 
 // 아이콘 - src/components/common/Icons
 import {

@@ -1,0 +1,85 @@
+:root {
+  /* Semantic - Text */
+  --text-primary: var(--color-neutral-800);
+  --text-secondary: var(--color-neutral-700);
+  --text-tertiary: var(--color-neutral-600);
+  --text-muted: var(--color-neutral-500);
+  --text-disabled: var(--color-neutral-400);
+  --text-accent: var(--color-primary);
+  --text-inverse: var(--color-white);
+  --text-link: var(--color-info);
+
+  /* Semantic - Surface */
+  --bg-white: var(--color-white);
+  --bg-gray: var(--color-neutral-100);
+  --bg-gray-light: var(--color-neutral-50);
+  --bg-gray-medium: var(--color-neutral-200);
+  --bg-gray-dark: var(--color-neutral-300);
+  --bg-primary-light: var(--color-primary-light);
+  --bg-hover: #F8F8F8;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
+
+  --surface-base: var(--color-white);
+  --surface-subtle: var(--color-neutral-50);
+  --surface-muted: var(--color-neutral-100);
+  --surface-elevated: #FAFAFA;
+  --surface-overlay-weak: rgba(0, 0, 0, 0.04);
+  --surface-overlay-strong: rgba(0, 0, 0, 0.6);
+
+  /* Semantic - Border */
+  --border-default: var(--color-neutral-300);
+  --border-light: var(--color-neutral-200);
+  --border-dark: var(--color-neutral-400);
+  --border-divider: var(--color-neutral-200);
+  --border-focus: var(--color-primary);
+
+  /* Semantic - Interaction */
+  --hover-bg: var(--color-neutral-200);
+  --hover-bg-light: var(--color-neutral-100);
+  --hover-bg-subtle: var(--color-neutral-50);
+
+  --focus-ring-color: var(--color-primary);
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-shadow: 0 0 0 2px rgba(255, 107, 0, 0.15);
+
+  /* Semantic - Effects */
+  --effect-lift-y-sm: -3px;
+  --effect-lift-y-md: -4px;
+  --effect-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --effect-shadow-card-hover:
+    0 8px 24px rgba(255, 107, 0, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.04);
+  --effect-shadow-hero:
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  --effect-focus-ring-primary: 0 0 0 3px rgba(255, 107, 0, 0.1);
+
+  /* Semantic - Layout */
+  --header-height: 56px;
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 64px;
+  --content-max-width: 1400px;
+  --board-gap: 12px;
+
+  --space-section-gap: 12px;
+  --space-card-padding: 20px;
+  --space-inner-padding: 16px;
+  --space-title-gap: 10px;
+  --space-divider-gap: 10px;
+  --space-item-gap: 8px;
+  --space-small-gap: 4px;
+  --space-inline-gap: 6px;
+  --card-gap: 12px;
+
+  /* Semantic - Domain */
+  --home-search-bg-start: var(--color-white);
+  --home-search-bg-end: var(--surface-subtle);
+  --home-search-input-bg: #F7F7F8;
+  --home-search-input-bg-hover: #F0F0F2;
+
+  --chat-bg: var(--surface-elevated);
+  --chat-header-bg: var(--surface-base);
+  --chat-bubble-user-bg: var(--color-primary);
+  --chat-bubble-assistant-bg: var(--surface-base);
+}

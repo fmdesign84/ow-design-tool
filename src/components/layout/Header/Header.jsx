@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { AppLink } from '../../../hooks/useAppRouter';
 import { ProfileMenu } from '../../../features/studio/components/Common';
 import styles from './Header.module.css';
 
@@ -10,13 +10,13 @@ const Header = ({
 }) => {
   return (
     <header className={`${styles.topHeader} ${transparent ? styles.transparent : ''}`}>
-      <Link
+      <AppLink
         to="/"
         className={`${styles.pageTitle} ${transparent ? styles.pageTitleTransparent : ''}`}
         style={{ textDecoration: 'none' }}
       >
         <h1 style={{ margin: 0, font: 'inherit', color: 'inherit' }}>{pageTitle}</h1>
-      </Link>
+      </AppLink>
 
       <div
         className={styles.headerRight}

@@ -7,9 +7,9 @@ export interface ModelSelectorProps {
   recommendReason?: string;
   disabled?: boolean;
   compact?: boolean;
-  showCost?: boolean;
   quality?: string;
   className?: string;
+  excludeModels?: string[];
 }
 
 export interface ModelInfo {
@@ -20,7 +20,7 @@ export interface ModelInfo {
   badges: string[];
   description: string;
   bestFor: string[];
-  costs: Record<string, number>;
+  basePoints: number;
 }
 
 export function ModelSelector(props: ModelSelectorProps): JSX.Element;

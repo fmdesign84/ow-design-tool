@@ -10,6 +10,7 @@
 
 import { useState, useCallback, useMemo } from 'react';
 import { processImage, ImageProcessOptions } from '../utils/imageUtils';
+import { getApiUrl } from '../utils/apiRoute';
 
 // ===== 타입 정의 =====
 
@@ -129,7 +130,7 @@ export function useImageUpload(options: UseImageUploadOptions = {}): UseImageUpl
     const compressedBase64 = await processImage(originalBase64, opts.compress);
 
     // 4. temp에 업로드
-    const response = await fetch('/api/upload-temp-image', {
+    const response = await fetch(getApiUrl('/api/upload-temp-image', { method: 'POST' }), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

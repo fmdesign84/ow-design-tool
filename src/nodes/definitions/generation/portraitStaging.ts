@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const portraitStagingNode: NodeDefinition = {
   id: 'portrait-staging',
@@ -96,7 +97,7 @@ export const portraitStagingNode: NodeDefinition = {
         };
       }
 
-      const response = await fetch('/api/generate-staging', {
+      const response = await fetch(getApiUrl('/api/generate-staging', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

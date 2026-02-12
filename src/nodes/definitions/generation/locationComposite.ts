@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const locationCompositeNode: NodeDefinition = {
   id: 'location-composite',
@@ -77,7 +78,7 @@ export const locationCompositeNode: NodeDefinition = {
         };
       }
 
-      const response = await fetch('/api/composite-inpaint', {
+      const response = await fetch(getApiUrl('/api/composite-inpaint', { method: 'POST' }), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

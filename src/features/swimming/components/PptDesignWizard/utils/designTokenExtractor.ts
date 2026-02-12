@@ -242,7 +242,7 @@ function convertFromFigmaTokens(figmaTokens: Record<string, unknown>): Partial<D
 export async function extractTokensFromPPT(file: File): Promise<Partial<DesignTokens>> {
   // 실제 구현에서는 서버 API 호출
   // 여기서는 placeholder
-  console.log('Extracting tokens from PPT:', file.name);
+  void file;
 
   return {
     colors: {

@@ -411,7 +411,6 @@ export const CompositePhoto: React.FC<CompositePhotoProps> = ({
                 {mode === 'location' && '합성하기'}
                 {mode === 'tryon' && '피팅하기'}
                 {mode === 'background' && '배경 생성'}
-                <span className={styles.pointCost}>5P</span>
               </>
             )}
           </button>

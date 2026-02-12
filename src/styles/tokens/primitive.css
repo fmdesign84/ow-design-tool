@@ -1,0 +1,109 @@
+:root {
+  /* Primitive - Colors */
+  --color-primary: #FF6B00;
+  --color-primary-light: #FFF5F0;
+  --color-primary-hover: #E55A00;
+
+  --color-success: #22C55E;
+  --color-success-light: #DCFCE7;
+  --color-warning: #F5A623;
+  --color-warning-light: #FFF8E6;
+  --color-error: #F44336;
+  --color-error-light: #FFEBEE;
+  --color-error-hover: #D32F2F;
+  --color-info: #3B82F6;
+  --color-info-light: #DBEAFE;
+  --color-gray: #607D8B;
+  --color-gray-light: #ECEFF1;
+
+  --color-neutral-900: #212121;
+  --color-neutral-800: #3C3C3C;
+  --color-neutral-700: #5F5F5F;
+  --color-neutral-600: #757575;
+  --color-neutral-500: #9E9E9E;
+  --color-neutral-400: #D9D9D9;
+  --color-neutral-350: #ACACAC;
+  --color-neutral-300: #E8E8E8;
+  --color-neutral-200: #F3F4F6;
+  --color-neutral-100: #F5F6F8;
+  --color-neutral-50: #FAFBFC;
+  --color-white: #FFFFFF;
+  --color-black: #1A1A1A;
+
+  /* Primitive - Typography */
+  --font-family: 'Pretendard', 'Pretendard Variable', sans-serif;
+
+  --font-size-xs: 10px;
+  --font-size-sm: 11px;
+  --font-size-base: 12px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.6;
+
+  /* Primitive - Spacing scale */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+  --spacing-4xl: 40px;
+
+  /* Primitive - Radius */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-full: 20px;
+  --radius-circle: 50%;
+
+  /* Primitive - Shadow */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-primary: 0 1px 4px rgba(255, 107, 0, 0.15);
+  --shadow-primary-hover: 0 2px 8px rgba(255, 107, 0, 0.2);
+  --shadow-inset: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+
+  /* Primitive - Motion */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+  --transition-bounce: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Primitive - Layer */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-toast: 1100;
+}

@@ -4,6 +4,7 @@
  */
 
 import type { NodeDefinition } from '../../types';
+import { getApiUrl } from '../../../utils/apiRoute';
 
 export const characterPoseNode: NodeDefinition = {
     id: 'character-pose',
@@ -172,7 +173,7 @@ export const characterPoseNode: NodeDefinition = {
 
             const backgroundImage = inputs.backgroundImage as string | undefined;
 
-            const response = await fetch('/api/character-pose', {
+            const response = await fetch(getApiUrl('/api/character-pose', { method: 'POST' }), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

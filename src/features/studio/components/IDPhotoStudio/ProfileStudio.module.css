@@ -742,14 +742,6 @@
   box-shadow: none;
 }
 
-.pointCost {
-  padding: 3px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-}
-
 /* 스피너 */
 .spinner {
   width: 40px;

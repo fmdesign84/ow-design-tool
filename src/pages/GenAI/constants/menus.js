@@ -26,7 +26,6 @@ import {
     TextCorrectIcon,
     MultiImageIcon,
     OrangeWaveIcon,
-    VideoToWebPIcon,
     PortraitStagingIcon,
 } from '../../../components/common/Icons';
 
@@ -70,7 +69,6 @@ export const TOOLS_SUB_MENUS = [
     { key: 'upscale', label: '업스케일', Icon: ScaleUpIcon },
     { key: 'remove-bg', label: '배경제거', Icon: RemoveBgIcon },
     { key: 'text-correct', label: '텍스트보정', Icon: TextCorrectIcon },
-    { key: 'video-to-webp', label: 'WebP변환', Icon: VideoToWebPIcon, locked: true },
 ];
 
 // 영상 생성 하위 메뉴

@@ -12,14 +12,12 @@ import {
   AlignmentType,
   PageBreak,
   BorderStyle,
-  convertInchesToTwip,
 } from 'docx';
 
 import {
   DocumentElement,
   DocumentStyleMap,
   ElementStyle,
-  MergeMode,
   MergeSettings,
   ParsedDocument,
   TextRun,

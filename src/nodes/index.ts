@@ -6,7 +6,12 @@
 // 타입 정의
 // 초기화 함수
 import { nodeRegistry } from './registry';
-import { allNodes } from './definitions';
+import {
+  defaultNodeCatalog,
+  flattenNodeCatalog,
+  type NodeCatalogEntry,
+} from './definitions';
+import { rlog } from '../utils/debug';
 
 export * from './types';
 export type {
@@ -41,6 +46,12 @@ export {
 export * from './definitions';
 export { allNodes } from './definitions';
 
+export type InitializeNodeSystemOptions = {
+  clearBeforeRegister?: boolean;
+  includeBundles?: string[];
+  excludeBundles?: string[];
+};
+
 // 워크플로우 엔진
 export {
   WorkflowEngine,
@@ -65,8 +76,39 @@ export type { ExecutionResult, WorkflowExecutionState } from './hooks';
  * 앱 시작 시 호출하여 모든 기본 노드를 레지스트리에 등록
  */
 export function initializeNodeSystem(): void {
-  nodeRegistry.registerAll(allNodes);
-  console.log(`[NodeSystem] Initialized with ${nodeRegistry.size} nodes`);
+  initializeNodeSystemWithCatalog(defaultNodeCatalog);
+}
+
+export function initializeNodeSystemWithCatalog(
+  catalog = defaultNodeCatalog,
+  options: InitializeNodeSystemOptions = {}
+): void {
+  const resolvedCatalog = resolveNodeCatalog(catalog, options);
+
+  if (options.clearBeforeRegister) {
+    nodeRegistry.clear();
+  }
+  nodeRegistry.registerAll(flattenNodeCatalog(resolvedCatalog));
+  rlog('NodeSystem', `Initialized with ${nodeRegistry.size} nodes`);
+}
+
+function resolveNodeCatalog(
+  catalog: NodeCatalogEntry[],
+  options: InitializeNodeSystemOptions
+): NodeCatalogEntry[] {
+  let resolved = catalog;
+
+  if (options.includeBundles?.length) {
+    const includes = new Set(options.includeBundles);
+    resolved = resolved.filter(entry => includes.has(entry.id));
+  }
+
+  if (options.excludeBundles?.length) {
+    const excludes = new Set(options.excludeBundles);
+    resolved = resolved.filter(entry => !excludes.has(entry.id));
+  }
+
+  return resolved;
 }
 
 /**
