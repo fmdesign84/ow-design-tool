@@ -19,6 +19,12 @@
   --card-shadow: var(--shadow-sm);
   --card-hover-shadow: var(--shadow-md);
   --card-hover-border: var(--color-primary);
+  --card-hover-offset-y: -2px;
+  --card-transition: all var(--transition-normal) ease;
+  --card-header-gap: var(--spacing-3);
+  --card-footer-padding: var(--spacing-3) var(--space-card-padding);
+  --card-footer-border: var(--border-light);
+  --card-footer-bg: var(--bg-gray);
 
   /* Component - Button */
   --btn-primary-bg: var(--color-primary);
@@ -85,9 +91,36 @@
   --modal-border: var(--border-default);
   --modal-shadow: var(--shadow-xl);
   --modal-backdrop: var(--bg-overlay);
+  --modal-overlay-padding: var(--spacing-4);
+  --modal-overlay-padding-mobile: var(--spacing-2);
+  --modal-enter-duration: 0.3s;
+  --modal-fade-duration: 0.2s;
+  --modal-enter-offset-y: 20px;
+  --modal-enter-scale-from: 0.95;
+  --modal-size-sm: 400px;
+  --modal-size-md: 560px;
+  --modal-size-lg: 800px;
+  --modal-size-xl: 1024px;
+  --modal-close-size: 32px;
+  --modal-close-radius: var(--radius-md);
+  --modal-close-focus-width: 2px;
+  --modal-close-focus-offset: 2px;
+  --modal-header-padding: var(--spacing-4) var(--spacing-5);
+  --modal-header-padding-mobile: var(--spacing-3) var(--spacing-4);
+  --modal-body-padding: var(--spacing-5);
+  --modal-body-padding-mobile: var(--spacing-4);
+  --modal-footer-padding: var(--spacing-4) var(--spacing-5);
+  --modal-footer-padding-mobile: var(--spacing-3) var(--spacing-4);
 
   --tooltip-bg: var(--color-neutral-900);
   --tooltip-text: var(--color-white);
+  --tooltip-padding: var(--spacing-2) var(--spacing-3);
+  --tooltip-radius: var(--radius-md);
+  --tooltip-arrow-size: 8px;
+  --tooltip-offset-hidden: 8px;
+  --tooltip-offset-visible: 4px;
+  --tooltip-transition: all var(--transition-fast) ease;
+  --tooltip-shadow: var(--shadow-lg);
 
   --toast-bg: var(--color-white);
   --toast-shadow: var(--shadow-lg);

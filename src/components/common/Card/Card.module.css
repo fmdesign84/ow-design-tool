@@ -5,18 +5,18 @@
 .card {
   display: flex;
   flex-direction: column;
-  background: var(--card-bg, #FFFFFF);
-  border: 1px solid var(--card-border, #E8E8E8);
-  border-radius: var(--card-radius, var(--radius-xl, 12px));
-  box-shadow: var(--card-shadow, var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.04)));
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
   overflow: hidden;
-  transition: all var(--transition-normal, 0.2s) ease;
+  transition: var(--card-transition);
 }
 
 .hoverable:hover {
-  border-color: var(--card-hover-border, var(--color-primary));
-  box-shadow: var(--card-hover-shadow, var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08)));
-  transform: translateY(-2px);
+  border-color: var(--card-hover-border);
+  box-shadow: var(--card-hover-shadow);
+  transform: translateY(var(--card-hover-offset-y));
 }
 
 .clickable {
@@ -41,8 +41,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: var(--spacing-3, 12px);
-  padding: var(--space-card-padding, 20px);
+  gap: var(--card-header-gap);
+  padding: var(--space-card-padding);
   padding-bottom: 0;
 }
 
@@ -53,17 +53,17 @@
 
 .title {
   margin: 0;
-  font-size: var(--font-size-md, 14px);
-  font-weight: var(--font-weight-semibold, 600);
-  color: var(--text-primary, #3C3C3C);
-  line-height: var(--line-height-tight, 1.2);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  line-height: var(--line-height-tight);
 }
 
 .subtitle {
-  margin: var(--spacing-1, 4px) 0 0;
-  font-size: var(--font-size-sm, 11px);
-  color: var(--text-secondary, #5F5F5F);
-  line-height: var(--line-height-normal, 1.4);
+  margin: var(--spacing-1) 0 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: var(--line-height-normal);
 }
 
 .extra {
@@ -74,7 +74,7 @@
 
 .body {
   flex: 1;
-  padding: var(--space-card-padding, 20px);
+  padding: var(--space-card-padding);
 }
 
 .noPadding .body {
@@ -82,14 +82,14 @@
 }
 
 .noPadding .header {
-  padding: var(--space-card-padding, 20px);
-  padding-bottom: var(--spacing-3, 12px);
+  padding: var(--space-card-padding);
+  padding-bottom: var(--spacing-3);
 }
 
 /* ===== Footer ===== */
 
 .footer {
-  padding: var(--spacing-3, 12px) var(--space-card-padding, 20px);
-  border-top: 1px solid var(--border-light, #F3F4F6);
-  background: var(--bg-gray, #F5F6F8);
+  padding: var(--card-footer-padding);
+  border-top: 1px solid var(--card-footer-border);
+  background: var(--card-footer-bg);
 }
