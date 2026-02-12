@@ -3,7 +3,7 @@
  */
 
 .skeleton {
-  background: var(--bg-gray, #F5F6F8);
+  background: var(--skeleton-bg);
   display: block;
 }
 
@@ -11,8 +11,8 @@
 
 .text {
   height: 1em;
-  border-radius: var(--radius-sm, 4px);
-  margin-bottom: var(--spacing-2, 8px);
+  border-radius: var(--skeleton-text-radius);
+  margin-bottom: var(--skeleton-text-margin-bottom);
 }
 
 .text:last-child {
@@ -28,7 +28,7 @@
 }
 
 .rounded {
-  border-radius: var(--radius-lg, 8px);
+  border-radius: var(--skeleton-rounded-radius);
 }
 
 /* ===== Animation: Pulse ===== */
@@ -42,7 +42,7 @@
     opacity: 1;
   }
   50% {
-    opacity: 0.4;
+    opacity: var(--skeleton-pulse-min-opacity);
   }
 }
 
@@ -63,7 +63,7 @@
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.4),
+    var(--skeleton-wave-highlight),
     transparent
   );
   animation: skeleton-wave 1.5s linear infinite;
@@ -86,15 +86,15 @@
 }
 
 .cardSkeleton {
-  border-radius: var(--radius-xl, 12px);
+  border-radius: var(--skeleton-card-radius);
   overflow: hidden;
-  background: var(--bg-white, #FFFFFF);
-  border: 1px solid var(--border-default, #E8E8E8);
+  background: var(--skeleton-card-bg);
+  border: 1px solid var(--skeleton-card-border);
 }
 
 .cardContent {
-  padding: var(--spacing-3, 12px);
+  padding: var(--skeleton-card-padding);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-2, 8px);
+  gap: var(--skeleton-card-gap);
 }

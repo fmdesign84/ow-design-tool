@@ -221,6 +221,41 @@
   --progress-stripe-size: 20px 20px;
   --progress-stripe-offset-x: 20px;
 
+  /* Component - LoadingScreen */
+  --loading-bg: var(--bg-white);
+  --loading-z-index: var(--z-modal);
+  --loading-container-padding: var(--spacing-10);
+  --loading-content-gap: var(--spacing-4);
+  --loading-spinner-border-color: var(--color-neutral-200);
+  --loading-spinner-size-sm: 24px;
+  --loading-spinner-size-md: 40px;
+  --loading-spinner-size-lg: 56px;
+  --loading-spinner-border-sm: 2px;
+  --loading-spinner-border-md: 3px;
+  --loading-spinner-border-lg: 4px;
+  --loading-message-size: var(--font-size-md);
+  --loading-message-color: var(--text-secondary);
+
+  /* Component - Skeleton */
+  --skeleton-bg: var(--bg-gray);
+  --skeleton-text-radius: var(--radius-sm);
+  --skeleton-text-margin-bottom: var(--spacing-2);
+  --skeleton-rounded-radius: var(--radius-lg);
+  --skeleton-card-radius: var(--radius-xl);
+  --skeleton-card-bg: var(--bg-white);
+  --skeleton-card-border: var(--border-default);
+  --skeleton-card-padding: var(--spacing-3);
+  --skeleton-card-gap: var(--spacing-2);
+  --skeleton-wave-highlight: rgba(255, 255, 255, 0.4);
+  --skeleton-pulse-min-opacity: 0.4;
+
+  /* Component - Divider */
+  --divider-color: var(--border-default);
+  --divider-thickness: 1px;
+  --divider-text-size: var(--font-size-sm);
+  --divider-text-color: var(--text-muted);
+  --divider-gap-with-text: var(--spacing-3);
+
   /* Component - Notification */
   --notification-bg: var(--color-white);
   --notification-hover-bg: var(--color-neutral-50);

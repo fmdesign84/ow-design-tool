@@ -4,18 +4,18 @@
 
 .divider {
   border: none;
-  background: var(--border-default, #E8E8E8);
+  background: var(--divider-color);
 }
 
 /* ===== Orientation ===== */
 
 .horizontal {
   width: 100%;
-  height: 1px;
+  height: var(--divider-thickness);
 }
 
 .vertical {
-  width: 1px;
+  width: var(--divider-thickness);
   height: 100%;
 }
 
@@ -26,27 +26,27 @@
 }
 
 .spacing-sm.horizontal {
-  margin: var(--spacing-2, 8px) 0;
+  margin: var(--spacing-2) 0;
 }
 
 .spacing-md.horizontal {
-  margin: var(--spacing-4, 16px) 0;
+  margin: var(--spacing-4) 0;
 }
 
 .spacing-lg.horizontal {
-  margin: var(--spacing-6, 24px) 0;
+  margin: var(--spacing-6) 0;
 }
 
 .spacing-sm.vertical {
-  margin: 0 var(--spacing-2, 8px);
+  margin: 0 var(--spacing-2);
 }
 
 .spacing-md.vertical {
-  margin: 0 var(--spacing-4, 16px);
+  margin: 0 var(--spacing-4);
 }
 
 .spacing-lg.vertical {
-  margin: 0 var(--spacing-6, 24px);
+  margin: 0 var(--spacing-6);
 }
 
 /* ===== With Text ===== */
@@ -54,19 +54,19 @@
 .withText {
   display: flex;
   align-items: center;
-  gap: var(--spacing-3, 12px);
+  gap: var(--divider-gap-with-text);
   height: auto;
   background: transparent;
 }
 
 .line {
   flex: 1;
-  height: 1px;
-  background: var(--border-default, #E8E8E8);
+  height: var(--divider-thickness);
+  background: var(--divider-color);
 }
 
 .text {
-  font-size: var(--font-size-sm, 11px);
-  color: var(--text-muted, #9E9E9E);
+  font-size: var(--divider-text-size);
+  color: var(--divider-text-color);
   white-space: nowrap;
 }
