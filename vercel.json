@@ -5,6 +5,19 @@
   "ignoreCommand": "git diff --quiet HEAD^ HEAD -- ./src ./api ./public ./package.json ./vercel.json",
   "outputDirectory": "build",
   "installCommand": "npm install",
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/index.html"
+    }
+  ],
   "crons": [
     {
       "path": "/api/cleanup-temp-files",
