@@ -1,19 +1,54 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useAppNavigate } from '../../hooks/useAppRouter';
 import { TOKEN_LAYERS, ASSET_GROUPS, TOKEN_TOTAL, ASSET_TOTAL } from './catalog';
 import styles from './DesignAssetsPage.module.css';
 
-const TABS = [
+const MAIN_TABS = [
   { key: 'tokens', label: 'Design Tokens' },
   { key: 'assets', label: 'Assets' },
 ];
 
+const TOKEN_TABS = [
+  { key: 'all', label: 'All' },
+  { key: 'colors', label: 'Colors' },
+  { key: 'typography', label: 'Typography' },
+  { key: 'spacing', label: 'Spacing' },
+  { key: 'radius', label: 'Radius' },
+  { key: 'effects', label: 'Effects' },
+  { key: 'motion', label: 'Motion' },
+  { key: 'layout', label: 'Layout' },
+  { key: 'component', label: 'Component' },
+];
+
+const flattenTokens = () => TOKEN_LAYERS.flatMap((layer) =>
+  layer.items.map((item) => ({ ...item, layerKey: layer.key, layerLabel: layer.label, source: layer.file }))
+);
+
+const classifyToken = (tokenName) => {
+  if (/^--(color|text|bg|surface|border|toast|tooltip|modal|notification|tag)-/.test(tokenName)) return 'colors';
+  if (/^--(font|line-height)-/.test(tokenName)) return 'typography';
+  if (/^--(spacing|space)-/.test(tokenName)) return 'spacing';
+  if (/^--radius-/.test(tokenName)) return 'radius';
+  if (/^--(shadow|effect)-/.test(tokenName) || tokenName.includes('glow')) return 'effects';
+  if (/^--transition-/.test(tokenName)) return 'motion';
+  if (/^--(z-|header-height|sidebar|content|max-width|board-gap)/.test(tokenName)) return 'layout';
+  return 'component';
+};
+
+const parsePixel = (value) => {
+  const match = String(value).match(/^(\d+(?:\.\d+)?)px$/);
+  return match ? Number(match[1]) : null;
+};
+
 const DesignAssetsPage = () => {
   const navigate = useAppNavigate();
   const [activeTab, setActiveTab] = useState('tokens');
+  const [tokenTab, setTokenTab] = useState('colors');
   const [tokenFilter, setTokenFilter] = useState('');
   const [assetFilter, setAssetFilter] = useState('');
   const [copiedValue, setCopiedValue] = useState('');
+
+  const allTokens = useMemo(flattenTokens, []);
 
   const copyText = async (text) => {
     try {
@@ -21,7 +56,6 @@ const DesignAssetsPage = () => {
       setCopiedValue(text);
       setTimeout(() => setCopiedValue(''), 1200);
     } catch {
-      // Clipboard API 미지원 브라우저 대비
       setCopiedValue('');
     }
   };
@@ -29,24 +63,26 @@ const DesignAssetsPage = () => {
   const normalizedTokenFilter = tokenFilter.trim().toLowerCase();
   const normalizedAssetFilter = assetFilter.trim().toLowerCase();
 
-  const filteredTokenLayers = TOKEN_LAYERS.map((layer) => ({
-    ...layer,
-    items: layer.items.filter((token) => {
-      if (!normalizedTokenFilter) return true;
-      return token.name.toLowerCase().includes(normalizedTokenFilter)
-        || token.value.toLowerCase().includes(normalizedTokenFilter);
-    }),
-  })).filter((layer) => layer.items.length > 0);
+  const filteredTokens = useMemo(() => {
+    return allTokens
+      .filter((token) => {
+        if (!normalizedTokenFilter) return true;
+        return token.name.toLowerCase().includes(normalizedTokenFilter)
+          || token.value.toLowerCase().includes(normalizedTokenFilter);
+      })
+      .filter((token) => tokenTab === 'all' || classifyToken(token.name) === tokenTab);
+  }, [allTokens, normalizedTokenFilter, tokenTab]);
 
-  const filteredAssetGroups = ASSET_GROUPS.map((group) => ({
-    ...group,
-    items: group.items.filter((assetPath) => {
-      if (!normalizedAssetFilter) return true;
-      return assetPath.toLowerCase().includes(normalizedAssetFilter);
-    }),
-  })).filter((group) => group.items.length > 0);
+  const filteredAssetGroups = useMemo(() => {
+    return ASSET_GROUPS.map((group) => ({
+      ...group,
+      items: group.items.filter((assetPath) => {
+        if (!normalizedAssetFilter) return true;
+        return assetPath.toLowerCase().includes(normalizedAssetFilter);
+      }),
+    })).filter((group) => group.items.length > 0);
+  }, [normalizedAssetFilter]);
 
-  const filteredTokenCount = filteredTokenLayers.reduce((acc, layer) => acc + layer.items.length, 0);
   const filteredAssetCount = filteredAssetGroups.reduce((acc, group) => acc + group.items.length, 0);
 
   return (
@@ -54,7 +90,7 @@ const DesignAssetsPage = () => {
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>Design Assets</h1>
-          <p className={styles.subtitle}>OW Tool 전체 디자인 토큰/에셋 카탈로그</p>
+          <p className={styles.subtitle}>컬러/타이포/스페이싱 등 카테고리별 토큰 뷰</p>
         </div>
         <button className={styles.backButton} onClick={() => navigate('/wave')}>
           WAVE로 돌아가기
@@ -67,13 +103,17 @@ const DesignAssetsPage = () => {
           <strong className={styles.metricValue}>{TOKEN_TOTAL}</strong>
         </div>
         <div className={styles.metricCard}>
+          <span className={styles.metricLabel}>현재 토큰</span>
+          <strong className={styles.metricValue}>{filteredTokens.length}</strong>
+        </div>
+        <div className={styles.metricCard}>
           <span className={styles.metricLabel}>전체 에셋</span>
           <strong className={styles.metricValue}>{ASSET_TOTAL}</strong>
         </div>
       </div>
 
       <div className={styles.tabs}>
-        {TABS.map((tab) => (
+        {MAIN_TABS.map((tab) => (
           <button
             key={tab.key}
             className={`${styles.tab} ${activeTab === tab.key ? styles.active : ''}`}
@@ -91,41 +131,71 @@ const DesignAssetsPage = () => {
               className={styles.filterInput}
               value={tokenFilter}
               onChange={(event) => setTokenFilter(event.target.value)}
-              placeholder="토큰명 또는 값으로 검색 (--color-primary, 14px, rgba...)"
+              placeholder="토큰명/값 검색 (--color-primary, 14px, rgba...)"
             />
-            <span className={styles.filterCount}>{filteredTokenCount}개 표시</span>
           </div>
-          {filteredTokenLayers.map((group) => (
-            <section key={group.key} className={styles.section}>
-              <div className={styles.sectionHeader}>
-                <h2 className={styles.sectionTitle}>{group.label} ({group.items.length})</h2>
-                <button className={styles.sourcePath} onClick={() => copyText(group.source)}>
-                  {group.source}
-                </button>
-              </div>
-              <div className={styles.grid}>
-                {group.items.map((token) => {
-                  const copyValue = `var(${token.name})`;
-                  return (
-                    <button
-                      key={token.name}
-                      className={styles.itemCard}
-                      onClick={() => copyText(copyValue)}
-                      title={copyValue}
-                    >
-                      <span className={styles.itemName}>{token.name}</span>
-                      <span className={styles.itemValue}>{token.value}</span>
-                      <span className={styles.itemMeta}>line {token.line}</span>
-                      {copiedValue === copyValue && <span className={styles.copied}>Copied</span>}
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-          ))}
-          {filteredTokenLayers.length === 0 && (
-            <div className={styles.emptyState}>검색 결과가 없습니다.</div>
-          )}
+
+          <div className={styles.tokenTabs}>
+            {TOKEN_TABS.map((tab) => (
+              <button
+                key={tab.key}
+                className={`${styles.tokenTab} ${tokenTab === tab.key ? styles.active : ''}`}
+                onClick={() => setTokenTab(tab.key)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <section className={styles.section}>
+            <div className={styles.sectionHeader}>
+              <h2 className={styles.sectionTitle}>토큰 목록 ({filteredTokens.length})</h2>
+            </div>
+
+            <div className={styles.grid}>
+              {filteredTokens.map((token) => {
+                const tokenVar = `var(${token.name})`;
+                const category = classifyToken(token.name);
+                const spacingPx = parsePixel(token.value);
+                const spacingWidth = spacingPx ? Math.min(Math.max(spacingPx, 6), 180) : 36;
+
+                return (
+                  <button
+                    key={`${token.layerKey}-${token.name}`}
+                    className={styles.itemCard}
+                    onClick={() => copyText(tokenVar)}
+                    title={tokenVar}
+                  >
+                    {category === 'colors' && (
+                      <span className={styles.swatch} style={{ background: tokenVar }} />
+                    )}
+
+                    {category === 'spacing' && (
+                      <span className={styles.spacingBar} style={{ width: `${spacingWidth}px` }} />
+                    )}
+
+                    {category === 'radius' && (
+                      <span className={styles.radiusBox} style={{ borderRadius: tokenVar }} />
+                    )}
+
+                    {category === 'effects' && (
+                      <span className={styles.shadowBox} style={{ boxShadow: tokenVar }} />
+                    )}
+
+                    <span className={styles.itemName}>{token.name}</span>
+                    <span className={styles.itemValue}>{token.value}</span>
+                    <span className={styles.itemMeta}>{token.layerLabel} · line {token.line}</span>
+                    <span className={styles.itemMeta}>{token.source}</span>
+                    {copiedValue === tokenVar && <span className={styles.copied}>Copied</span>}
+                  </button>
+                );
+              })}
+            </div>
+
+            {filteredTokens.length === 0 && (
+              <div className={styles.emptyState}>검색/카테고리 조건에 맞는 토큰이 없습니다.</div>
+            )}
+          </section>
         </div>
       )}
 
@@ -136,10 +206,11 @@ const DesignAssetsPage = () => {
               className={styles.filterInput}
               value={assetFilter}
               onChange={(event) => setAssetFilter(event.target.value)}
-              placeholder="에셋 경로로 검색 (icons, images, pdf...)"
+              placeholder="에셋 경로 검색 (icons, images, pdf...)"
             />
             <span className={styles.filterCount}>{filteredAssetCount}개 표시</span>
           </div>
+
           {filteredAssetGroups.map((group) => (
             <section key={group.key} className={styles.section}>
               <div className={styles.sectionHeader}>
@@ -163,6 +234,7 @@ const DesignAssetsPage = () => {
               </div>
             </section>
           ))}
+
           {filteredAssetGroups.length === 0 && (
             <div className={styles.emptyState}>검색 결과가 없습니다.</div>
           )}
