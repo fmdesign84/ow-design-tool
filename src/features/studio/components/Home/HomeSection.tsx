@@ -2,14 +2,14 @@
  * HomeSection - 홈 화면 전체 컴포넌트
  *
  * 포함 요소:
- * - 배경 영상 (Cross-fade)
+ * - 히어로 배경 프레임
  * - 검색 카드
  * - 빠른 시작 (QuickActions)
  * - 추천 갤러리 (FeaturedGallery)
  * - 창작 아이디어
  */
 
-import React, { useRef, useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 // useNavigate 제거됨 - onNavigate prop 사용
 import { Button, Badge, SectionCard } from '../../../../components/common';
 import { OrangeWhaleIcon, ImageGenIcon, VideoGenIcon } from '../../../../components/common/Icons';
@@ -19,9 +19,6 @@ import { FeaturedGallery } from './FeaturedGallery';
 import { IMAGE_ASPECT_RATIOS, VIDEO_ASPECT_RATIOS, CREATIVE_IDEAS } from '../../constants';
 import type { GalleryItem, StudioMenu, AspectRatio, GenerationType } from '../../types';
 import styles from './HomeSection.module.css';
-// Assets
-import bgVideo from '../../../../assets/video/orange-whale-main-compressed.mp4';
-import bgPoster from '../../../../assets/video/orange-whale-poster.jpg';
 
 // FeaturedWaves는 @xyflow 의존성이 무거워서 lazy loading
 const FeaturedWaves = lazy(() => import('./FeaturedWaves'));
@@ -72,7 +69,6 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
   onNavigateToWave,
   onImageClick,
 }) => {
-  const video1Ref = useRef<HTMLVideoElement>(null);
   const [isWhaleBouncing, setIsWhaleBouncing] = useState(false);
 
   // 고래 아이콘 클릭 핸들러
@@ -108,17 +104,7 @@ export const HomeSection: React.FC<HomeSectionProps> = ({
       <div className={styles.homeSearchCard}>
         {/* 영상 프레임 - 검색바 카드 안에 배치 */}
         <div className={styles.videoFrame}>
-          <video
-            ref={video1Ref}
-            className={styles.frameVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            poster={bgPoster}
-            src={bgVideo}
-          />
+          <div className={styles.frameVideo} />
         </div>
 
         {/* 검색 입력 영역 */}

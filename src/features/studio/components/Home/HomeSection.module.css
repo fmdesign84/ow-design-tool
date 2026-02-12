@@ -47,8 +47,10 @@
 .frameVideo {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
+  background:
+    radial-gradient(120% 140% at 10% 0%, rgba(255, 107, 0, 0.22) 0%, rgba(255, 107, 0, 0) 48%),
+    radial-gradient(120% 140% at 90% 100%, rgba(255, 107, 0, 0.18) 0%, rgba(255, 107, 0, 0) 52%),
+    linear-gradient(135deg, #20242d 0%, #283243 52%, #11161f 100%);
 }
 
 /* ========== 검색 행 (입력 + 옵션) ========== */

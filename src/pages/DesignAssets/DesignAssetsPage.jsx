@@ -64,15 +64,6 @@ const ASSET_GROUPS = [
     source: 'src/assets/images',
     items: [
       'src/assets/images/whale-celebration.png',
-      'src/assets/video/orange-whale-poster.jpg',
-    ],
-  },
-  {
-    title: 'Video',
-    source: 'src/assets/video',
-    items: [
-      'src/assets/video/orange-whale-main.mp4',
-      'src/assets/video/orange-whale-main-compressed.mp4',
     ],
   },
 ];
