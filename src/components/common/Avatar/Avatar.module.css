@@ -7,7 +7,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-primary-light, #FFF5F0);
+  background: var(--color-primary-light);
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -17,7 +17,7 @@
 }
 
 .square {
-  border-radius: var(--radius-md, 6px);
+  border-radius: var(--avatar-radius-square);
 }
 
 /* ===== Image ===== */
@@ -36,7 +36,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  font-weight: var(--font-weight-semibold, 600);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-primary);
   text-transform: uppercase;
 }
@@ -49,7 +49,7 @@
 }
 
 .xs .fallback {
-  font-size: 10px;
+  font-size: var(--avatar-fallback-font-xs);
 }
 
 .sm {
@@ -58,7 +58,7 @@
 }
 
 .sm .fallback {
-  font-size: var(--font-size-xs, 10px);
+  font-size: var(--avatar-fallback-font-sm);
 }
 
 .md {
@@ -67,7 +67,7 @@
 }
 
 .md .fallback {
-  font-size: var(--font-size-base, 12px);
+  font-size: var(--avatar-fallback-font-md);
 }
 
 .lg {
@@ -76,7 +76,7 @@
 }
 
 .lg .fallback {
-  font-size: var(--font-size-md, 14px);
+  font-size: var(--avatar-fallback-font-lg);
 }
 
 .xl {
@@ -85,7 +85,7 @@
 }
 
 .xl .fallback {
-  font-size: var(--font-size-xl, 18px);
+  font-size: var(--avatar-fallback-font-xl);
 }
 
 /* ===== Status Indicator ===== */
@@ -96,24 +96,24 @@
   right: 0;
   width: 25%;
   height: 25%;
-  min-width: 8px;
-  min-height: 8px;
+  min-width: var(--avatar-status-min-size);
+  min-height: var(--avatar-status-min-size);
   border-radius: 50%;
-  border: 2px solid var(--bg-white, #FFFFFF);
+  border: var(--avatar-status-border-width) solid var(--avatar-status-border);
 }
 
 .status-online {
-  background: var(--color-success, #22C55E);
+  background: var(--color-success);
 }
 
 .status-offline {
-  background: var(--color-neutral-400, #D9D9D9);
+  background: var(--color-neutral-400);
 }
 
 .status-busy {
-  background: var(--color-error, #F44336);
+  background: var(--color-error);
 }
 
 .status-away {
-  background: var(--color-warning, #F5A623);
+  background: var(--color-warning);
 }

@@ -5,14 +5,14 @@
 .container {
   display: flex;
   align-items: center;
-  gap: var(--spacing-2, 8px);
+  gap: var(--spacing-2);
   width: 100%;
 }
 
 .labelTop {
   flex-direction: column;
   align-items: stretch;
-  gap: var(--spacing-1, 4px);
+  gap: var(--spacing-1);
 }
 
 .labelTop .labelOutside {
@@ -24,8 +24,8 @@
 
 .track {
   flex: 1;
-  background: var(--bg-gray, #F5F6F8);
-  border-radius: var(--radius-full, 20px);
+  background: var(--progress-track-bg);
+  border-radius: var(--progress-radius);
   overflow: hidden;
 }
 
@@ -33,8 +33,8 @@
 
 .bar {
   height: 100%;
-  border-radius: var(--radius-full, 20px);
-  transition: width var(--transition-slow, 0.3s) ease;
+  border-radius: var(--progress-radius);
+  transition: width var(--transition-slow) ease;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -43,15 +43,15 @@
 /* ===== Size Variants ===== */
 
 .sm .track {
-  height: 6px;
+  height: var(--progress-height-sm);
 }
 
 .md .track {
-  height: 10px;
+  height: var(--progress-height-md);
 }
 
 .lg .track {
-  height: 16px;
+  height: var(--progress-height-lg);
 }
 
 /* ===== Color Variants ===== */
@@ -61,34 +61,34 @@
 }
 
 .success {
-  background: var(--color-success, #22C55E);
+  background: var(--color-success);
 }
 
 .warning {
-  background: var(--color-warning, #F5A623);
+  background: var(--color-warning);
 }
 
 .error {
-  background: var(--color-error, #F44336);
+  background: var(--color-error);
 }
 
 .info {
-  background: var(--color-info, #3B82F6);
+  background: var(--color-info);
 }
 
 /* ===== Label ===== */
 
 .labelInside {
-  padding-right: var(--spacing-2, 8px);
-  font-size: var(--font-size-xs, 10px);
-  font-weight: var(--font-weight-semibold, 600);
-  color: var(--color-white, #FFFFFF);
+  padding-right: var(--progress-label-inside-padding-right);
+  font-size: var(--progress-label-inside-size);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
 }
 
 .labelOutside {
-  font-size: var(--font-size-sm, 11px);
-  font-weight: var(--font-weight-medium, 500);
-  color: var(--text-secondary, #5F5F5F);
+  font-size: var(--progress-label-outside-size);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
@@ -101,15 +101,15 @@
 .striped {
   background-image: linear-gradient(
     45deg,
-    rgba(255, 255, 255, 0.15) 25%,
+    var(--progress-stripe-overlay) 25%,
     transparent 25%,
     transparent 50%,
-    rgba(255, 255, 255, 0.15) 50%,
-    rgba(255, 255, 255, 0.15) 75%,
+    var(--progress-stripe-overlay) 50%,
+    var(--progress-stripe-overlay) 75%,
     transparent 75%,
     transparent
   );
-  background-size: 20px 20px;
+  background-size: var(--progress-stripe-size);
 }
 
 /* ===== Animated ===== */
@@ -120,7 +120,7 @@
 
 @keyframes progress-stripes {
   0% {
-    background-position: 20px 0;
+    background-position: var(--progress-stripe-offset-x) 0;
   }
   100% {
     background-position: 0 0;

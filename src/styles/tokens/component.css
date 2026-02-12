@@ -188,6 +188,38 @@
 
   /* Component - Avatar */
   --avatar-bg-accent: #FFE5D0;
+  --avatar-radius-square: var(--radius-md);
+  --avatar-status-min-size: 8px;
+  --avatar-status-border-width: 2px;
+  --avatar-status-border: var(--bg-white);
+  --avatar-fallback-font-xs: var(--font-size-xs);
+  --avatar-fallback-font-sm: var(--font-size-xs);
+  --avatar-fallback-font-md: var(--font-size-base);
+  --avatar-fallback-font-lg: var(--font-size-md);
+  --avatar-fallback-font-xl: var(--font-size-xl);
+
+  /* Component - IconButton */
+  --icon-button-size-sm: 28px;
+  --icon-button-size-md: 36px;
+  --icon-button-size-lg: 44px;
+  --icon-button-radius-sm: var(--radius-md);
+  --icon-button-radius-md: var(--radius-lg);
+  --icon-button-radius-lg: var(--radius-lg);
+  --icon-button-transition: all var(--transition-fast) ease;
+  --icon-button-disabled-opacity: 0.5;
+
+  /* Component - ProgressBar */
+  --progress-track-bg: var(--bg-gray);
+  --progress-radius: var(--radius-full);
+  --progress-height-sm: 6px;
+  --progress-height-md: 10px;
+  --progress-height-lg: 16px;
+  --progress-label-inside-padding-right: var(--spacing-2);
+  --progress-label-inside-size: var(--font-size-xs);
+  --progress-label-outside-size: var(--font-size-sm);
+  --progress-stripe-overlay: rgba(255, 255, 255, 0.15);
+  --progress-stripe-size: 20px 20px;
+  --progress-stripe-offset-x: 20px;
 
   /* Component - Notification */
   --notification-bg: var(--color-white);
