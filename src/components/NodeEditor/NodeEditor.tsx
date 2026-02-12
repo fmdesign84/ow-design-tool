@@ -40,6 +40,7 @@ import {
   WorkflowData,
 } from '../../utils/pngWorkflow';
 import { getApiUrl } from '../../utils/apiRoute';
+import { useAppNavigate } from '../../hooks/useAppRouter';
 import styles from './NodeEditor.module.css';
 
 // ===== 템플릿 아이콘 (Lucide 기반, strokeWidth 1.5) =====
@@ -325,6 +326,7 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
   onLoad,
   onLightboxChange,
 }) => {
+  const navigate = useAppNavigate();
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isNodePickerOpen, setIsNodePickerOpen] = useState(false);
@@ -1051,11 +1053,16 @@ const NodeEditorInner: React.FC<NodeEditorProps> = ({
       <div className={styles.header}>
         {/* 좌측: 로고 + 웨이브홈 버튼 */}
         <div className={styles.headerLeft}>
-          <div className={styles.brandSection}>
+          <button
+            type="button"
+            className={styles.brandSection}
+            onClick={() => navigate('/design-assets')}
+            title="Design Assets"
+          >
             <span className={styles.brandIcon}>🌊</span>
             <span className={styles.brandName}>Wave</span>
             <span className={styles.betaBadge}>Beta</span>
-          </div>
+          </button>
           {/* 웨이브 홈 버튼 - 노드가 있거나 시작된 상태일 때 표시 */}
           {(nodes.length > 0 || isStarted) && (
             <>

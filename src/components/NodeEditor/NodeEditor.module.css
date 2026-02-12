@@ -278,6 +278,15 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}
+
+.brandSection:hover .brandName {
+  color: var(--color-primary, #FF6B00);
 }
 
 .brandIcon {

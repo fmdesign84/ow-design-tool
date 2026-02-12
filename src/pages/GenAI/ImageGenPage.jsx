@@ -184,8 +184,8 @@ const ImageGenPage = () => {
               <div className={styles.bottomGnbCard}>
                 <div
                   className={styles.bottomGnbLogo}
-                  onClick={() => handleMenuChange('wave')}
-                  title="Wave"
+                  onClick={() => navigate('/design-assets')}
+                  title="Design Assets"
                 >
                   <OrangeWhaleIcon size={28} />
                 </div>

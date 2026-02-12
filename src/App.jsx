@@ -1,5 +1,5 @@
 import { AppRoutes, AppRoute, AppNavigate } from './app/routerAdapter';
-import { ImageGenPage, DocumentMergerPage } from './pages';
+import { ImageGenPage, DocumentMergerPage, DesignAssetsPage } from './pages';
 import ErrorOverlay from './components/ErrorOverlay';
 import { ToastProvider } from './components/common';
 import './styles/index.css';
@@ -21,6 +21,7 @@ function App() {
           <AppRoute path="/video" element={<ImageGenPage />} />
           <AppRoute path="/design" element={<ImageGenPage />} />
           <AppRoute path="/wave" element={<ImageGenPage />} />
+          <AppRoute path="/design-assets" element={<DesignAssetsPage />} />
 
           {/* 문서 스타일 통합기 */}
           <AppRoute path="/document-merger" element={<DocumentMergerPage />} />
