@@ -38,19 +38,16 @@
 .videoFrame {
   position: relative;
   width: 100%;
-  height: 200px;
-  border-radius: 14px;
+  height: var(--home-video-frame-height);
+  border-radius: var(--home-video-frame-radius);
   overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--home-video-frame-shadow);
 }
 
 .frameVideo {
   width: 100%;
   height: 100%;
-  background:
-    radial-gradient(120% 140% at 10% 0%, rgba(255, 107, 0, 0.22) 0%, rgba(255, 107, 0, 0) 48%),
-    radial-gradient(120% 140% at 90% 100%, rgba(255, 107, 0, 0.18) 0%, rgba(255, 107, 0, 0) 52%),
-    linear-gradient(135deg, #20242d 0%, #283243 52%, #11161f 100%);
+  background: var(--home-video-frame-bg);
 }
 
 /* ========== 검색 행 (입력 + 옵션) ========== */
@@ -87,8 +84,8 @@
   flex: 1;
   border: none;
   background: transparent;
-  font-size: 15px;
-  font-weight: 450;
+  font-size: var(--home-search-input-font-size);
+  font-weight: var(--home-search-input-font-weight);
   color: var(--text-primary, #1A1A1A);
   outline: none;
   box-shadow: none;
@@ -102,7 +99,7 @@
 }
 
 .searchInput::placeholder {
-  color: #9E9E9E;
+  color: var(--text-muted);
   font-weight: 400;
 }
 
@@ -165,11 +162,11 @@
   cursor: pointer;
   transition: all var(--transition-fast, 0.15s) ease;
   white-space: nowrap;
-  min-width: 70px; /* 고정 너비로 위치 고정 */
+  min-width: var(--home-search-option-min-width); /* 고정 너비로 위치 고정 */
 }
 
 .optionBtn:hover {
-  background: rgba(0, 0, 0, 0.04);
+  background: var(--home-search-option-hover-bg);
   color: var(--text-primary, #3C3C3C);
 }
 
@@ -200,13 +197,13 @@
 }
 
 .homeRatioSelect:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: var(--home-search-option-hover-bg);
   color: var(--text-primary, #3C3C3C);
 }
 
 .homeRatioSelect:focus {
   outline: none;
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: var(--home-search-option-hover-bg);
 }
 
 .homeRatioSelect option {
@@ -221,7 +218,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--home-featured-section-gap);
 }
 
 /* ========== 아이디어 섹션 (SectionCard 사용) ========== */
@@ -269,8 +266,8 @@
 .ideaText {
   font-size: 13px;
   font-weight: 500;
-  color: #1A1A1A;
-  line-height: 1.45;
+  color: var(--home-idea-text-color);
+  line-height: var(--home-idea-text-line-height);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -323,7 +320,7 @@
 /* ========== 반응형 - 태블릿 ========== */
 @media (max-width: 1024px) {
   .videoFrame {
-    height: 200px;
+    height: var(--home-video-frame-height);
   }
 
   .ideasGrid {
@@ -345,7 +342,7 @@
   }
 
   .videoFrame {
-    height: 140px;
+    height: var(--home-video-frame-height-mobile);
   }
 
   .homeSearchCard {

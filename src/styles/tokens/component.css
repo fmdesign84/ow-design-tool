@@ -77,6 +77,24 @@
   --home-card-text-secondary: var(--text-muted);
   --home-card-icon: var(--text-primary);
 
+  --home-featured-section-gap: var(--spacing-5);
+  --home-video-frame-height: 200px;
+  --home-video-frame-height-mobile: 140px;
+  --home-video-frame-radius: 14px;
+  --home-video-frame-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --home-video-frame-bg:
+    radial-gradient(120% 140% at 10% 0%, rgba(255, 107, 0, 0.22) 0%, rgba(255, 107, 0, 0) 48%),
+    radial-gradient(120% 140% at 90% 100%, rgba(255, 107, 0, 0.18) 0%, rgba(255, 107, 0, 0) 52%),
+    linear-gradient(135deg, #20242d 0%, #283243 52%, #11161f 100%);
+
+  --home-search-input-font-size: 15px;
+  --home-search-input-font-weight: 450;
+  --home-search-option-min-width: 70px;
+  --home-search-option-hover-bg: var(--surface-overlay-weak);
+
+  --home-idea-text-color: var(--color-black);
+  --home-idea-text-line-height: 1.45;
+
   /* Component - Avatar */
   --avatar-bg-accent: #FFE5D0;
 
