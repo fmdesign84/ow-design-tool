@@ -6,31 +6,31 @@
 .section {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: var(--section-card-gap);
   animation: sectionSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
 
 .sectionTitle {
-  font-size: 15px;
-  font-weight: var(--font-weight-bold, 700);
-  color: var(--home-section-title, #3C3C3C);
+  font-size: var(--section-card-title-size);
+  font-weight: var(--font-weight-bold);
+  color: var(--home-section-title);
   margin: 0;
-  padding: 0 4px;
+  padding: 0 var(--section-card-title-padding-x);
 }
 
 .sectionCard {
-  background: var(--home-card-bg, #FFFFFF);
-  border: 1px solid var(--home-card-border, #E8E8E8);
-  border-radius: var(--radius-2xl, 16px);
-  padding: 16px;
-  box-shadow: var(--shadow-md, 0 2px 12px rgba(0, 0, 0, 0.08));
+  background: var(--home-card-bg);
+  border: 1px solid var(--home-card-border);
+  border-radius: var(--section-card-radius);
+  padding: var(--section-card-padding);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
 }
 
 @keyframes sectionSlideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(var(--section-card-enter-offset-y));
   }
   to {
     opacity: 1;

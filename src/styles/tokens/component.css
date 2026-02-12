@@ -91,6 +91,14 @@
 
   --toast-bg: var(--color-white);
   --toast-shadow: var(--shadow-lg);
+  --toast-gap: var(--spacing-2);
+  --toast-padding: var(--spacing-3) var(--spacing-4);
+  --toast-radius: var(--radius-lg);
+  --toast-border-left-width: 4px;
+  --toast-min-width: 280px;
+  --toast-max-width: 400px;
+  --toast-close-radius: var(--radius-sm);
+  --toast-close-transition: all var(--transition-fast) ease;
 
   /* Component - Home */
   --home-section-title: var(--text-primary);
@@ -123,6 +131,27 @@
 
   --home-idea-text-color: var(--color-black);
   --home-idea-text-line-height: 1.45;
+
+  /* Component - Tabs */
+  --tabs-gap: var(--spacing-1);
+  --tabs-padding: var(--spacing-1);
+  --tabs-radius: var(--radius-lg);
+  --tabs-tab-gap: var(--spacing-2);
+  --tabs-tab-radius: var(--radius-md);
+  --tabs-tab-padding-sm: 6px 12px;
+  --tabs-tab-padding-md: var(--spacing-2) var(--spacing-4);
+  --tabs-tab-padding-lg: 10px 20px;
+  --tabs-pills-gap: var(--spacing-2);
+  --tabs-pills-radius: var(--radius-full);
+  --tabs-underline-active-border-width: 2px;
+
+  /* Component - SectionCard */
+  --section-card-gap: 14px;
+  --section-card-title-size: 15px;
+  --section-card-title-padding-x: 4px;
+  --section-card-padding: var(--spacing-4);
+  --section-card-radius: var(--radius-2xl);
+  --section-card-enter-offset-y: 20px;
 
   /* Component - Avatar */
   --avatar-bg-accent: #FFE5D0;
