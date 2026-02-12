@@ -7,14 +7,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-2, 8px);
-  border-radius: var(--radius-lg, 8px);
-  font-weight: var(--font-weight-semibold, 600);
+  gap: var(--btn-gap);
+  border-radius: var(--radius-lg);
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
-  transition: background var(--transition-normal, 0.2s) ease,
-              border-color var(--transition-normal, 0.2s) ease,
-              box-shadow var(--transition-normal, 0.2s) ease,
-              color var(--transition-normal, 0.2s) ease;
+  transition: background var(--transition-normal) ease,
+              border-color var(--transition-normal) ease,
+              box-shadow var(--transition-normal) ease,
+              color var(--transition-normal) ease;
   border: 1px solid transparent;
   white-space: nowrap;
 }
@@ -25,57 +25,57 @@
 }
 
 .button:focus-visible {
-  outline: 2px solid var(--color-primary, #FF6B00);
-  outline-offset: 2px;
+  outline: var(--btn-focus-outline-width) solid var(--color-primary);
+  outline-offset: var(--btn-focus-outline-offset);
 }
 
 /* ===== Variants ===== */
 
 .primary {
-  background: var(--btn-primary-bg, var(--color-primary));
-  border-color: var(--btn-primary-bg, var(--color-primary));
-  color: var(--btn-primary-text, #FFFFFF);
-  box-shadow: var(--shadow-primary, 0 2px 8px rgba(255, 107, 0, 0.25));
+  background: var(--btn-primary-bg);
+  border-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  box-shadow: var(--shadow-primary);
 }
 
 .primary:hover:not(:disabled) {
-  background: var(--btn-primary-hover, #E55A00);
-  box-shadow: var(--shadow-primary-hover, 0 4px 16px rgba(255, 107, 0, 0.35));
+  background: var(--btn-primary-hover);
+  box-shadow: var(--shadow-primary-hover);
 }
 
 .primary:disabled {
-  background: var(--btn-disabled-bg, #E8E8E8);
-  border-color: var(--btn-disabled-border, #D9D9D9);
-  color: var(--btn-disabled-text, #9E9E9E);
+  background: var(--btn-disabled-bg);
+  border-color: var(--btn-disabled-border);
+  color: var(--btn-disabled-text);
   box-shadow: none;
 }
 
 .secondary {
-  background: var(--bg-white, #FFFFFF);
-  border-color: var(--border-default, #E8E8E8);
-  color: var(--text-primary, #3C3C3C);
+  background: var(--bg-white);
+  border-color: var(--border-default);
+  color: var(--text-primary);
 }
 
 .secondary:hover:not(:disabled) {
-  background: var(--bg-gray, #F5F6F8);
-  border-color: var(--border-dark, #D9D9D9);
+  background: var(--bg-gray);
+  border-color: var(--border-dark);
 }
 
 .ghost {
   background: transparent;
   border-color: transparent;
-  color: var(--text-secondary, #5F5F5F);
+  color: var(--text-secondary);
 }
 
 .ghost:hover:not(:disabled) {
-  background: var(--bg-gray, #F5F6F8);
-  color: var(--text-primary, #3C3C3C);
+  background: var(--bg-gray);
+  color: var(--text-primary);
 }
 
 .danger {
-  background: var(--color-error, #F44336);
-  border-color: var(--color-error, #F44336);
-  color: var(--color-white, #FFFFFF);
+  background: var(--color-error);
+  border-color: var(--color-error);
+  color: var(--color-white);
 }
 
 .danger:hover:not(:disabled) {
@@ -86,21 +86,21 @@
 /* ===== Sizes ===== */
 
 .sm {
-  padding: 6px 12px;
-  font-size: var(--font-size-sm, 12px);
-  min-height: 30px;
+  padding: var(--btn-padding-sm);
+  font-size: var(--font-size-sm);
+  min-height: var(--btn-min-height-sm);
 }
 
 .md {
-  padding: 10px 20px;
-  font-size: var(--font-size-md, 14px);
-  min-height: 40px;
+  padding: var(--btn-padding-md);
+  font-size: var(--font-size-md);
+  min-height: var(--btn-min-height-md);
 }
 
 .lg {
-  padding: 14px 28px;
-  font-size: var(--font-size-lg, 16px);
-  min-height: 48px;
+  padding: var(--btn-padding-lg);
+  font-size: var(--font-size-lg);
+  min-height: var(--btn-min-height-lg);
 }
 
 /* ===== Modifiers ===== */
@@ -129,9 +129,9 @@
 }
 
 .spinner {
-  width: 16px;
-  height: 16px;
-  border: 2px solid currentColor;
+  width: var(--btn-spinner-size);
+  height: var(--btn-spinner-size);
+  border: var(--btn-spinner-border-width) solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;

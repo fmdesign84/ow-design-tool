@@ -18,21 +18,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-2, 8px);
-  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
-  background: var(--input-bg, #F5F6F8);
-  border: 1px solid var(--input-border, #E8E8E8);
-  border-radius: var(--radius-lg, 8px);
-  font-size: var(--font-size-base, 12px);
-  color: var(--text-primary, #3C3C3C);
+  gap: var(--spacing-2);
+  padding: var(--select-trigger-padding-md);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
   cursor: pointer;
-  transition: all var(--transition-fast, 0.15s) ease;
+  transition: all var(--transition-fast) ease;
   width: 100%;
   text-align: left;
 }
 
 .trigger:hover:not(:disabled) {
-  border-color: var(--border-dark, #D9D9D9);
+  border-color: var(--border-dark);
 }
 
 .trigger:focus-visible {
@@ -54,13 +54,13 @@
 
 .placeholder {
   flex: 1;
-  color: var(--text-muted, #9E9E9E);
+  color: var(--text-muted);
 }
 
 .chevron {
   flex-shrink: 0;
-  color: var(--text-secondary, #5F5F5F);
-  transition: transform var(--transition-fast, 0.15s) ease;
+  color: var(--text-secondary);
+  transition: transform var(--transition-fast) ease;
 }
 
 .open .chevron {
@@ -75,13 +75,13 @@
   left: 0;
   right: 0;
   z-index: var(--z-dropdown, 100);
-  margin-top: var(--spacing-1, 4px);
-  padding: var(--spacing-1, 4px);
-  background: var(--bg-white, #FFFFFF);
-  border: 1px solid var(--border-default, #E8E8E8);
-  border-radius: var(--radius-lg, 8px);
-  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08));
-  max-height: 200px;
+  margin-top: var(--spacing-1);
+  padding: var(--spacing-1);
+  background: var(--bg-white);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  max-height: var(--select-dropdown-max-height);
   overflow-y: auto;
 }
 
@@ -89,30 +89,30 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
+  padding: var(--spacing-2) var(--spacing-3);
   border: none;
   background: transparent;
-  border-radius: var(--radius-md, 6px);
-  font-size: var(--font-size-base, 12px);
-  color: var(--text-primary, #3C3C3C);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
   text-align: left;
   cursor: pointer;
-  transition: all var(--transition-fast, 0.15s) ease;
+  transition: all var(--transition-fast) ease;
 }
 
 .option:hover:not(.optionDisabled) {
-  background: var(--bg-gray, #F5F6F8);
+  background: var(--bg-gray);
 }
 
 .option.selected {
-  background: var(--color-primary-light, #FFF5F0);
+  background: var(--color-primary-light);
   color: var(--color-primary);
-  font-weight: var(--font-weight-medium, 500);
+  font-weight: var(--font-weight-medium);
 }
 
 .option.focused {
-  background: var(--bg-gray, #F5F6F8);
-  outline: 2px solid var(--color-primary, #FF6B00);
+  background: var(--bg-gray);
+  outline: 2px solid var(--color-primary);
   outline-offset: -2px;
 }
 
@@ -124,32 +124,32 @@
 /* ===== Size Variants ===== */
 
 .sm .trigger {
-  padding: 6px 10px;
-  font-size: var(--font-size-sm, 11px);
+  padding: var(--select-trigger-padding-sm);
+  font-size: var(--font-size-sm);
 }
 
 .md .trigger {
-  padding: var(--spacing-2, 8px) var(--spacing-3, 12px);
-  font-size: var(--font-size-base, 12px);
+  padding: var(--select-trigger-padding-md);
+  font-size: var(--font-size-base);
 }
 
 .lg .trigger {
-  padding: 10px 14px;
-  font-size: var(--font-size-md, 14px);
+  padding: var(--select-trigger-padding-lg);
+  font-size: var(--font-size-md);
 }
 
 /* ===== States ===== */
 
 .disabled .trigger {
-  background: var(--bg-gray-light, #F3F4F6);
-  color: var(--text-disabled, #D9D9D9);
+  background: var(--bg-gray-light);
+  color: var(--text-disabled);
   cursor: not-allowed;
 }
 
 .error .trigger {
-  border-color: var(--color-error, #F44336);
+  border-color: var(--color-error);
 }
 
 .error .trigger:focus {
-  box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.1);
+  box-shadow: var(--select-error-focus-shadow);
 }

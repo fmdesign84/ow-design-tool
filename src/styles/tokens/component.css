@@ -31,6 +31,17 @@
   --btn-disabled-bg: var(--color-neutral-200);
   --btn-disabled-border: var(--color-neutral-300);
   --btn-disabled-text: var(--color-neutral-400);
+  --btn-focus-outline-width: 2px;
+  --btn-focus-outline-offset: 2px;
+  --btn-gap: var(--spacing-2);
+  --btn-padding-sm: 6px 12px;
+  --btn-padding-md: 10px 20px;
+  --btn-padding-lg: 14px 28px;
+  --btn-min-height-sm: 30px;
+  --btn-min-height-md: 40px;
+  --btn-min-height-lg: 48px;
+  --btn-spinner-size: 16px;
+  --btn-spinner-border-width: 2px;
 
   /* Component - Input */
   --input-bg: var(--color-neutral-100);
@@ -40,6 +51,13 @@
   --input-focus-bg: var(--color-white);
   --input-focus-border: var(--color-primary);
   --input-error-border: var(--color-error);
+  --input-focus-outline-width: 2px;
+  --input-focus-outline-offset: 1px;
+  --input-padding-sm: 6px 10px;
+  --input-padding-md: 10px 14px;
+  --input-padding-lg: 14px 18px;
+  --input-icon-padding: 12px;
+  --input-icon-inner-padding: var(--spacing-2);
 
   /* Component - Badge */
   --badge-bg: var(--color-neutral-100);
@@ -50,6 +68,17 @@
   --badge-active-bg: var(--color-primary-light);
   --badge-active-border: var(--color-primary);
   --badge-active-text: var(--color-primary);
+  --badge-padding-sm: 2px 6px;
+  --badge-padding-md: 4px 10px;
+  --badge-clickable-height: 28px;
+  --badge-clickable-padding: 4px 12px;
+
+  /* Component - Select */
+  --select-trigger-padding-sm: 6px 10px;
+  --select-trigger-padding-md: var(--spacing-2) var(--spacing-3);
+  --select-trigger-padding-lg: 10px 14px;
+  --select-dropdown-max-height: 200px;
+  --select-error-focus-shadow: 0 0 0 2px rgba(244, 67, 54, 0.1);
 
   /* Component - Modal/Tooltip/Toast */
   --modal-bg: var(--color-white);
